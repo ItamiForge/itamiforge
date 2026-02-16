@@ -11,12 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
       - name: Format check
         working-directory: utils/devnav
         run: cargo fmt -- --check
@@ -30,12 +24,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
       - name: Build release artifact
         working-directory: utils/devnav
         run: cargo build --release

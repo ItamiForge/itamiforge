@@ -22,17 +22,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 22
-          cache: npm
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build static site
-        run: npm run build
+        run: bun run build
+        env:
+           NEXT_PUBLIC_SITE_URL: https://itamiforge.github.io/itamiforge
 
       - name: Disable Jekyll processing
         run: touch out/.nojekyll
