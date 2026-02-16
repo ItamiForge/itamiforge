@@ -29,7 +29,7 @@ jobs:
         with:
           workspaces: tools/devnav
 
-      - name: 🔍 Phase: Lint check
+      - name: Phase: Lint check
         working-directory: tools/devnav
         run: |
           echo "::group::Cargo Fmt"
@@ -52,7 +52,7 @@ jobs:
         with:
           workspaces: tools/devnav
 
-      - name: 🧪 Phase: Run tests
+      - name: Phase: Run tests
         working-directory: tools/devnav
         run: |
           echo "::group::Running Tests"
@@ -75,7 +75,7 @@ jobs:
         with:
           workspaces: tools/devnav
 
-      - name: 🔨 Phase: Build release artifact
+      - name: Phase: Build release artifact
         working-directory: tools/devnav
         run: |
           echo "::group::Cargo Build"

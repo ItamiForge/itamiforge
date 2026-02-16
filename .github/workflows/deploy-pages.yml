@@ -19,21 +19,21 @@ jobs:
     name: Build & Prepare
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Phase: Checkout
+      - name: Phase: Checkout
         uses: actions/checkout@v4
 
-      - name: 🟢 Phase: Setup Bun
+      - name: Phase: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: 📦 Phase: Install dependencies
+      - name: Phase: Install dependencies
         run: |
           echo "::group::Bun Install"
           bun install --frozen-lockfile
           echo "::endgroup::"
 
-      - name: 🏗️ Phase: Build static site
+      - name: Phase: Build static site
         run: |
           echo "::group::Next.js Build"
           bun run build
@@ -41,7 +41,7 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: https://itamiforge.github.io/itamiforge
 
-      - name: 🛠️ Phase: Post-build cleanup
+      - name: Phase: Post-build cleanup
         run: touch out/.nojekyll
 
       - name: 📤 Phase: Upload Pages artifact
