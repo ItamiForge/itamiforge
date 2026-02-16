@@ -9,7 +9,7 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
-      "!utils",
+      "!tools",
       "!node_modules",
       "!.next",
       "!dist",

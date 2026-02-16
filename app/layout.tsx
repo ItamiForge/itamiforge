@@ -7,12 +7,12 @@ import "./global.css";
 const satoshi = localFont({
   src: [
     {
-      path: "../fonts/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf",
+      path: "../public/fonts/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf",
       weight: "300 900",
       style: "normal",
     },
     {
-      path: "../fonts/Satoshi_Complete/Fonts/TTF/Satoshi-VariableItalic.ttf",
+      path: "../public/fonts/Satoshi_Complete/Fonts/TTF/Satoshi-VariableItalic.ttf",
       weight: "300 900",
       style: "italic",
     },
@@ -24,7 +24,7 @@ const satoshi = localFont({
 const synonym = localFont({
   src: [
     {
-      path: "../fonts/Synonym_Complete/Fonts/TTF/Synonym-Variable.ttf",
+      path: "../public/fonts/Synonym_Complete/Fonts/TTF/Synonym-Variable.ttf",
       weight: "200 700",
       style: "normal",
     },
@@ -36,7 +36,7 @@ const synonym = localFont({
 const quicksand = localFont({
   src: [
     {
-      path: "../fonts/Quicksand_Complete/Fonts/TTF/Quicksand-Variable.ttf",
+      path: "../public/fonts/Quicksand_Complete/Fonts/TTF/Quicksand-Variable.ttf",
       weight: "300 700",
       style: "normal",
     },

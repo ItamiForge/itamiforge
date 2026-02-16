@@ -1,0 +1,72 @@
+Varun V 
+Bengaluru, India 
+9916014327
+varunrajan@protonmail.com
+
+Summary
+
+Engineer and Consultant with a decade of experience in Data, Analytics and Software.
+Worked in Retail, Banking, Insurance, FMCG, and Manufacturing industries.
+Expertise lies in building analytics strategy, product development, and AIML solutioning.
+Recent experience has been in game dev and mobile apps, working as an indie solo developer.
+
+Experience
+Senior Manager 
+AbInBev                   03/2024 - 01/2025
+, KA
+Led the effort to build in-house supply chain solution for end-to-end automated process control in breweries
+Core product collected data from brewery floor real time, made predictions from pre-built ml models, and controlled equipments to achieve various desired outputs throughout the brewery and packaging lines
+Global Analytics Manager 
+AbInBev                   05/2022 - 03/2024
+, KA
+Lead data scientist for analytics projects undertaken globally in Supply
+Liaison between the 6 zones and the global function for projects around brewing quality and efficiency, AIML platform and analytical solution building; aggregate to the tune of 1M USD capex/opex with benefits around 2-3M USD
+Lead Data Scientist 
+Tesco Bengaluru                   05/2020 - 05/2022
+, KA
+Designed and built an in-house product for test-control experimentation and review, to test experiments ranging from Store layout changes to product core set launch/tweaks and digital platform A/B testing
+The tech stack was Hadoop Eco-system, dash web framework, deployment on the inhouse cloud platform with custom VMs and load balancer setup
+Data Science Specialist 
+Bain & Company                   06/2019 - 05/2020
+, KA
+A varied experience working across business problems in the strategy consulting side, to creating products as part of the internal IP development
+Bain provided a generous platform that enabled me to find my strengths and interests, and the stint, albeit short, added significant maturity and understanding of fundamental problem solving
+Built a Supplier Negotiation Tool for the Retail practice with MetroChina being one of the customers
+Associate 
+TheMathCompany                   07/2018 - 06/2019
+, KA
+Onsite consultant at one of the largest beverage companies in the world
+Global framework to identify and retain employees at risk of attrition (~6k employees worldwide)
+Tool for quantifying yearly performance of employees
+Part of the core Hiring and Training people in Data Science
+Deployed solutions on Azure (Databricks, Datalakes, MySQL) with mostly frameworks
+Data Scientist 
+Mu Sigma                   05/2015 - 07/2018
+, KA
+Part of a customer churn/retention problem, creating a prediction model for a major insurance client to help make low level decisions easier, and scaled for their entire Asia - Pacific region (4 months)
+Created the foundation for enabling machine learning based decision making for their global analytics department (platform - R)
+Created Excel VBA automation tools, Qlikview decision boards for one of the biggest life insurance companies as part of a process of optimising their business. Prototype towards creating value for their Russian entity (10 months)
+Presales experience in both pitching and handling discovery phase of projects across insurance, retail and government transportation domains. One specific one being for a US state department of transportation, in partnership with a leading design consultancy firm (3 months)
+Forecasting project for a food services company to improve logistics efforts with more accurate sales predictions (4 months)
+Retail project doing batch forecasting of new products and their cannibalisation of existing products. Part of the process involved in deploying them into the digital platform back-end (7 months)
+Primary contributor in a novel project for a huge Swiss bank, involving generating synthetic test data for offshore app-development, with minimal touch points with production (4 months)
+Consolidation project for a major footwear company to integrate their manufacturing supply/demand dashboards/workflows (4 months)
+
+Skills
+HTML & CSS
+Docker/CICD/Related Tech Stack
+SQL
+Git
+Machine Learning
+Python
+Dash/Flask/Related Tech Stack
+R
+Azure Eco-System (AWS and onprem knowledge too)
+GenAI (and all related hype)
+
+Education
+Amrita School of Engineering                   B.Tech 
+01/2015
+
+Links
+LinkedIn , Github

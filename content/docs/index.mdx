@@ -1,14 +1,46 @@
 ---
-title: ItamiForge Docs
+title: Docs
 description: Documentation hub for active tools, concepts, and working notes.
 ---
 
-This documentation site is the source-of-truth for tools and concepts built in `utils/`.
+import { Card, Cards } from 'fumadocs-ui/components/card'
 
-## Sections
+Build logs, architecture notes, and operational guides for each project.
 
 <Cards>
-  <Card title="Projects" href="/docs/projects" />
-  <Card title="Notes" href="/docs/notes" />
-  <Card title="Blog" href="/blog" />
+  <Card
+    title="Kirei"
+    description="Fast macOS cleaner with CLI and TUI workflows. Rust-based, safe recursive cleanup."
+    href="/docs/projects/kirei"
+  />
+  <Card
+    title="Port Finder"
+    description="Cross-platform CLI + TUI for finding and reclaiming busy ports. Deep process insights."
+    href="/docs/projects/port-finder"
+  />
+  <Card
+    title="zsh-dev-nav"
+    description="Shell navigation shortcuts with tab completion for quick project jumping."
+    href="/docs/projects/zsh-dev-nav"
+  />
+  <Card
+    title="BrewRun"
+    description="Interactive SOP runner concept for brewery operations and audit trails."
+    href="/docs/projects/brew-run"
+  />
+  <Card
+    title="YieldViz"
+    description="Analytics concept to visualize process yield losses and financial impact."
+    href="/docs/projects/yield-viz"
+  />
+</Cards>
+
+---
+
+<Cards>
+  <Card
+    title="Notes"
+    description="Field notes, workflow decisions, and dev environment baselines."
+    href="/docs/notes"
+  />
 </Cards>
