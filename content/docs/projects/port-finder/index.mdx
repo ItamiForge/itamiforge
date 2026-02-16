@@ -1,0 +1,35 @@
+---
+title: Port Finder
+description: Cross-platform CLI/TUI for inspecting and reclaiming ports.
+---
+
+## Overview
+
+Port Finder (`pf`) is a Rust CLI that quickly answers "what is on this port?" and helps terminate blockers.
+
+## Core features
+
+- List active listening ports.
+- Find process details by port.
+- Kill process by port.
+- Check availability.
+- Scan ranges.
+- Interactive TUI mode.
+
+## Install
+
+```bash
+cd utils/port-finder
+cargo install --path .
+```
+
+## Quick usage
+
+```bash
+pf
+pf list
+pf find 3000
+pf kill 3000
+pf check 8080
+pf scan 3000-4000
+```

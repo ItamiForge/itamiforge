@@ -1,0 +1,21 @@
+---
+title: Architecture and Phases
+description: Proposed architecture, data model, and implementation phases.
+---
+
+## Proposed stack
+
+- Rust for reliability and single-binary deployment.
+- Ratatui terminal interface for production floor conditions.
+- SQLite local-first persistence with export paths.
+
+## Data model
+
+1. Blueprint: recipe/SOP definition.
+2. Run: timestamped execution and captured measurements.
+
+## Phase plan
+
+1. MVP run engine and step validation.
+2. Timer and alarm orchestration.
+3. Report generation and analytics exports.

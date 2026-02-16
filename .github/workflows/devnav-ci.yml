@@ -1,0 +1,41 @@
+name: DevNav CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+      - name: Format check
+        working-directory: utils/devnav
+        run: cargo fmt -- --check
+      - name: Run tests
+        working-directory: utils/devnav
+        run: cargo test --release
+
+  build:
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+      - name: Build release artifact
+        working-directory: utils/devnav
+        run: cargo build --release

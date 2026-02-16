@@ -1,0 +1,30 @@
+---
+title: Setup and Examples
+description: Root configuration patterns and practical examples.
+---
+
+## Configure roots
+
+Edit `~/.config/devnav/config.toml`:
+
+```toml
+[[namespace]]
+name = "gh"
+path = "~/Documents/GitHub"
+aliases = ["github"]
+
+[[namespace]]
+name = "work"
+path = "~/Documents/Work"
+```
+
+## Good defaults
+
+1. Keep short root aliases (`gh`, `work`, `lab`).
+2. Use absolute paths.
+3. Re-source shell config after edits.
+
+## Next milestones
+
+- Add optional fuzzy matching.
+- Add shell diagnostics for missing roots.

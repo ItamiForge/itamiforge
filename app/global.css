@@ -1,0 +1,264 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+:root {
+  color-scheme: light dark;
+
+  /* Iron Hill / Organic Industrial (light) */
+  --color-fd-background: #f4eddd;
+  /* cream */
+  --color-fd-foreground: #344128;
+  /* deep olive */
+  --color-fd-muted: #e6dec8;
+  /* darker cream */
+  --color-fd-muted-foreground: #6c7862;
+  /* olive-500 */
+  --color-fd-popover: #f4eddd;
+  --color-fd-popover-foreground: #344128;
+  --color-fd-card: #f4eddd;
+  --color-fd-card-foreground: #344128;
+  --color-fd-border: #d4cfc0;
+  /* stone-300 approx */
+  --color-fd-primary: #344128;
+  /* deep olive */
+  --color-fd-primary-foreground: #f4eddd;
+  --color-fd-secondary: #fec820;
+  /* mustard yellow */
+  --color-fd-secondary-foreground: #344128;
+  --color-fd-accent: #e6dec8;
+  --color-fd-accent-foreground: #344128;
+  --color-fd-ring: #344128;
+  --color-fd-overlay: color-mix(in oklab, #344128 10%, transparent);
+
+  --color-fd-info: #24837b;
+  --color-fd-warning: #fec820;
+  --color-fd-error: #af3029;
+  --color-fd-success: #66800b;
+  --color-fd-idea: #5e409d;
+
+  --background: var(--color-fd-background);
+  --foreground: var(--color-fd-foreground);
+  --muted: var(--color-fd-muted);
+  --muted-foreground: var(--color-fd-muted-foreground);
+  --popover: var(--color-fd-popover);
+  --popover-foreground: var(--color-fd-popover-foreground);
+  --card: var(--color-fd-card);
+  --card-foreground: var(--color-fd-card-foreground);
+  --border: var(--color-fd-border);
+  --input: var(--color-fd-border);
+  --primary: var(--color-fd-primary);
+  --primary-foreground: var(--color-fd-primary-foreground);
+  --secondary: var(--color-fd-secondary);
+  --secondary-foreground: var(--color-fd-secondary-foreground);
+  --accent: var(--color-fd-accent);
+  --accent-foreground: var(--color-fd-accent-foreground);
+  --ring: var(--color-fd-ring);
+  --radius: 0.25rem;
+  /* 4px, gentle industrial */
+}
+
+.dark {
+  /* Iron Hill / Organic Industrial (dark) */
+  --color-fd-background: #1a2114;
+  /* deep forest green */
+  --color-fd-foreground: #f4eddd;
+  /* cream */
+  --color-fd-muted: #27311e;
+  /* olive-900 */
+  --color-fd-muted-foreground: #9ca692;
+  /* olive-300 */
+  --color-fd-popover: #1a2114;
+  --color-fd-popover-foreground: #f4eddd;
+  --color-fd-card: #1a2114;
+  --color-fd-card-foreground: #f4eddd;
+  --color-fd-border: #354029;
+  /* olive-800 */
+  --color-fd-primary: #fec820;
+  /* yellow */
+  --color-fd-primary-foreground: #1a2114;
+  --color-fd-secondary: #27311e;
+  --color-fd-secondary-foreground: #fec820;
+  --color-fd-accent: #27311e;
+  --color-fd-accent-foreground: #fec820;
+  --color-fd-ring: #fec820;
+  --color-fd-overlay: color-mix(in oklab, #000000 40%, transparent);
+
+  --color-fd-info: #06b6d4;
+  --color-fd-warning: #fec820;
+  --color-fd-error: #ef4444;
+  --color-fd-success: #22c55e;
+  --color-fd-idea: #8b5cf6;
+
+  --background: var(--color-fd-background);
+  --foreground: var(--color-fd-foreground);
+  --muted: var(--color-fd-muted);
+  --muted-foreground: var(--color-fd-muted-foreground);
+  --popover: var(--color-fd-popover);
+  --popover-foreground: var(--color-fd-popover-foreground);
+  --card: var(--color-fd-card);
+  --card-foreground: var(--color-fd-card-foreground);
+  --border: var(--color-fd-border);
+  --input: var(--color-fd-border);
+  --primary: var(--color-fd-primary);
+  --primary-foreground: var(--color-fd-primary-foreground);
+  --secondary: var(--color-fd-secondary);
+  --secondary-foreground: var(--color-fd-secondary-foreground);
+  --accent: var(--color-fd-accent);
+  --accent-foreground: var(--color-fd-accent-foreground);
+  --ring: var(--color-fd-ring);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+h1,
+.display {
+  font-family: var(--font-display);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  /* Medium weight like Iron Hill */
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.card-subtle {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.card {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color 200ms ease;
+}
+
+.card:hover {
+  border-color: var(--primary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: var(--muted);
+}
+
+.btn-primary {
+  border-color: transparent;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+  background: color-mix(in oklab, var(--primary) 90%, transparent);
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.status-pill {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.65rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.status-active {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.status-experimental {
+  background: var(--muted);
+}
+
+.status-concept {
+  background: transparent;
+}
+
+.tag-pill {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  padding: 0.14rem 0.55rem;
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  text-transform: lowercase;
+  font-family: var(--font-mono);
+}
+
+.bento-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .bento-card-wide {
+    grid-column: span 2;
+  }
+
+  .bento-card {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 900px) {
+  .bento-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .bento-card-wide {
+    grid-column: span 3;
+  }
+
+  .bento-card {
+    grid-column: span 2;
+  }
+}

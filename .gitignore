@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.pnp*
+.pnpm-store/
+
+# Build outputs and caches
+.next/
+**/.next/
+out/
+**/out/
+dist/
+**/dist/
+build/
+**/build/
+coverage/
+**/coverage/
+.source/
+**/.astro/
+.turbo/
+.cache/
+.vite/
+
+# Rust
+target/
+**/target/
+
+# TypeScript / Next.js
+*.tsbuildinfo
+next-env.d.ts
+
+# Env / local config
+.env
+.env.*
+!.env.example
+!.env.sample
+.vercel/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*.pem

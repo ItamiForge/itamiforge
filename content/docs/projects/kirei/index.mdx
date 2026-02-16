@@ -1,0 +1,33 @@
+---
+title: Kirei
+description: Safe macOS cleaner with CLI and TUI paths for developer machines.
+---
+
+## Overview
+
+Kirei is a Rust-first cleaner focused on reclaiming development disk space without destructive defaults.
+
+## Current capabilities
+
+- Scans Xcode, Node/Bun, Cargo, logs, and cache-heavy directories.
+- Interactive TUI flow for review before clean-up.
+- Safety model based on moving files to Trash instead of hard deletion.
+
+## Install
+
+```bash
+cd utils/kirei
+cargo install --path .
+```
+
+## Commands
+
+```bash
+kirei
+kirei scan
+```
+
+## Notes
+
+- GUI/Tauri workspace exists, but the terminal UX is currently the primary path.
+- CLI deletion is intentionally not implemented yet.
