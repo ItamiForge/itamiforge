@@ -4,11 +4,7 @@ import { docsSource } from "@/lib/source";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <DocsLayout
-      tree={docsSource.getPageTree()}
-      {...baseOptions()}
-      links={[]}
-    >
+    <DocsLayout tree={docsSource.getPageTree()} {...baseOptions()} links={[]}>
       {children}
     </DocsLayout>
   );

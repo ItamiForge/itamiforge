@@ -16,41 +16,47 @@ concurrency:
 
 jobs:
   build:
+    name: Build & Prepare
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: 📥 Phase: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
+      - name: 🟢 Phase: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+      - name: 📦 Phase: Install dependencies
+        run: |
+          echo "::group::Bun Install"
+          bun install --frozen-lockfile
+          echo "::endgroup::"
 
-      - name: Build static site
-        run: bun run build
+      - name: 🏗️ Phase: Build static site
+        run: |
+          echo "::group::Next.js Build"
+          bun run build
+          echo "::endgroup::"
         env:
-           NEXT_PUBLIC_SITE_URL: https://itamiforge.github.io/itamiforge
+          NEXT_PUBLIC_SITE_URL: https://itamiforge.github.io/itamiforge
 
-      - name: Disable Jekyll processing
+      - name: 🛠️ Phase: Post-build cleanup
         run: touch out/.nojekyll
 
-      - name: Upload Pages artifact
+      - name: 📤 Phase: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
   deploy:
+    name: Deployment
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 🚀 Phase: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

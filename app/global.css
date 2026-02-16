@@ -309,12 +309,10 @@ h6 {
 nav.fd-not-prose,
 header.fd-not-prose,
 [data-fumadocs-nav] {
-  position: sticky !important;
+  position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in oklab,
-      var(--background) 92%,
-      transparent) !important;
+  background: color-mix(in oklab, var(--background) 92%, transparent);
   backdrop-filter: blur(12px) saturate(1.4);
   -webkit-backdrop-filter: blur(12px) saturate(1.4);
   border-bottom: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
@@ -387,4 +385,68 @@ header.fd-not-prose,
     0 1px 4px color-mix(in oklab, var(--primary) 30%, transparent),
     0 0 8px color-mix(in oklab, var(--primary) 15%, transparent);
   border-radius: 2px;
+}
+
+/* Asymmetrical bento grid for docs cards */
+.fd-docs-page [data-cards] {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.fd-docs-page [data-cards] > a {
+  border-radius: 0.375rem;
+  border: 1px solid color-mix(in oklab, var(--border) 40%, transparent);
+  background: var(--card);
+  padding: 1rem;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 150ms ease;
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 3%, transparent);
+}
+
+.fd-docs-page [data-cards] > a:hover {
+  border-color: color-mix(in oklab, var(--primary) 30%, transparent);
+  box-shadow:
+    0 2px 4px color-mix(in oklab, var(--foreground) 4%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--primary) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+/* Asymmetrical spanning for visual interest */
+.fd-docs-page [data-cards] > a:nth-child(1) {
+  grid-column: span 4;
+}
+
+.fd-docs-page [data-cards] > a:nth-child(2) {
+  grid-column: span 2;
+}
+
+.fd-docs-page [data-cards] > a:nth-child(3) {
+  grid-column: span 3;
+}
+
+.fd-docs-page [data-cards] > a:nth-child(4) {
+  grid-column: span 3;
+}
+
+.fd-docs-page [data-cards] > a:nth-child(5) {
+  grid-column: span 2;
+}
+
+.fd-docs-page [data-cards] > a:nth-child(6) {
+  grid-column: span 4;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .fd-docs-page [data-cards] {
+    grid-template-columns: 1fr;
+  }
+
+  .fd-docs-page [data-cards] > a {
+    grid-column: span 1;
+  }
 }

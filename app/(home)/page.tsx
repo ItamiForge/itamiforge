@@ -4,7 +4,6 @@ import { featuredProjects, publicProjects } from "@/lib/projects";
 import { SITE } from "@/lib/site";
 
 export default function HomePage() {
-
   return (
     <div className="space-y-16 pb-10">
       <section className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
@@ -15,9 +14,7 @@ export default function HomePage() {
           <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
             {SITE.description}
           </p>
-
         </div>
-
       </section>
 
       <section className="space-y-6">
@@ -45,7 +42,6 @@ export default function HomePage() {
             ))}
         </div>
       </section>
-
     </div>
   );
 }
