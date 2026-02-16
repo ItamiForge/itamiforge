@@ -1,5 +1,9 @@
 {
   "title": "Docs",
   "root": true,
-  "pages": ["index", "projects", "notes"]
+  "pages": [
+    "index",
+    "projects",
+    "notes"
+  ]
 }
