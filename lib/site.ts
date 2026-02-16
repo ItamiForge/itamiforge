@@ -1,8 +1,7 @@
 export const SITE = {
   name: "ItamiForge",
-  tagline: "Developer tools, notes, and products in progress.",
-  description:
-    "Personal portfolio and documentation hub for tools, experiments, and products built by Varun and the ItamiForge studio.",
+  tagline: "Systems, tools, and notes.",
+  description: "Personal build log and documentation hub for ItamiForge.",
   githubRepo: "https://github.com/ItamiForge/itamiforge",
   githubProfile: "https://github.com/ItamiForge",
 };

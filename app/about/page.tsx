@@ -92,7 +92,6 @@ export default function AboutPage() {
     <div className="container mx-auto max-w-5xl py-12 space-y-12">
       <section className="space-y-6">
         <div className="border-b border-border pb-6">
-          <p className="eyebrow text-muted-foreground mb-2">Resume</p>
           <h1 className="font-display text-6xl font-medium tracking-tight text-primary">
             Varun V
           </h1>
@@ -114,24 +113,22 @@ export default function AboutPage() {
       <div className="bento-grid">
         {/* Summary */}
         <div className="bento-card-wide card p-8 space-y-6">
-          <p className="eyebrow text-muted-foreground">01 / Summary</p>
+          <p className="eyebrow text-muted-foreground">Summary</p>
           <div className="space-y-4 text-lg font-display text-foreground/90 leading-relaxed max-w-2xl">
             <p>
-              Engineer and Consultant with a decade of experience in Data,
-              Analytics and Software. Worked in Retail, Banking, Insurance,
-              FMCG, and Manufacturing industries.
+              Engineer and Consultant. Ten years in Data, Analytics, and
+              Software.
             </p>
             <p>
-              Expertise lies in building analytics strategy, product
-              development, and AIML solutioning. Recent experience has been in
-              game dev and mobile apps, working as an indie solo developer.
+              focused on analytics strategy and product development. Currently
+              building game dev and mobile apps as an indie developer.
             </p>
           </div>
         </div>
 
         {/* Skills */}
         <div className="bento-card-wide card p-8 space-y-6">
-          <p className="eyebrow text-muted-foreground">02 / Skills</p>
+          <p className="eyebrow text-muted-foreground">Skills</p>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill) => (
               <span
@@ -146,7 +143,7 @@ export default function AboutPage() {
 
         {/* Education */}
         <div className="bento-card-wide card p-8 space-y-6">
-          <p className="eyebrow text-muted-foreground">03 / Education</p>
+          <p className="eyebrow text-muted-foreground">Education</p>
           <div>
             <h3 className="font-display text-2xl font-medium tracking-tight">
               Amrita School of Engineering
@@ -163,7 +160,7 @@ export default function AboutPage() {
         {/* Links */}
         <div className="bento-card-wide card p-8 space-y-6 flex flex-col justify-between">
           <div>
-            <p className="eyebrow text-muted-foreground">04 / Connect</p>
+            <p className="eyebrow text-muted-foreground">Connect</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Link
