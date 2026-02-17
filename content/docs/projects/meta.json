@@ -6,6 +6,7 @@
     "zsh-dev-nav",
     "brew-run",
     "yield-viz",
-    "shadcn-theme-builder"
+    "shadcn-theme-builder",
+    "vibe-check"
   ]
 }

@@ -1,0 +1,58 @@
+---
+title: "Research: AI Slop Patterns"
+description: Identifying conversational residue, synthetic patterns, and AI fingerprints in codebases.
+---
+
+# Research: AI Slop Patterns
+
+AI Slop is the "synthetic friction" left behind during the rapid iteration cycles of agentic coding. It isn't just "bad code"—it's code that carries the hallmarks of its generation process.
+
+## 1. The Heuristics Library
+
+The `vibe-check` engine maintains a library of known patterns.
+
+### A. Conversational "Fingerprints"
+These are regular expressions used to sweep comments and documentation.
+
+| Pattern Type | Example Matches | Regex Concept |
+| :--- | :--- | :--- |
+| **Throat Clearing** | "Sure, here's a refined...", "It's important to note..." | `/^(sure,?\s+here'?s?|important\s+to\s+note)/i` |
+| **The Hedge** | "Typically, you might...", "Consider using..." | `/(typically|generally|might\s+be\s+beneficial)/i` |
+| **Response Markers** | "Summary of changes:", "Next steps:" | `/^(summary\s+of\s+changes|next\s+steps)/mic` |
+
+### B. Structural "Slop"
+Patterns that emerge from LLM prompting styles.
+
+- **"The Fragmenter"**: AI models often extract logic into small, descriptively named functions that are only used once.
+  - *Heuristic*: Detect functions $< 10$ lines with $1$ call-site and $0$ sibling reuse.
+- **"The Filler"**: Redundant comments that repeat the function name.
+  - *Heuristic*: Jaccard similarity $> 0.8$ between function name and docstring content.
+
+---
+
+## 2. Evolution of Slop
+
+We categorize slop into three evolutionary stages:
+
+### Stage 1: The Obvious (2023-2024)
+- Left-over conversation headers.
+- Plain-text apologies from the model in the comments.
+- Hallucinated imports.
+
+### Stage 2: The Subtle (2025)
+- Consistent over-documentation.
+- Generic, overly-safe variable naming (`processed_data_output`).
+- Performance-blind abstractions (e.g., unnecessary deep clones).
+
+### Stage 3: The Fraudulent (2026+)
+- Intentional "human" errors to mimic manual work.
+- Masking synthetic patterns with slang or informal comments.
+- **Detection**: Requires **Entropy Analysis** to find "too perfect" probability distributions.
+
+---
+
+## 3. The Baseline Vector Store
+To detect subtle Stage 2 slop, we use **Vector Comparison**.
+1. **Source**: We index a "Trusted Baseline" (e.g., the Linux kernel, or a project's manual MVP).
+2. **Analysis**: We compare the "Distance" between a new PR and the baseline.
+3. **Threshold**: If the PR moves into a "Generator-Specific" cluster in the vector space, it flags for review.
