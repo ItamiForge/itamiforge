@@ -1,9 +1,9 @@
 "use client";
 
-import { ThemeToggler } from "animate-ui";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { ThemeToggler } from "./animate-ui-theme-toggler";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, resolvedTheme, setTheme } = useTheme();
@@ -32,7 +32,6 @@ export function ThemeToggle({ className }: { className?: string }) {
       resolvedTheme={resolvedTheme as "light" | "dark"}
       setTheme={setTheme}
       direction="ttb"
-      className={className}
     >
       {({ effective, toggleTheme }) => {
         const nextTheme = effective === "dark" ? "light" : "dark";
