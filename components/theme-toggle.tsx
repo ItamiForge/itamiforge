@@ -2,24 +2,36 @@
 
 import { ThemeToggler } from "animate-ui";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export function ThemeToggle({ className }: { className?: string }) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+
   return (
-    <ThemeToggler direction="ttb" className={className}>
-      {({ effective, toggleTheme }) => (
-        <button
-          type="button"
-          onClick={() => toggleTheme(effective === "dark" ? "light" : "dark")}
-          className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground transition-colors"
-          aria-label="Toggle Theme"
-        >
-          {effective === "dark" ? (
-            <Moon className="w-5 h-5" />
-          ) : (
-            <Sun className="w-5 h-5" />
-          )}
-        </button>
-      )}
+    <ThemeToggler
+      theme={theme as "light" | "dark" | "system"}
+      resolvedTheme={resolvedTheme as "light" | "dark"}
+      setTheme={setTheme}
+      direction="ttb"
+      className={className}
+    >
+      {({ effective, toggleTheme }) => {
+        const nextTheme = effective === "dark" ? "light" : "dark";
+        return (
+          <button
+            type="button"
+            onClick={() => toggleTheme(nextTheme)}
+            className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground transition-colors"
+            aria-label="Toggle Theme"
+          >
+            {effective === "dark" ? (
+              <Moon className="w-5 h-5" />
+            ) : (
+              <Sun className="w-5 h-5" />
+            )}
+          </button>
+        );
+      }}
     </ThemeToggler>
   );
 }
