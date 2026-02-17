@@ -149,22 +149,20 @@
   --ring: var(--color-fd-ring);
 }
 
-/* Global theme transition */
+/* Global theme transition for non-view-transition elements */
 :root,
 .dark {
   transition:
     background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ensure children also transition if they use these vars */
+/* Ensure children also transition backgrounds */
 *,
 *::before,
 *::after {
   transition:
     background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
