@@ -5,8 +5,8 @@
  * and creates /content/docs/projects/index.mdx with project cards
  */
 
-import { readdir, readFile, stat } from "fs/promises";
-import { basename, join } from "path";
+import { readdir, readFile, stat } from "node:fs/promises";
+import { join } from "node:path";
 
 const PROJECTS_DIR = join(process.cwd(), "content", "docs", "projects");
 const OUTPUT_FILE = join(PROJECTS_DIR, "index.mdx");
