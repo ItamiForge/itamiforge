@@ -3,9 +3,28 @@
 import { ThemeToggler } from "animate-ui";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent hydration mismatch - render placeholder during SSR
+  if (!mounted) {
+    return (
+      <button
+        type="button"
+        className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground transition-colors"
+        aria-label="Toggle Theme"
+      >
+        <Sun className="w-5 h-5" />
+      </button>
+    );
+  }
 
   return (
     <ThemeToggler

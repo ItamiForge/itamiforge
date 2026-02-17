@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { SITE } from "@/lib/site";
 
 export function baseOptions(): BaseLayoutProps {
@@ -29,6 +30,7 @@ export function baseOptions(): BaseLayoutProps {
     themeSwitch: {
       enabled: true,
       mode: "light-dark-system",
+      component: <ThemeToggle />,
     },
   };
 }
