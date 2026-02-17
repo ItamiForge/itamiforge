@@ -80,7 +80,7 @@ function generateIndexPage(projects: ProjectInfo[]): string {
     .map(
       (
         project,
-      ) => `  <Link href="${project.path}" className="card block h-full">
+      ) => `  <Link href="${project.path}" className="card block h-full no-underline">
     <h3 className="text-xl font-semibold tracking-tight">${project.title}</h3>
     <p className="mt-3 text-sm text-muted-foreground leading-6">${project.description}</p>
   </Link>`,
@@ -94,17 +94,10 @@ description: A collection of tools and experiments.
 
 import Link from "next/link";
 
-# Projects
-
-A collection of tools, experiments, and concepts.
-
 <div className="bento-grid my-8">
 ${cards}
 </div>
 
-## Navigation
-
-Use the sidebar to explore detailed documentation for each project.
 `;
 }
 
