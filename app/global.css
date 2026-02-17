@@ -168,30 +168,10 @@
     border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* View Transitions API Animations */
+/* View Transitions API - let ThemeToggler handle root transitions */
 ::view-transition-group(root) {
   animation-duration: 0.5s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-::view-transition-old(root) {
-  animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
-}
-
-::view-transition-new(root) {
-  animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both fade-in;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes fade-out {
-  to {
-    opacity: 0;
-  }
 }
 
 html {
