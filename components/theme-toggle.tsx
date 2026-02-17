@@ -18,7 +18,7 @@ export function ThemeToggle() {
     return (
       <button
         type="button"
-        className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground transition-colors"
+        className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground active:scale-95 transition-all"
         aria-label="Toggle Theme"
       >
         <Sun className="w-5 h-5" />
@@ -39,7 +39,7 @@ export function ThemeToggle() {
           <button
             type="button"
             onClick={() => toggleTheme(nextTheme)}
-            className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground transition-colors"
+            className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground active:scale-95 transition-all"
             aria-label="Toggle Theme"
           >
             {effective === "dark" ? (
