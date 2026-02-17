@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -35,18 +36,31 @@ export function ThemeToggle() {
     >
       {({ effective, toggleTheme }) => {
         const nextTheme = effective === "dark" ? "light" : "dark";
+        const isDark = effective === "dark";
+
         return (
           <button
             type="button"
             onClick={() => toggleTheme(nextTheme)}
-            className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground active:scale-95 transition-all"
+            className="p-2 rounded-md hover:bg-fd-accent hover:text-fd-accent-foreground active:scale-95 transition-all relative overflow-hidden"
             aria-label="Toggle Theme"
           >
-            {effective === "dark" ? (
-              <Moon className="w-5 h-5" />
-            ) : (
-              <Sun className="w-5 h-5" />
-            )}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={isDark ? "dark" : "light"}
+                initial={{ y: -20, opacity: 0, rotate: -90 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                exit={{ y: 20, opacity: 0, rotate: 90 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="flex items-center justify-center"
+              >
+                {isDark ? (
+                  <Moon className="w-5 h-5" />
+                ) : (
+                  <Sun className="w-5 h-5" />
+                )}
+              </motion.div>
+            </AnimatePresence>
           </button>
         );
       }}

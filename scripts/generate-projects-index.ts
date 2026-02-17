@@ -6,7 +6,7 @@
  */
 
 import { readdir, readFile, stat } from "fs/promises";
-import { join, basename } from "path";
+import { basename, join } from "path";
 
 const PROJECTS_DIR = join(process.cwd(), "content", "docs", "projects");
 const OUTPUT_FILE = join(PROJECTS_DIR, "index.mdx");
@@ -21,9 +21,7 @@ interface ProjectInfo {
 async function extractFrontmatter(
   content: string,
 ): Promise<{ title: string; description: string }> {
-  const frontmatterMatch = content.match(
-    /^---\n([\s\S]*?)\n---/,
-  );
+  const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
 
   if (!frontmatterMatch) {
     return { title: "", description: "" };
@@ -80,7 +78,9 @@ async function scanProjects(): Promise<ProjectInfo[]> {
 function generateIndexPage(projects: ProjectInfo[]): string {
   const cards = projects
     .map(
-      (project) => `  <Link href="${project.path}" className="card block h-full">
+      (
+        project,
+      ) => `  <Link href="${project.path}" className="card block h-full">
     <h3 className="text-xl font-semibold tracking-tight">${project.title}</h3>
     <p className="mt-3 text-sm text-muted-foreground leading-6">${project.description}</p>
   </Link>`,
