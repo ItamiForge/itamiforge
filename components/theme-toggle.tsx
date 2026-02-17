@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { ThemeToggler } from "./animate-ui-theme-toggler";
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
