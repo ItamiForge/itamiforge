@@ -1,0 +1,239 @@
+---
+title: TUI Guide
+description: Interactive Terminal User Interface for Device Finder.
+---
+
+# TUI Guide
+
+The Terminal User Interface (TUI) provides an immersive, interactive way to browse and manage your devices.
+
+## Launching the TUI
+
+```bash
+device-finder tui
+```
+
+## Interface Layout
+
+The TUI is divided into four sections:
+
+```
+┌ Header ──────────────────────────────────────────────────────────────┐
+│  Device Finder [All] | Sort: type ▲ | Tab: Filter | s: Sort | ...     │
+├──────────────────────────────────────────────────────────────────────┤
+│▶ 📱  iOS    iPhone 16 Pro      Simulator   Shutdown (off)   18.2   █│
+│  🤖  Android Pixel_9           Emulator     Shutdown (off)   -      █│
+│  📱  iOS     iPad Pro          Simulator    not installed     18.4   ║│
+│                                                                      ▼│
+├ Details ─────────────────────────────────────────────────────────────┤
+│ Platform: iOS | Type: Simulator | Status: Shutdown                    │
+│ ID: 589413D1-CCAC-4950-A968-83348F5BCF05                              │
+├──────────────────────────────────────────────────────────────────────┤
+│  5/38 devices | ↑↓: Navigate | PgUp/PgDn: Page | r: Refresh | q:... │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### 1. Header Bar
+
+Shows current state:
+- **Filter**: [All], [iOS], [Android], or [Web]
+- **Sort**: Current sort column and direction (▲ ascending, ▼ descending)
+- **Hints**: Available key commands
+
+### 2. Device Table
+
+The main content area showing devices in columns:
+- **Platform**: Emoji + platform name (colored)
+- **Name**: Device name
+- **Type**: Simulator, Emulator, Physical, or Container
+- **Status**: Color-coded state
+- **OS Version**: iOS/Android version if available
+
+### 3. Details Panel
+
+Sticky footer showing extended information for the selected device:
+- Platform, Type, Status
+- OS Version, Model (if available)
+- Device ID and UDID
+
+### 4. Status Bar
+
+Shows navigation position and available commands.
+
+## Keyboard Navigation
+
+### Basic Movement
+
+| Key | Action |
+|-----|--------|
+| `↑` / `↓` | Navigate up/down one row |
+| `j` / `k` | Vim-style navigation |
+| `Page Up` | Move up 10 rows |
+| `Page Down` | Move down 10 rows |
+| `Home` | Jump to first device |
+| `End` | Jump to last device |
+| `g` | Jump to top |
+| `G` | Jump to bottom |
+
+### Filtering & Sorting
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Cycle platform filter (All → iOS → Android → Web → All) |
+| `s` | Change sort column (cycles: name → platform → status → type → OS) |
+| `S` (shift+s) | Toggle sort direction (ascending ↔ descending) |
+
+### Application Control
+
+| Key | Action |
+|-----|--------|
+| `r` | Refresh device list |
+| `q` | Quit TUI |
+
+## Mouse Support
+
+The TUI supports mouse interaction:
+
+- **Scroll wheel**: Navigate up/down through the list
+- **Trackpad scroll**: Smooth scrolling navigation
+
+Note: Click selection is not currently implemented. Use keyboard for precise selection.
+
+## Color Coding
+
+### Platform Colors
+
+| Platform | Color | Emoji |
+|----------|-------|-------|
+| iOS | Blue | 📱 |
+| Android | Green | 🤖 |
+| Web | Cyan | 🌐 |
+| Unknown | Gray | ❓ |
+
+### Status Colors
+
+| Status | Color | Meaning |
+|--------|-------|---------|
+| Connected | 🟢 Green | Device is running |
+| Shutdown | ⚫ Dark Gray | Device is off |
+| Not Installed | 🟡 Yellow | Runtime not available |
+| Booting | 🟡 Yellow | Device starting |
+| Unknown | ⚪ Gray | Status unavailable |
+
+### Selection Highlight
+
+- **Selected row**: Light blue background with black text
+- **Cursor indicator**: ▶ arrow at row start
+- **Scrollbar thumb**: Light blue on dark track
+
+## Sorting Behavior
+
+When sorting, devices are reorganized while maintaining your selection context:
+
+1. Press `s` to cycle through sort columns
+2. Press `S` to reverse direction
+3. Selection is preserved when possible
+4. Scroll position adjusts to keep selected device visible
+
+### Sort Columns
+
+| Column | Sort Logic |
+|--------|------------|
+| Name | Alphabetical |
+| Platform | iOS → Android → Web → Unknown |
+| Status | Connected → Booting → Shutdown → Unknown |
+| Type | Simulator → Emulator → Physical → Container |
+| OS Version | Semantic version (18.2 < 18.4) |
+
+## Tips & Tricks
+
+### Quick Filtering
+
+Use `Tab` to quickly isolate a platform:
+- Starting from [All], one Tab shows only iOS
+- Two Tabs shows only Android
+- Three Tabs shows only Web
+- Four Tabs returns to [All]
+
+### Finding Specific Devices
+
+1. Sort by name (`s` until "name" appears)
+2. Use `g` to go to top
+3. Use `G` to go to end
+4. Or navigate with arrow keys
+
+### Large Device Lists
+
+When you have many simulators:
+- Use `Page Up`/`Page Down` for faster navigation
+- The scrollbar shows your position in the list
+- Status bar shows "X/Y devices" counter
+
+### Refresh After Changes
+
+If you:
+- Create a new simulator in Xcode
+- Start an Android emulator
+- Connect a physical device
+
+Press `r` to refresh the list without restarting the TUI.
+
+## Troubleshooting
+
+### TUI Won't Launch
+
+Check terminal requirements:
+- Terminal must support alternate screen buffer
+- Unicode support required for table borders
+- Minimum 80x24 terminal size recommended
+
+### Colors Look Wrong
+
+Ensure your terminal supports 256 colors:
+
+```bash
+# Check color support
+echo $TERM
+# Should show xterm-256color or similar
+
+# If not, set in your shell config:
+export TERM=xterm-256color
+```
+
+### Mouse Scrolling Not Working
+
+Mouse support requires:
+- Terminal with mouse reporting (most modern terminals)
+- No terminal multiplexer capturing events (tmux/screen may interfere)
+- In tmux: `set -g mouse on`
+
+### High CPU Usage
+
+The TUI polls for input every 50ms. This should be negligible, but if you notice high CPU:
+- Ensure you're running a release build (`cargo build --release`)
+- Check for terminal rendering issues with your terminal emulator
+
+## Configuration
+
+The TUI currently uses sensible defaults. Future versions may support:
+- Custom color schemes
+- Configurable key bindings
+- Default sort preferences
+- Column visibility toggles
+
+## Comparison: TUI vs CLI
+
+| Feature | CLI | TUI |
+|---------|-----|-----|
+| Speed | Instant | ~100ms startup |
+| Interaction | One-shot | Continuous |
+| Visualization | Text table | Rich columns |
+| Sorting | Flags | Interactive |
+| Filtering | Flags | Real-time |
+| Details | Per-command | Persistent panel |
+| Best for | Scripts, CI | Exploration, debugging |
+
+## See Also
+
+- [CLI Reference](./cli) - Command-line documentation
+- [Architecture](./architecture) - How the TUI works internally

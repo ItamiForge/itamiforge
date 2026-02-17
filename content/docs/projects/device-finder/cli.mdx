@@ -1,0 +1,230 @@
+---
+title: CLI Reference
+description: Complete command-line interface reference for Device Finder.
+---
+
+# CLI Reference
+
+Device Finder provides a comprehensive command-line interface for device discovery and management.
+
+## Global Options
+
+```
+device-finder [OPTIONS] <COMMAND>
+```
+
+| Option | Description |
+|--------|-------------|
+| `-h, --help` | Print help information |
+| `-V, --version` | Print version information |
+
+## Commands
+
+### `list`
+
+Display all detected devices in a formatted table.
+
+```bash
+device-finder list [OPTIONS]
+```
+
+#### Options
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--platform <PLATFORM>` | `-p` | Filter by platform (ios, android, web) |
+| `--json` | `-j` | Output as JSON |
+| `--verbose` | `-v` | Include additional details |
+
+#### Examples
+
+```bash
+# List all devices
+device-finder list
+
+# List only iOS simulators
+device-finder list --platform ios
+
+# List Android devices with full details
+device-finder list -p android --verbose
+
+# Export to JSON for scripting
+device-finder list --json > devices.json
+```
+
+#### Sample Output
+
+```
+PLATFORM   NAME                     TYPE         STATUS            OS VERSION
+📱 iOS     iPhone 16 Pro            Simulator    Shutdown (off)    18.2
+📱 iOS     iPhone 16 Pro Max        Simulator    Shutdown (off)    18.2
+🤖 Android Medium_Phone_API_35    Emulator     Shutdown (off)    -
+🤖 Android Pixel_9                Emulator     Shutdown (off)    -
+🌐 Web     Web Browser              Container    Unknown           -
+```
+
+### `find`
+
+Search for devices by name or ID.
+
+```bash
+device-finder find <QUERY>
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `QUERY` | Search string (matches name or ID) |
+
+#### Examples
+
+```bash
+# Find iPhone devices
+device-finder find "iPhone"
+
+# Find specific emulator
+device-finder find "Pixel"
+
+# Find by partial ID
+device-finder find "B52873B1"
+```
+
+### `info`
+
+Display detailed information about a specific device.
+
+```bash
+device-finder info <DEVICE_ID>
+```
+
+#### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `DEVICE_ID` | Device identifier (UDID for iOS, name for Android) |
+
+#### Examples
+
+```bash
+# Get iOS simulator details
+device-finder info "589413D1-CCAC-4950-A968-83348F5BCF05"
+
+# Get Android emulator details
+device-finder info "Pixel_9"
+```
+
+#### Sample Output
+
+```
+Platform: iOS
+Name: iPhone 16 Pro
+Type: Simulator
+Status: Shutdown
+ID: 589413D1-CCAC-4950-A968-83348F5BCF05
+OS Version: 18.2
+Model: iPhone
+```
+
+### `tui`
+
+Launch the interactive Terminal User Interface.
+
+```bash
+device-finder tui
+```
+
+The TUI provides:
+- Real-time device list with sorting
+- Sticky details panel
+- Platform filtering
+- Mouse/keyboard navigation
+- Color-coded status indicators
+
+See the [TUI Guide](./tui) for complete navigation reference.
+
+### `completions`
+
+Generate shell completion scripts.
+
+```bash
+device-finder completions <SHELL>
+```
+
+#### Arguments
+
+| Argument | Options |
+|----------|---------|
+| `SHELL` | bash, zsh, fish, powershell, elvish |
+
+#### Examples
+
+```bash
+# Bash
+device-finder completions bash > /etc/bash_completion.d/device-finder
+
+# Zsh
+device-finder completions zsh > "${fpath[1]}/_device-finder"
+
+# Fish
+device-finder completions fish > ~/.config/fish/completions/device-finder.fish
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | General error |
+| 2 | Device not found |
+| 3 | Platform tool missing (e.g., adb, xcrun) |
+
+## Scripting Examples
+
+### Check if specific device exists
+
+```bash
+if device-finder list --json | jq -e '.[] | select(.name == "iPhone 16 Pro")' > /dev/null; then
+    echo "Device found"
+else
+    echo "Device not found"
+fi
+```
+
+### Start all shutdown iOS simulators
+
+```bash
+device-finder list --platform ios --json | \
+    jq -r '.[] | select(.status == "Shutdown") | .id' | \
+    while read -r id; do
+        xcrun simctl boot "$id"
+    done
+```
+
+### Monitor device connections
+
+```bash
+#!/bin/bash
+prev_count=0
+while true; do
+    count=$(device-finder list --json | jq 'length')
+    if [ "$count" -ne "$prev_count" ]; then
+        echo "$(date): Device count changed from $prev_count to $count"
+        prev_count=$count
+    fi
+    sleep 5
+done
+```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `DEVICE_FINDER_LOG` | Set to `debug` for verbose logging |
+| `ANDROID_HOME` | Android SDK location (auto-detected if not set) |
+| `XCODE_PATH` | Xcode.app location (auto-detected on macOS) |
+
+## See Also
+
+- [TUI Guide](./tui) - Interactive mode documentation
+- [Installation](./installation) - Setup instructions

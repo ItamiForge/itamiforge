@@ -1,0 +1,97 @@
+---
+title: Device Finder
+description: Cross-platform device discovery CLI/TUI for iOS, Android, and Web development.
+---
+
+# Device Finder
+
+A Rust-powered developer tool for discovering and managing iOS simulators, Android emulators, and connected devices. Built for the modern development workflow where you need instant visibility into your device ecosystem.
+
+## What It Does
+
+Device Finder eliminates the friction of device management by providing a unified interface across all platforms:
+
+- **iOS**: Detects Xcode simulators via `xcrun simctl` with runtime version detection
+- **Android**: Discovers emulators via `emulator -list-avds` and physical devices via `adb`
+- **Web**: Identifies available browsers and development containers
+
+## Why Device Finder?
+
+### The Problem
+
+Modern development requires juggling multiple devices across platforms:
+- Multiple iOS simulators with different OS versions
+- Android emulators with various API levels
+- Physical devices connected via USB
+- Web containers for testing
+
+Traditionally, this meant memorizing different commands for each platform:
+```bash
+# iOS
+xcrun simctl list devices available
+
+# Android
+adb devices -l
+emulator -list-avds
+
+# Finding a specific device?
+# Good luck scrolling through verbose output
+```
+
+### The Solution
+
+Device Finder provides a single, consistent interface:
+
+```bash
+# List everything
+device-finder list
+
+# Filter by platform
+device-finder list --platform ios
+
+# Interactive TUI
+device-finder tui
+```
+
+## Core Features
+
+- **Unified Interface**: One command for all platforms
+- **Smart Detection**: Automatically identifies installed runtimes, OS versions, and device states
+- **Visual Status**: Color-coded indicators for connected, shutdown, and unavailable devices
+- **Tabular Display**: Clean columnar view with sorting capabilities
+- **Interactive TUI**: Full terminal interface with keyboard and mouse support
+- **Fast Startup**: Optimized detection with loading feedback
+- **Cross-Platform**: Works on macOS (iOS + Android), Linux, and Windows (Android + Web)
+
+## Quick Links
+
+- [Installation & Setup](./installation)
+- [CLI Reference](./cli)
+- [TUI Guide](./tui)
+- [Architecture & Internals](./architecture)
+
+## Status Meanings
+
+| Status | Color | Meaning |
+|--------|-------|---------|
+| Connected | 🟢 Green | Device is running and accessible |
+| Shutdown | ⚫ Dark Gray | Device is installed but powered off |
+| Not Installed | 🟡 Yellow | Simulator exists but runtime not installed |
+| Booting | 🟡 Yellow | Device is starting up |
+| Unknown | ⚪ Gray | Status could not be determined |
+
+## Platform Support
+
+| Platform | macOS | Linux | Windows |
+|----------|-------|-------|---------|
+| iOS (Simulators) | ✅ Full | ❌ N/A | ❌ N/A |
+| Android (Emulators) | ✅ Full | ✅ Full | ✅ Full |
+| Android (Physical) | ✅ Full | ✅ Full | ✅ Full |
+| Web (Browsers) | ✅ Basic | ✅ Basic | ✅ Basic |
+
+## Next Steps
+
+1. [Install Device Finder](./installation)
+2. Try `device-finder list` to see your devices
+3. Explore the [TUI](./tui) for interactive management
+4. Check the [CLI reference](./cli) for scripting
