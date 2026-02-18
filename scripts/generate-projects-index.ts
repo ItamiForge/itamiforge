@@ -2,14 +2,14 @@
 /**
  * Generate projects index page dynamically
  * Scans /content/docs/projects/ for directories with index.mdx
- * and creates /content/docs/projects/index.mdx with project cards
+ * and creates /content/docs/projects.mdx with project cards
  */
 
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 
 const PROJECTS_DIR = join(process.cwd(), "content", "docs", "projects");
-const OUTPUT_FILE = join(PROJECTS_DIR, "index.mdx");
+const OUTPUT_FILE = join(process.cwd(), "content", "docs", "projects.mdx");
 
 interface ProjectInfo {
   slug: string;
@@ -59,7 +59,7 @@ async function scanProjects(): Promise<ProjectInfo[]> {
             slug: entry.name,
             title,
             description,
-            path: `./${entry.name}`,
+            path: `./projects/${entry.name}`,
           });
         }
       } catch {
@@ -80,7 +80,7 @@ function generateIndexPage(projects: ProjectInfo[]): string {
     .map(
       (
         project,
-      ) => `  <Link href="${project.path}" className="card block h-full no-underline">
+      ) => `  <Link href="./projects/${project.slug}" className="card block h-full no-underline">
     <h3 className="text-xl font-semibold tracking-tight">${project.title}</h3>
     <p className="mt-3 text-sm text-muted-foreground leading-6">${project.description}</p>
   </Link>`,
