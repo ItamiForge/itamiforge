@@ -1,7 +1,9 @@
 import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
-const isProduction = process.env.NODE_ENV === "production";
+// NODE_ENV is always "production" during `next build`, so we use a custom
+// variable to distinguish a GitHub Pages deployment from a local dev build.
+const isDeployBuild = process.env.DEPLOY_ENV === "production";
 const projectBasePath = "/itamiforge";
 
 /** @type {import('next').NextConfig} */
@@ -12,8 +14,8 @@ const config = {
   images: {
     unoptimized: true,
   },
-  basePath: isProduction ? projectBasePath : undefined,
-  assetPrefix: isProduction ? projectBasePath : undefined,
+  basePath: isDeployBuild ? projectBasePath : undefined,
+  assetPrefix: isDeployBuild ? projectBasePath : undefined,
 };
 
 export default withMDX(config);
