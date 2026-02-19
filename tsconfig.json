@@ -40,5 +40,5 @@
     "mdx-components.tsx",
     "source.config.ts"
   ],
-  "exclude": ["node_modules", "utils"]
+  "exclude": ["node_modules", "tools"]
 }

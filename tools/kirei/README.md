@@ -20,8 +20,8 @@ A fast, safe, and beautiful macOS system cleaner built in Rust. It helps develop
 
 ```bash
 # From source
-git clone https://github.com/varunv/utils.git
-cd utils/kirei
+git clone https://github.com/varunv/tools.git
+cd tools/kirei
 cargo install --path .
 ```
 

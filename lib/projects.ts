@@ -9,7 +9,7 @@ export interface ProjectMeta {
   category: ProjectCategory;
   tags: string[];
   docsPath: `/docs/projects/${string}`;
-  sourcePath: `utils/${string}`;
+  sourcePath: `tools/${string}`;
   featured: boolean;
   public: boolean;
 }
@@ -23,7 +23,7 @@ export const PROJECTS: ProjectMeta[] = [
     category: "desktop",
     tags: ["rust", "tauri", "macos", "cleaning"],
     docsPath: "/docs/projects/kirei",
-    sourcePath: "utils/kirei",
+    sourcePath: "tools/kirei",
     featured: true,
     public: true,
   },
@@ -36,7 +36,7 @@ export const PROJECTS: ProjectMeta[] = [
     category: "cli",
     tags: ["rust", "networking", "terminal"],
     docsPath: "/docs/projects/port-finder",
-    sourcePath: "utils/port-finder",
+    sourcePath: "tools/port-finder",
     featured: true,
     public: true,
   },
@@ -62,7 +62,7 @@ export const PROJECTS: ProjectMeta[] = [
     category: "concept",
     tags: ["brewery", "operations", "tui", "consulting"],
     docsPath: "/docs/projects/brew-run",
-    sourcePath: "utils/brew-run",
+    sourcePath: "tools/brew-run",
     featured: true,
     public: true,
   },
@@ -75,7 +75,7 @@ export const PROJECTS: ProjectMeta[] = [
     category: "concept",
     tags: ["analytics", "visualization", "brewery"],
     docsPath: "/docs/projects/yield-viz",
-    sourcePath: "utils/yield-viz",
+    sourcePath: "tools/yield-viz",
     featured: false,
     public: true,
   },
@@ -88,7 +88,7 @@ export const PROJECTS: ProjectMeta[] = [
     category: "app",
     tags: ["nextjs", "shadcn", "design-system"],
     docsPath: "/docs/projects/shadcn-theme-builder",
-    sourcePath: "utils/shadcn-theme-builder",
+    sourcePath: "tools/shadcn-theme-builder",
     featured: false,
     public: true,
   },
@@ -101,7 +101,7 @@ export const PROJECTS: ProjectMeta[] = [
     category: "app",
     tags: ["astro", "wip", "internal"],
     docsPath: "/docs/projects/developer-blog-theme",
-    sourcePath: "utils/developer-blog-theme",
+    sourcePath: "tools/developer-blog-theme",
     featured: false,
     public: false,
   },
