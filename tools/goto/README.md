@@ -1,8 +1,21 @@
 # goto
 
-Navigate to projects using namespace-based paths.
+Navigate to projects using namespace-based paths with a single command.
+
+## Overview
+
+`goto` is a lightweight CLI tool that provides quick navigation to frequently accessed directories. Instead of typing long `cd` commands, you can jump directly to projects using short namespace aliases.
+
+**Key features:**
+- Single binary, zero runtime dependencies
+- Cross-platform (macOS, Linux, Windows)
+- Tab completion support for all major shells
+- Namespace-based organization with aliases
+- Path expansion with `~` and `$HOME` support
 
 ## Install
+
+### From source
 
 ```bash
 cargo install --path tools/goto
@@ -14,17 +27,64 @@ Or from the project root:
 cargo install --path .
 ```
 
+### Verify installation
+
+```bash
+goto --version
+```
+
 ## Usage
 
 ```bash
+# Jump to a project
 goto gh/project
+
+# Jump to a subdirectory within a project
 goto gh/project/src
+
+# Jump to a different namespace
 goto work/my-app
+
+# List all namespaces and projects
+goto list
+
+# List projects within a specific namespace
+goto list work
 ```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `goto <namespace>/<path>` | Navigate to the specified path (prints path, use with `cd`) |
+| `goto resolve <namespace>/<path>` | Print the absolute path without navigating |
+| `goto list [namespace]` | List all namespaces and their projects |
+| `goto complete --shell=<shell>` | Generate shell completion script |
+| `goto --help` | Show help information |
+| `goto --version` | Show version information |
+
+### Shell completion
+
+Generate and source completion for your shell:
+
+```bash
+# Zsh
+eval "$(goto complete --shell=zsh)"
+
+# Bash
+eval "$(goto complete --shell=bash)"
+
+# Fish
+goto complete --shell=fish | source
+```
+
+Add the appropriate line to your shell config (`.zshrc`, `.bashrc`, etc.) for persistent completions.
 
 ## Configuration
 
-Create `~/.config/goto/config.toml`:
+`goto` reads configuration from `~/.config/goto/config.toml` on macOS/Linux and `%LOCALAPPDATA%\goto\config.toml` on Windows.
+
+### Example config
 
 ```toml
 [[namespace]]
@@ -35,17 +95,80 @@ aliases = ["github"]
 [[namespace]]
 name = "work"
 path = "~/Projects"
+aliases = ["work", "projects"]
+
+[[namespace]]
+name = "lab"
+path = "~/Lab"
 ```
 
-## Commands
+### Configuration options
 
-- `goto resolve <namespace>/<path>` — prints the absolute path
-- `goto list [namespace]` — lists available namespaces and projects
-- `goto complete --shell=zsh|bash|fish|powershell` — emits shell completion
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | Unique namespace identifier (lowercase) |
+| `path` | Yes | Base directory path (supports `~` and `$HOME`) |
+| `aliases` | No | Alternative names for the namespace |
 
-## Testing
+### Default configuration
+
+If no config file exists, `goto` uses a built-in default with the `gh` namespace pointing to `~/Documents/GitHub`.
+
+## Path resolution
+
+- Namespaces are case-insensitive
+- Aliases are checked after exact namespace matches
+- Paths are canonicalized (symlinks resolved) when possible
+- Non-existent paths return an error
+
+### Examples
 
 ```bash
-cargo fmt
+# Using namespace
+goto gh/myproject
+
+# Using alias
+goto github/myproject
+
+# Case-insensitive
+goto GH/myproject
+
+# Subdirectory
+goto gh/myproject/src/components
+```
+
+## Project structure
+
+```
+tools/goto/
+├── Cargo.toml          # Rust package configuration
+├── default_config.toml # Built-in default configuration
+├── README.md           # This file
+└── src/
+    └── main.rs         # CLI implementation
+```
+
+## Development
+
+### Build
+
+```bash
+cargo build --release
+```
+
+### Test
+
+```bash
 cargo test
 ```
+
+### Lint
+
+```bash
+cargo fmt      # Format code
+cargo clippy   # Run linter
+```
+
+## License
+
+MIT
