@@ -1,27 +1,22 @@
 ---
-title: zsh-dev-nav
+title: goto
 description: Tab-completed project navigation for daily shell workflows.
 ---
 
 ## Overview
 
-`zsh-dev-nav` adds a `goto` command to jump between common roots and projects.
+`goto` is a single binary for jumping between common roots and projects using namespace-based paths.
 
 ## Install
 
-1. Install the `devnav` CLI (Rust):
-
 ```bash
-cd utils/devnav
-cargo install --path .
+cargo install --path tools/goto
 ```
 
-2. Install the shell integration:
+Or from the project root:
 
 ```bash
-cd utils/zsh-dev-nav
-./install.sh
-source ~/.zshrc
+cargo install --path .
 ```
 
 ## Typical usage

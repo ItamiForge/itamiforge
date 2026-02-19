@@ -13,10 +13,10 @@ use std::{
 const DEFAULT_CONFIG: &str = include_str!("../default_config.toml");
 
 #[derive(Parser)]
-#[command(name = "devnav")]
+#[command(name = "goto")]
 #[command(version)]
-#[command(about = "Lightweight project navigation CLI with shell integration.")]
-struct DevNav {
+#[command(about = "Navigate to projects using namespace-based paths.")]
+struct Goto {
     #[command(subcommand)]
     command: Command,
 }
@@ -62,7 +62,7 @@ impl ShellVariant {
 }
 
 fn main() -> Result<()> {
-    let cli = DevNav::parse();
+    let cli = Goto::parse();
     let namespaces = NamespaceMap::load()?;
 
     match cli.command {
@@ -74,8 +74,8 @@ fn main() -> Result<()> {
             namespaces.list(namespace.as_deref())?;
         }
         Command::Complete { shell } => {
-            let mut cmd = DevNav::command();
-            generate(shell.to_clap_shell(), &mut cmd, "devnav", &mut io::stdout());
+            let mut cmd = Goto::command();
+            generate(shell.to_clap_shell(), &mut cmd, "goto", &mut io::stdout());
         }
     }
 
@@ -197,7 +197,7 @@ impl NamespaceMap {
 }
 
 fn config_file() -> PathBuf {
-    if let Some(dirs) = ProjectDirs::from("dev", "ItamiForge", "devnav") {
+    if let Some(dirs) = ProjectDirs::from("goto", "ItamiForge", "goto") {
         dirs.config_dir().join("config.toml")
     } else {
         PathBuf::from("devnav-config.toml")

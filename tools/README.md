@@ -7,7 +7,7 @@ A collection of developer utilities designed for the 2026 workflow: AI-augmented
 ## 🧭 Navigation & Shell
 *Optimizing the environment and moving at the speed of thought.*
 
-- [x] **zsh-dev-nav** - `goto gh/project` with tab completion (Rust-powered).
+- [x] **goto** - Navigate to projects using namespace-based paths (`goto gh/project`). Single binary, zero config.
 - [ ] **shush** - CLI wrapper that silences build noise into a background buffer; progress bar in macOS Menu Bar.
 - [ ] **path-shrink** - Analyzes `$PATH` for dead links, duplicates, and slow network drives to optimize shell startup.
 

@@ -3,7 +3,7 @@
   "pages": [
     "kirei",
     "port-finder",
-    "zsh-dev-nav",
+    "goto",
     "brew-run",
     "yield-viz",
     "shadcn-theme-builder",

@@ -1,15 +1,15 @@
-name: DevNav CI
+name: Goto CI
 
 on:
   push:
     branches: [main]
     paths:
-      - 'tools/devnav/**'
-      - '.github/workflows/devnav-ci.yml'
+      - 'tools/goto/**'
+      - '.github/workflows/goto-ci.yml'
   pull_request:
     paths:
-      - 'tools/devnav/**'
-      - '.github/workflows/devnav-ci.yml'
+      - 'tools/goto/**'
+      - '.github/workflows/goto-ci.yml'
 
 jobs:
   lint:
@@ -27,10 +27,10 @@ jobs:
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: tools/devnav
+          workspaces: tools/goto
 
       - name: Lint check
-        working-directory: tools/devnav
+        working-directory: tools/goto
         run: |
           echo "::group::Cargo Fmt"
           cargo fmt -- --check
@@ -50,10 +50,10 @@ jobs:
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: tools/devnav
+          workspaces: tools/goto
 
       - name: Run tests
-        working-directory: tools/devnav
+        working-directory: tools/goto
         run: |
           echo "::group::Running Tests"
           cargo test --release
@@ -73,10 +73,10 @@ jobs:
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: tools/devnav
+          workspaces: tools/goto
 
       - name: Build release artifact
-        working-directory: tools/devnav
+        working-directory: tools/goto
         run: |
           echo "::group::Cargo Build"
           cargo build --release
