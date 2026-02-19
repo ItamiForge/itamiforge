@@ -1,5 +1,5 @@
-use anyhow::{Context, Result, bail};
-use clap::{CommandFactory, Parser, Subcommand, ValueEnum};
+use anyhow::{bail, Context, Result};
+use clap::{ArgAction, CommandFactory, Parser, ValueEnum};
 use clap_complete::{generate, shells::Shell as ClapShell};
 use directories::ProjectDirs;
 use serde::Deserialize;
@@ -17,29 +17,25 @@ const DEFAULT_CONFIG: &str = include_str!("../default_config.toml");
 #[command(version)]
 #[command(about = "Navigate to projects using namespace-based paths.")]
 struct Goto {
-    #[command(subcommand)]
-    command: Command,
-}
+    /// Target in the format <namespace> or <namespace>/<path>
+    #[arg(value_name = "TARGET")]
+    target: Option<String>,
 
-#[derive(Subcommand)]
-enum Command {
-    Resolve {
-        /// Target in the format <namespace> or <namespace>/<path>
-        target: String,
-    },
-    List {
-        /// Optional namespace to scope the list
-        namespace: Option<String>,
-    },
-    Complete {
-        #[arg(
-            long,
-            value_enum,
-            default_value = "zsh",
-            help = "Shell type for completion script"
-        )]
-        shell: ShellVariant,
-    },
+    /// List available namespaces and projects
+    #[arg(long, action = ArgAction::SetTrue)]
+    list: bool,
+
+    /// Optional namespace to scope the list
+    #[arg(long, value_name = "NAMESPACE")]
+    namespace: Option<String>,
+
+    /// Generate shell completion script
+    #[arg(long, value_enum)]
+    complete: Option<ShellVariant>,
+
+    /// Print help
+    #[arg(short, long)]
+    help: bool,
 }
 
 #[derive(ValueEnum, Clone)]
@@ -65,20 +61,29 @@ fn main() -> Result<()> {
     let cli = Goto::parse();
     let namespaces = NamespaceMap::load()?;
 
-    match cli.command {
-        Command::Resolve { target } => {
-            let path = namespaces.resolve(&target)?;
-            println!("{}", path.display());
-        }
-        Command::List { namespace } => {
-            namespaces.list(namespace.as_deref())?;
-        }
-        Command::Complete { shell } => {
-            let mut cmd = Goto::command();
-            generate(shell.to_clap_shell(), &mut cmd, "goto", &mut io::stdout());
-        }
+    // Handle completion first
+    if let Some(shell) = cli.complete {
+        let mut cmd = Goto::command();
+        generate(shell.to_clap_shell(), &mut cmd, "goto", &mut io::stdout());
+        return Ok(());
     }
 
+    // Handle list
+    if cli.list {
+        namespaces.list(cli.namespace.as_deref())?;
+        return Ok(());
+    }
+
+    // Handle target (resolve)
+    if let Some(target) = cli.target {
+        let path = namespaces.resolve(&target)?;
+        println!("{}", path.display());
+        return Ok(());
+    }
+
+    // No arguments provided, show help
+    Goto::command().print_help()?;
+    println!();
     Ok(())
 }
 
