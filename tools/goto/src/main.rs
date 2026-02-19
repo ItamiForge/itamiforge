@@ -200,7 +200,7 @@ fn config_file() -> PathBuf {
     if let Some(dirs) = ProjectDirs::from("goto", "ItamiForge", "goto") {
         dirs.config_dir().join("config.toml")
     } else {
-        PathBuf::from("devnav-config.toml")
+        PathBuf::from("goto-config.toml")
     }
 }
 
