@@ -1,0 +1,6 @@
+# rumdl configuration file
+# Disables MD013 (line length) rule
+
+[global]
+disable = ["MD013", "MD032", "MD040"]
+respect_gitignore = true
