@@ -28,10 +28,10 @@ The site has two main content areas:
 
 ```bash
 bun run dev               # Start dev server on localhost:3000 (no basePath, hot reload)
-bun run build             # Build static site (runs generate:projects first, NODE_ENV=dev)
-bun run build:prod        # Production build with DEPLOY_ENV=production (sets basePath /itamiforge)
-bun run serve:dev         # Build (dev) + serve out/ at localhost:3000 — quick local check
-bun run serve:prod        # Build (prod) + serve at localhost:3000/itamiforge/ — mirrors GitHub Pages
+bun run build             # Build static site export (runs generate:projects first)
+bun run build:pages       # Alias for GitHub Pages build (same output as CI)
+bun run preview:prod      # Build + serve Pages-parity preview at localhost:3000/itamiforge/
+bun run serve:prod        # Alias for preview:prod
 bun run generate:projects # Auto-generate content/docs/projects.mdx from project dirs
 bun run compile           # TypeScript type check
 bun run lint              # Biome format check + auto-fix
@@ -44,10 +44,9 @@ bun run check:fix         # compile + lint with unsafe fixes
 | Command | URL | basePath | Use when |
 |---|---|---|---|
 | `bun run dev` | `localhost:3000/` | none | Day-to-day development |
-| `bun run serve:dev` | `localhost:3000/` | none | Quick check of static export |
-| `bun run serve:prod` | `localhost:3000/itamiforge/` | `/itamiforge` | Full prod parity check before deploying |
+| `bun run preview:prod` | `localhost:3000/itamiforge/` | `/itamiforge` | Full prod parity check before deploying |
 
-> **Why `serve:prod` is different**: The production build sets `basePath: /itamiforge` (matching GitHub Pages), so assets are prefixed with `/itamiforge/`. The serve command mirrors this by placing the output inside a `.serve-prod/itamiforge/` directory so `serve` serves it from the correct path. The `.serve-prod/` directory is git-ignored.
+> **Why `preview:prod` is different**: The production export sets `basePath: /itamiforge` (matching GitHub Pages), so assets are prefixed with `/itamiforge/`. The preview command mirrors this by serving a `.serve-prod/itamiforge/` directory.
 
 ## Project Structure
 
@@ -117,7 +116,7 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 ## Architecture Notes
 
 - **Static export only**: `output: "export"` in next.config.mjs. No server-side APIs at runtime.
-- **basePath**: `/itamiforge` in production (GitHub Pages), empty in dev. The `next.config.mjs` switches based on `NODE_ENV`.
+- **basePath**: `/itamiforge` for production builds (including CI and local `next build`), empty in `next dev`.
 - **Search**: Orama indexes are pre-built at build time. The search dialog is custom (`components/search.tsx`), registered as the Fumadocs search component via `provider.tsx`.
 - **Fonts**: Three local custom fonts — Satoshi (sans), Synonym (display), Quicksand (mono). Defined in `app/layout.tsx` using `next/font/local`.
 - **Layout pattern**: `HomeLayout` and `DocsLayout` (Fumadocs wrappers) share config via `baseOptions()` in `lib/layout.shared.tsx`.
@@ -133,7 +132,7 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 
 - Hosted on **GitHub Pages** via GitHub Actions.
 - Production URL: `https://itamiforge.github.io/itamiforge/`
-- Build command: `bun run build:prod`
+- Build command: `bun run build:pages`
 - Output directory: `out/`
 
 ## Common Tasks
@@ -147,4 +146,4 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 
 **Add a new docs page**: Create `.mdx` file under `content/docs/` — Fumadocs picks it up automatically.
 
-**Test static export locally**: `bun run serve:dev` (builds then serves the `out/` directory).
+**Test deployed output locally**: `bun run preview:prod` (builds then serves at `/itamiforge/`).

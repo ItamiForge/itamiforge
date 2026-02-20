@@ -1,59 +1,77 @@
 use anyhow::{bail, Context, Result};
-use clap::{ArgAction, CommandFactory, Parser, ValueEnum};
-use clap_complete::{generate, shells::Shell as ClapShell};
+use clap::{CommandFactory, Parser, Subcommand};
 use directories::ProjectDirs;
 use serde::Deserialize;
 use shellexpand::full;
 use std::{
-    collections::BTreeMap,
-    fs, io,
+    collections::{BTreeMap, BTreeSet},
+    env, fs,
+    io::Write,
     path::{Path, PathBuf},
 };
 
 const DEFAULT_CONFIG: &str = include_str!("../default_config.toml");
+const ZSH_INTEGRATION: &str = include_str!("../shell/goto.zsh");
+const ZSH_MARKER_START: &str = "# >>> goto integration (managed by goto) >>>";
 
 #[derive(Parser)]
 #[command(name = "goto")]
 #[command(version)]
 #[command(about = "Navigate to projects using namespace-based paths.")]
+#[command(
+    override_usage = "goto <namespace>/<path>\n    goto list [namespace]\n    goto setup\n    goto uninstall"
+)]
+#[command(allow_external_subcommands = true)]
 struct Goto {
-    /// Target in the format <namespace> or <namespace>/<path>
-    #[arg(value_name = "TARGET")]
-    target: Option<String>,
+    #[command(subcommand)]
+    command: Option<Command>,
+}
 
+#[derive(Subcommand)]
+enum Command {
     /// List available namespaces and projects
-    #[arg(long, action = ArgAction::SetTrue)]
-    list: bool,
+    List {
+        /// Optional namespace to scope the list
+        #[arg(value_name = "NAMESPACE")]
+        namespace: Option<String>,
+    },
 
-    /// Optional namespace to scope the list
-    #[arg(long, value_name = "NAMESPACE")]
-    namespace: Option<String>,
+    /// Set up shell integration (zsh)
+    Setup,
+    /// Remove shell integration (zsh)
+    Uninstall,
 
-    /// Generate shell completion script
-    #[arg(long, value_enum)]
-    complete: Option<ShellVariant>,
+    /// Generate dynamic completions for the current target (internal)
+    #[command(name = "__complete", hide = true)]
+    CompleteTargets {
+        /// Current word to complete
+        #[arg(value_name = "PARTIAL")]
+        partial: Option<String>,
+    },
 
-    /// Print help
-    #[arg(short, long)]
-    help: bool,
+    #[command(external_subcommand)]
+    External(Vec<String>),
 }
 
-#[derive(ValueEnum, Clone)]
-enum ShellVariant {
-    Bash,
-    Zsh,
-    Fish,
-    PowerShell,
-}
+fn print_help_with_setup_hint() {
+    Goto::command().print_help().unwrap();
+    println!();
 
-impl ShellVariant {
-    fn to_clap_shell(&self) -> ClapShell {
-        match self {
-            ShellVariant::Bash => ClapShell::Bash,
-            ShellVariant::Zsh => ClapShell::Zsh,
-            ShellVariant::Fish => ClapShell::Fish,
-            ShellVariant::PowerShell => ClapShell::PowerShell,
-        }
+    // Only show setup hint if not already configured
+    let zshrc = zshrc_path().ok();
+    let needs_setup = zshrc
+        .and_then(|path| fs::read_to_string(path).ok())
+        .map(|content| !content.contains(ZSH_MARKER_START))
+        .unwrap_or(true);
+
+    if needs_setup {
+        println!("\x1b[1;33m⚠ Shell integration not detected\x1b[0m");
+        println!();
+        println!("Run \x1b[1mgoto setup\x1b[0m to enable:");
+        println!("  • Automatic directory navigation (cd to resolved paths)");
+        println!("  • Tab completion for namespaces and projects");
+        println!();
+        println!("Without setup, goto only prints paths to stdout.");
     }
 }
 
@@ -61,30 +79,115 @@ fn main() -> Result<()> {
     let cli = Goto::parse();
     let namespaces = NamespaceMap::load()?;
 
-    // Handle completion first
-    if let Some(shell) = cli.complete {
-        let mut cmd = Goto::command();
-        generate(shell.to_clap_shell(), &mut cmd, "goto", &mut io::stdout());
+    match cli.command {
+        Some(Command::CompleteTargets { partial }) => {
+            let entries = namespaces.complete(partial.as_deref().unwrap_or(""))?;
+            for entry in entries {
+                println!("{entry}");
+            }
+            Ok(())
+        }
+        Some(Command::List { namespace }) => {
+            namespaces.list(namespace.as_deref())?;
+            Ok(())
+        }
+        Some(Command::Setup) => setup_zsh(),
+        Some(Command::Uninstall) => uninstall_zsh(),
+        Some(Command::External(args)) => {
+            let target = match args.as_slice() {
+                [single] => single,
+                [] => {
+                    print_help_with_setup_hint();
+                    return Ok(());
+                }
+                _ => bail!("expected a single target like <namespace> or <namespace>/<path>"),
+            };
+            let path = namespaces.resolve(target)?;
+            println!("{}", path.display());
+            Ok(())
+        }
+        None => {
+            print_help_with_setup_hint();
+            Ok(())
+        }
+    }
+}
+
+fn setup_zsh() -> Result<()> {
+    let zshrc = zshrc_path()?;
+    let existing = fs::read_to_string(&zshrc).unwrap_or_default();
+    if existing.contains(ZSH_MARKER_START) {
+        println!("goto already configured in {}", zshrc.display());
         return Ok(());
     }
 
-    // Handle list
-    if cli.list {
-        namespaces.list(cli.namespace.as_deref())?;
-        return Ok(());
+    if let Some(parent) = zshrc.parent() {
+        fs::create_dir_all(parent)?;
     }
 
-    // Handle target (resolve)
-    if let Some(target) = cli.target {
-        let path = namespaces.resolve(&target)?;
-        println!("{}", path.display());
-        return Ok(());
+    let mut file = fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(&zshrc)?;
+    if !existing.is_empty() && !existing.ends_with('\n') {
+        writeln!(file)?;
     }
-
-    // No arguments provided, show help
-    Goto::command().print_help()?;
-    println!();
+    let last_line_blank = existing
+        .lines()
+        .last()
+        .map(|line| line.trim().is_empty())
+        .unwrap_or(true);
+    if !existing.is_empty() && !last_line_blank {
+        writeln!(file)?;
+    }
+    writeln!(file, "{ZSH_INTEGRATION}")?;
+    println!(
+        "Added goto helper to {}. Restart your shell.",
+        zshrc.display()
+    );
     Ok(())
+}
+
+fn uninstall_zsh() -> Result<()> {
+    let zshrc = zshrc_path()?;
+    let existing = fs::read_to_string(&zshrc).unwrap_or_default();
+    if !existing.contains(ZSH_MARKER_START) {
+        println!("goto helper not found in {}", zshrc.display());
+        return Ok(());
+    }
+
+    let mut output = Vec::new();
+    let mut in_block = false;
+    for line in existing.lines() {
+        if line.trim_end() == ZSH_MARKER_START {
+            in_block = true;
+            continue;
+        }
+        if in_block {
+            if line.trim_end() == "# <<< goto integration (managed by goto) <<<" {
+                in_block = false;
+            }
+            continue;
+        }
+        output.push(line);
+    }
+
+    let mut rendered = output.join("\n");
+    if !rendered.is_empty() {
+        rendered.push('\n');
+    }
+    fs::write(&zshrc, rendered)?;
+    println!("Removed goto helper from {}", zshrc.display());
+    Ok(())
+}
+
+fn zshrc_path() -> Result<PathBuf> {
+    let home = env::var_os("HOME")
+        .or_else(|| env::var_os("USERPROFILE"))
+        .map(PathBuf::from)
+        .context("HOME is not set")?;
+    let zdotdir = env::var_os("ZDOTDIR").map(PathBuf::from).unwrap_or(home);
+    Ok(zdotdir.join(".zshrc"))
 }
 
 #[derive(Debug)]
@@ -165,6 +268,87 @@ impl NamespaceMap {
         }
 
         Ok(())
+    }
+
+    fn complete(&self, partial: &str) -> Result<Vec<String>> {
+        let trimmed = partial.trim();
+        if trimmed.is_empty() {
+            return Ok(self.complete_namespaces(""));
+        }
+
+        if let Some((namespace, rest)) = trimmed.split_once('/') {
+            let entry = match self.lookup_namespace(namespace) {
+                Ok(entry) => entry,
+                Err(_) => return Ok(Vec::new()),
+            };
+            return Ok(self.complete_namespace_path(entry, namespace, rest));
+        }
+
+        Ok(self.complete_namespaces(trimmed))
+    }
+
+    fn complete_namespaces(&self, prefix: &str) -> Vec<String> {
+        let mut entries = BTreeSet::new();
+        let needle = prefix.to_lowercase();
+        for entry in self.primary.values() {
+            for name in std::iter::once(&entry.name).chain(entry.aliases.iter()) {
+                if needle.is_empty() || name.to_lowercase().starts_with(&needle) {
+                    entries.insert(format!("{}/", name));
+                }
+            }
+        }
+        entries.into_iter().collect()
+    }
+
+    fn complete_namespace_path(
+        &self,
+        entry: &NamespaceEntry,
+        namespace_input: &str,
+        rest: &str,
+    ) -> Vec<String> {
+        let (dir_part, prefix) = if rest.is_empty() {
+            (String::new(), String::new())
+        } else if rest.ends_with('/') {
+            (rest.trim_end_matches('/').to_string(), String::new())
+        } else if let Some((parent, leaf)) = rest.rsplit_once('/') {
+            (parent.to_string(), leaf.to_string())
+        } else {
+            (String::new(), rest.to_string())
+        };
+
+        let mut base = entry.path.clone();
+        if !dir_part.is_empty() {
+            base = base.join(&dir_part);
+        }
+
+        let mut entries = BTreeSet::new();
+        if base.exists() && base.is_dir() {
+            let needle = prefix.to_lowercase();
+            if let Ok(read_dir) = fs::read_dir(&base) {
+                for item in read_dir.flatten() {
+                    if let Ok(file_type) = item.file_type() {
+                        if !file_type.is_dir() {
+                            continue;
+                        }
+                    }
+                    let name = item.file_name().to_string_lossy().into_owned();
+                    if !needle.is_empty() && !name.to_lowercase().starts_with(&needle) {
+                        continue;
+                    }
+                    let mut candidate = String::new();
+                    candidate.push_str(namespace_input);
+                    candidate.push('/');
+                    if !dir_part.is_empty() {
+                        candidate.push_str(&dir_part);
+                        candidate.push('/');
+                    }
+                    candidate.push_str(&name);
+                    entries.insert(candidate);
+                }
+            }
+        }
+
+        entries.into_iter().collect()
     }
 
     fn lookup_namespace(&self, lookup: &str) -> Result<&NamespaceEntry> {

@@ -36,10 +36,8 @@ jobs:
       - name: Build static site
         run: |
           echo "::group::Next.js Build"
-          bun run build
+          bun run build:pages
           echo "::endgroup::"
-        env:
-          NEXT_PUBLIC_SITE_URL: https://itamiforge.github.io/itamiforge
 
       - name: Post-build cleanup
         run: touch out/.nojekyll

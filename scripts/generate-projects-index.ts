@@ -80,7 +80,7 @@ function generateIndexPage(projects: ProjectInfo[]): string {
     .map(
       (
         project,
-      ) => `  <Link href="./projects/${project.slug}" className="card block h-full no-underline">
+      ) => `  <Link href="/docs/projects/${project.slug}" className="card block h-full no-underline">
     <h3 className="text-xl font-semibold tracking-tight">${project.title}</h3>
     <p className="mt-3 text-sm text-muted-foreground leading-6">${project.description}</p>
   </Link>`,

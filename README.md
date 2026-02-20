@@ -17,8 +17,8 @@ Game and App studio blogging and docs site with integrated developer tools.
 |---------|-------------|
 | `bun run dev` | Start development server at localhost:3000 |
 | `bun run build` | Build static site to `out/` |
-| `bun run serve:dev` | Build and serve development output |
-| `bun run serve:prod` | Build production and serve locally |
+| `bun run build:pages` | Build the exact GitHub Pages output |
+| `bun run preview:prod` | Build and serve Pages output at `localhost:3000/itamiforge/` |
 | `bun run check` | Type check + lint |
 | `bun run lint` | Run Biome linter |
 | `bun run generate:projects` | Regenerate projects index |
@@ -38,7 +38,7 @@ Game and App studio blogging and docs site with integrated developer tools.
 ## Developer tools
 
 Located in `tools/`:
-- `goto/` - Namespace-based project navigation
+- `goto/` - Namespace-based project navigation with tab completion (requires `goto setup` for full functionality)
 - `port-finder/` - Find and reclaim ports
 - `device-finder/` - Cross-platform device discovery
 - `kirei/` - macOS system cleaner
@@ -56,3 +56,11 @@ bun run dev
 ```
 
 Open <http://localhost:3000>.
+
+## Pre-deploy parity check
+
+```bash
+bun run preview:prod
+```
+
+Open <http://localhost:3000/itamiforge/>. This mirrors GitHub Pages routing and asset paths.

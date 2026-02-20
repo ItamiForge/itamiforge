@@ -19,6 +19,10 @@ Or from the project root:
 cargo install --path .
 ```
 
+Run `goto setup` after install to wire the zsh helper into `~/.zshrc`. Restart your shell to pick up the `goto` function and tab completion. To remove it later, run `goto uninstall` before `cargo uninstall goto`.
+
+**Note**: Without running `goto setup`, the `goto` command will only print resolved paths to stdout without changing directories or providing tab completion.
+
 ## Typical usage
 
 ```bash

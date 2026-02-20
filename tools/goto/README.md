@@ -52,33 +52,17 @@ goto list
 goto list work
 ```
 
-## Commands
+## Shell integration (zsh)
 
-| Command | Description |
-|---------|-------------|
-| `goto <namespace>/<path>` | Navigate to the specified path (prints path, use with `cd`) |
-| `goto resolve <namespace>/<path>` | Print the absolute path without navigating |
-| `goto list [namespace]` | List all namespaces and their projects |
-| `goto complete --shell=<shell>` | Generate shell completion script |
-| `goto --help` | Show help information |
-| `goto --version` | Show version information |
+Run `goto setup` once after install. It appends a small helper to `~/.zshrc` so `goto gh/project` will `cd` directly into that directory and tab completion will list repos dynamically. Restart your shell after running setup.
 
-### Shell completion
+The shell integration provides:
+- **Automatic directory navigation**: `goto gh/project` changes your current directory
+- **Tab completion**: Press Tab after `goto` to see namespace and project suggestions
 
-Generate and source completion for your shell:
+To verify setup worked, run `goto` without arguments - you should see a help message. If you see a warning about shell integration not being detected, run `goto setup` again.
 
-```bash
-# Zsh
-eval "$(goto complete --shell=zsh)"
-
-# Bash
-eval "$(goto complete --shell=bash)"
-
-# Fish
-goto complete --shell=fish | source
-```
-
-Add the appropriate line to your shell config (`.zshrc`, `.bashrc`, etc.) for persistent completions.
+To remove it later, run `goto uninstall` before `cargo uninstall goto`.
 
 ## Configuration
 
