@@ -3,31 +3,95 @@ title: Kirei
 description: Safe macOS cleaner with CLI and TUI paths for developer machines.
 ---
 
+import { Card, Cards } from 'fumadocs-ui/components/card';
+
 ## Overview
 
-Kirei is a Rust-first cleaner focused on reclaiming development disk space without destructive defaults.
+Kirei (きれい - "clean" or "beautiful" in Japanese) is a fast, safe, and beautiful macOS system cleaner built in Rust. It helps developers reclaim disk space by identifying and removing cache files, build artifacts, and logs without destructive defaults.
 
-## Current capabilities
+## Key Features
 
-- Scans Xcode, Node/Bun, Cargo, logs, and cache-heavy directories.
-- Interactive TUI flow for review before clean-up.
-- Safety model based on moving files to Trash instead of hard deletion.
+- **Developer-Focused**: Deep cleaning for Xcode, Node/Bun, Cargo, and user logs
+- **Interactive TUI**: Beautiful terminal interface with real-time visualization
+- **Safety First**: All deletions move to Trash (fully recoverable), explicit user confirmation required
+- **Fast & Parallel**: Asynchronous scanning powered by Tokio
 
-## Install
+## Installation
+
+### From GitHub (Recommended)
+
+Install directly from the GitHub repository:
 
 ```bash
-cd tools/kirei
+cargo install --git https://github.com/ItamiForge/kirei.git
+```
+
+### From Source
+
+Clone and build locally:
+
+```bash
+git clone https://github.com/ItamiForge/kirei.git
+cd kirei
 cargo install --path .
 ```
 
-## Commands
+### Requirements
+
+- macOS 10.15 (Catalina) or later
+- Rust 1.70 or later
+
+## Quick Start
+
+Launch the interactive TUI:
 
 ```bash
 kirei
+```
+
+Or run a quick scan without entering interactive mode:
+
+```bash
 kirei scan
 ```
 
-## Notes
+## TUI Controls
 
-- GUI/Tauri workspace exists, but the terminal UX is currently the primary path.
-- CLI deletion is intentionally not implemented yet.
+- `↑/↓` or `j/k` - Navigate file list
+- `Space` - Toggle selection for cleaning
+- `Tab` - Switch between Dashboard and List view
+- `c` - Clean selected items (moves to Trash)
+- `r` - Rescan system
+- `q` - Quit application
+
+## Safety Design
+
+Kirei prioritizes safety:
+
+1. **Trash Integration**: Files are moved to macOS Trash, not permanently deleted
+2. **Read-Only Scans**: Scanning requires no permissions and modifies nothing
+3. **Explicit Confirmation**: Manual selection and confirmation required for all deletions
+4. **No Automatic Operations**: Never runs cleanup without user interaction
+
+## Project Links
+
+<Cards>
+  <Card
+    title="GitHub Repository"
+    href="https://github.com/ItamiForge/kirei"
+  />
+  <Card
+    title="Contributing Guide"
+    href="https://github.com/ItamiForge/kirei/blob/main/CONTRIBUTING.md"
+  />
+  <Card
+    title="Report Issues"
+    href="https://github.com/ItamiForge/kirei/issues"
+  />
+</Cards>
+
+## Development Status
+
+- **CLI/TUI**: Active and functional
+- **GUI (Tauri)**: Work in progress
+- **CLI Deletion**: Intentionally not implemented - use TUI for safety

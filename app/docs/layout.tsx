@@ -1,5 +1,5 @@
-import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import type { Folder, Root } from "fumadocs-core/page-tree";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { baseOptions } from "@/lib/layout.shared";
 import { docsSource } from "@/lib/source";
 

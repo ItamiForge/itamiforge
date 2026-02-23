@@ -9,9 +9,14 @@ export interface ProjectMeta {
   category: ProjectCategory;
   tags: string[];
   docsPath: `/docs/projects/${string}`;
-  sourcePath: `tools/${string}`;
+  sourcePath?: `tools/${string}`;
   featured: boolean;
   public: boolean;
+  links?: {
+    github?: string;
+    live?: string;
+    docs?: string;
+  };
 }
 
 export const PROJECTS: ProjectMeta[] = [
@@ -23,9 +28,12 @@ export const PROJECTS: ProjectMeta[] = [
     category: "desktop",
     tags: ["rust", "tauri", "macos", "cleaning"],
     docsPath: "/docs/projects/kirei",
-    sourcePath: "tools/kirei",
     featured: true,
     public: true,
+    links: {
+      github: "https://github.com/ItamiForge/kirei",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/kirei",
+    },
   },
   {
     slug: "port-finder",
