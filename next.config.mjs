@@ -13,6 +13,9 @@ const config = {
     unoptimized: true,
   },
   basePath: isProductionBuild ? pagesBasePath : "",
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProductionBuild ? pagesBasePath : "",
+  },
 };
 
 export default withMDX(config);
