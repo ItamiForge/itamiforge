@@ -67,7 +67,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: `
               window.ANALYTICS_SITE_ID = "itamiforge";
-              window.ANALYTICS_ENDPOINT = "https://central-analytics-suite.varunrajan.workers.dev/collect";
+              window.ANALYTICS_ENDPOINT = "https://sitestats.varunrajan.workers.dev/collect";
             `,
           }}
         />
