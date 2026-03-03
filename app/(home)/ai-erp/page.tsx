@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function AiErpPage() {
   return (
     <div className="space-y-8 py-10">

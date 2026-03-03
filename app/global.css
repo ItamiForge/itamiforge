@@ -55,26 +55,50 @@
   /* Green 600 */
   --color-fd-idea: #5e409d;
   /* Purple 600 */
-
-  --background: var(--color-fd-background);
-  --foreground: var(--color-fd-foreground);
-  --muted: var(--color-fd-muted);
-  --muted-foreground: var(--color-fd-muted-foreground);
-  --popover: var(--color-fd-popover);
-  --popover-foreground: var(--color-fd-popover-foreground);
-  --card: var(--color-fd-card);
-  --card-foreground: var(--color-fd-card-foreground);
-  --border: var(--color-fd-border);
-  --input: var(--color-fd-input);
-  --primary: var(--color-fd-primary);
-  --primary-foreground: var(--color-fd-primary-foreground);
-  --secondary: var(--color-fd-secondary);
-  --secondary-foreground: var(--color-fd-secondary-foreground);
-  --accent: var(--color-fd-accent);
-  --accent-foreground: var(--color-fd-accent-foreground);
-  --ring: var(--color-fd-ring);
-  --radius: 0rem;
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --card: oklch(100% 0.01597 95.255);
+  --card-foreground: oklch(91.811% 0.00587 59.12);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --primary: oklch(0.208 0.042 265.755);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --ring: oklch(0.704 0.04 256.788);
+  --radius: 0.625rem;
   /* Sharp, crisp */
+
+  /* Earthy palette — distinct bark / lichen / straw tones */
+  --earthy-amber: #a06828; /* raw sienna / bark amber */
+  --earthy-sage: #607840; /* bark lichen / forest sage */
+  --earthy-terra: #904820; /* terracotta clay */
+  --earthy-bark: #5a3010; /* dark tree bark */
+  --earthy-moss: #486030; /* deep moss */
+  --wood-tone-a: #9a6038; /* medium bark — brown/sienna, not amber */
+  --wood-tone-b: #668040; /* lichen green — distinctly green, not sage-grey */
+  --wood-tone-c: #c09828; /* dry straw / golden ochre — clearly yellow-gold */
+  --wood-grain: #5a3010; /* dark bark fiber — very dark brown */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --destructive: oklch(0.577 0.245 27.325);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
 .dark {
@@ -130,23 +154,48 @@
   --color-fd-idea: #8b7ec8;
   /* Purple 400 */
 
-  --background: var(--color-fd-background);
-  --foreground: var(--color-fd-foreground);
-  --muted: var(--color-fd-muted);
-  --muted-foreground: var(--color-fd-muted-foreground);
-  --popover: var(--color-fd-popover);
-  --popover-foreground: var(--color-fd-popover-foreground);
-  --card: var(--color-fd-card);
-  --card-foreground: var(--color-fd-card-foreground);
-  --border: var(--color-fd-border);
-  --input: var(--color-fd-input);
-  --primary: var(--color-fd-primary);
-  --primary-foreground: var(--color-fd-primary-foreground);
-  --secondary: var(--color-fd-secondary);
-  --secondary-foreground: var(--color-fd-secondary-foreground);
-  --accent: var(--color-fd-accent);
-  --accent-foreground: var(--color-fd-accent-foreground);
-  --ring: var(--color-fd-ring);
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(20.463% 0.00002 271.152);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.551 0.027 264.364);
+
+  /* Earthy palette dark — same distinct tones, lighter for dark bg readability */
+  --earthy-amber: #b07830; /* bark amber on dark */
+  --earthy-sage: #709050; /* lichen green on dark */
+  --earthy-terra: #a05828; /* clay on dark */
+  --earthy-bark: #7a4820; /* medium bark on dark */
+  --earthy-moss: #587040; /* moss on dark */
+  --wood-tone-a: #b07040; /* bark brown — warm but clearly brown, not bronze */
+  --wood-tone-b: #789050; /* lichen green — reads as green on dark */
+  --wood-tone-c: #c8a830; /* straw/ochre — golden on dark */
+  --wood-grain: #c09050; /* lighter bark grain visible on dark bg */
+  --destructive: oklch(0.704 0.191 22.216);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
 /* Global theme transition for non-view-transition elements */
@@ -178,8 +227,9 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(
+    --color-fd-background
+  ); /* #fffcf0 paper light / #100f0f ink dark */
 }
 
 h1,
@@ -413,30 +463,57 @@ h6 {
 }
 
 .status-active {
-  background: color-mix(in oklab, var(--secondary) 34%, transparent);
-  color: color-mix(in oklab, var(--foreground) 82%, var(--secondary-foreground));
+  background: color-mix(in oklab, #b87e38 22%, var(--card));
+  border-color: color-mix(in oklab, #b87e38 46%, transparent);
+  color: color-mix(in oklab, #6a4020 90%, var(--foreground));
+}
+
+.dark .status-active {
+  background: color-mix(in oklab, #c08840 18%, var(--card));
+  border-color: color-mix(in oklab, #c08840 38%, transparent);
+  color: color-mix(in oklab, #c08840 90%, var(--foreground));
 }
 
 .status-experimental {
-  background: color-mix(in oklab, var(--muted) 48%, transparent);
-  color: var(--muted-foreground);
+  background: color-mix(in oklab, #6a8848 18%, var(--card));
+  border-color: color-mix(in oklab, #6a8848 40%, transparent);
+  color: color-mix(in oklab, #4a6838 88%, var(--foreground));
+}
+
+.dark .status-experimental {
+  background: color-mix(in oklab, #789848 16%, var(--card));
+  border-color: color-mix(in oklab, #789848 34%, transparent);
+  color: color-mix(in oklab, #789848 90%, var(--foreground));
 }
 
 .status-concept {
-  background: color-mix(in oklab, var(--accent) 26%, transparent);
-  color: var(--muted-foreground);
+  background: color-mix(in oklab, #a05038 16%, var(--card));
+  border-color: color-mix(in oklab, #a05038 38%, transparent);
+  color: color-mix(in oklab, #6a3020 88%, var(--foreground));
+}
+
+.dark .status-concept {
+  background: color-mix(in oklab, #b05838 14%, var(--card));
+  border-color: color-mix(in oklab, #b05838 32%, transparent);
+  color: color-mix(in oklab, #b05838 88%, var(--foreground));
 }
 
 .tag-pill {
   display: inline-flex;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, #8a6a3e 38%, var(--border));
   border-radius: var(--radius);
-
+  background: color-mix(in oklab, #cdb882 22%, var(--card));
   padding: 0.14rem 0.55rem;
   font-size: 0.7rem;
-  color: var(--muted-foreground);
+  color: color-mix(in oklab, #6a4020 80%, var(--muted-foreground));
   text-transform: lowercase;
   font-family: var(--font-mono);
+}
+
+.dark .tag-pill {
+  border-color: color-mix(in oklab, #8a6a3e 28%, var(--border));
+  background: color-mix(in oklab, #b07e38 14%, var(--card));
+  color: color-mix(in oklab, #c08840 80%, var(--muted-foreground));
 }
 
 .visibility-pill {
@@ -458,18 +535,32 @@ h6 {
 }
 
 .visibility-oss {
-  background: color-mix(in oklab, var(--secondary) 34%, transparent);
-  color: color-mix(in oklab, var(--foreground) 82%, var(--secondary-foreground));
+  background: color-mix(in oklab, #6a8848 18%, var(--card));
+  border-color: color-mix(in oklab, #6a8848 42%, transparent);
+  color: color-mix(in oklab, #4a6838 88%, var(--foreground));
+}
+
+.dark .visibility-oss {
+  background: color-mix(in oklab, #789848 16%, var(--card));
+  border-color: color-mix(in oklab, #789848 36%, transparent);
+  color: color-mix(in oklab, #789848 90%, var(--foreground));
 }
 
 .visibility-private {
-  background: color-mix(in oklab, var(--muted) 46%, transparent);
-  color: var(--muted-foreground);
+  background: color-mix(in oklab, #a05038 14%, var(--card));
+  border-color: color-mix(in oklab, #a05038 36%, transparent);
+  color: color-mix(in oklab, #6a3020 88%, var(--foreground));
+}
+
+.dark .visibility-private {
+  background: color-mix(in oklab, #b05838 12%, var(--card));
+  border-color: color-mix(in oklab, #b05838 30%, transparent);
+  color: color-mix(in oklab, #b05838 88%, var(--foreground));
 }
 
 .project-mini {
   position: relative;
-  padding: 1.35rem 1.3rem 2.95rem;
+  padding: 1rem;
   border-width: 1px;
   border-color: color-mix(in oklab, var(--border) 82%, transparent);
   border-radius: var(--radius);
@@ -477,6 +568,38 @@ h6 {
     border-color 180ms ease,
     transform 180ms ease;
   overflow: hidden;
+  --mini-bg-a: var(--wood-tone-a);
+  --mini-bg-b: var(--wood-tone-b);
+  --mini-bg-c: var(--wood-tone-c);
+  /* Each zone gets a distinctly different earthy tone — no blending into one hue */
+  --zone-head-bg: color-mix(
+    in oklab,
+    var(--mini-bg-a) 58%,
+    var(--card)
+  ); /* bark brown */
+  --zone-summary-bg: color-mix(
+    in oklab,
+    var(--mini-bg-a) 20%,
+    var(--card)
+  ); /* neutral, text-friendly */
+  --zone-signals-bg: color-mix(
+    in oklab,
+    var(--mini-bg-b) 52%,
+    var(--card)
+  ); /* lichen green */
+  --zone-tags-bg: color-mix(
+    in oklab,
+    var(--mini-bg-c) 44%,
+    var(--card)
+  ); /* straw/gold */
+  --zone-footer-bg: color-mix(
+    in oklab,
+    var(--mini-bg-a) 30%,
+    var(--card)
+  ); /* muted bark */
+  /* SVG fractal noise for parchment / rough-paper texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  background-color: var(--card);
 }
 
 .project-mini::before {
@@ -484,11 +607,18 @@ h6 {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklab, var(--background) 96%, transparent),
-    color-mix(in oklab, var(--muted) 15%, transparent)
-  );
+  /* Subtle corner tints only — no big smooth bloom across card */
+  background:
+    radial-gradient(
+      60% 50% at 0% 0%,
+      color-mix(in oklab, var(--mini-bg-a) 28%, transparent),
+      transparent 100%
+    ),
+    radial-gradient(
+      55% 45% at 100% 100%,
+      color-mix(in oklab, var(--mini-bg-c) 24%, transparent),
+      transparent 100%
+    );
 }
 
 .project-mini::after {
@@ -500,42 +630,53 @@ h6 {
   transition: opacity 220ms ease;
 }
 
-.project-mini--v1::after,
-.project-mini--v2::after {
-  opacity: 0.42;
-}
-
 .project-mini--v1::after {
-  background:
-    repeating-linear-gradient(
-      14deg,
-      color-mix(in oklab, var(--secondary) 12%, transparent) 0 1px,
-      transparent 1px 8px
-    ),
-    linear-gradient(
-      165deg,
-      color-mix(in oklab, var(--accent) 18%, transparent),
-      transparent 52%
-    );
+  opacity: 0.7;
+  background: linear-gradient(
+    155deg,
+    color-mix(in oklab, var(--mini-bg-b) 48%, transparent),
+    transparent 55%
+  );
 }
 
 .project-mini--v2::after {
-  background:
-    repeating-linear-gradient(
-      -10deg,
-      color-mix(in oklab, var(--muted) 22%, transparent) 0 1px,
-      transparent 1px 10px
-    ),
-    radial-gradient(
-      80% 60% at 15% 0%,
-      color-mix(in oklab, var(--secondary) 16%, transparent),
-      transparent 70%
-    );
+  opacity: 0.7;
+  background: radial-gradient(
+    85% 65% at 18% 0%,
+    color-mix(in oklab, var(--mini-bg-a) 50%, transparent),
+    transparent 72%
+  );
+}
+
+.project-mini--v0 {
+  /* v0: bark-a head, green-b signals, gold-c tags */
+  --mini-bg-a: var(--wood-tone-a); /* bark brown */
+  --mini-bg-b: var(--wood-tone-b); /* lichen green */
+  --mini-bg-c: var(--wood-tone-c); /* straw gold */
+}
+
+.project-mini--v1 {
+  /* v1: green-b head, gold-c signals, bark-a tags */
+  --mini-bg-a: var(--wood-tone-b); /* lichen green heads */
+  --mini-bg-b: var(--wood-tone-c); /* gold signals */
+  --mini-bg-c: var(--wood-tone-a); /* bark tags */
+}
+
+.project-mini--v2 {
+  /* v2: gold-c head, bark-a signals, green-b tags */
+  --mini-bg-a: var(--wood-tone-c); /* gold head */
+  --mini-bg-b: var(--wood-tone-a); /* bark signals */
+  --mini-bg-c: var(--wood-tone-b); /* green tags */
 }
 
 .dark .project-mini--v1::after,
 .dark .project-mini--v2::after {
-  opacity: 0.26;
+  opacity: 0.36;
+}
+
+/* Dark mode: bump noise opacity slightly on card */
+.dark .project-mini {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E");
 }
 
 .project-mini:hover {
@@ -555,32 +696,51 @@ h6 {
   outline-offset: -2px;
 }
 
-.project-mini__grid {
+.project-mini__layout {
   position: relative;
   z-index: 2;
   display: grid;
-  gap: 0.78rem;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-areas:
+    "head signals"
+    "summary summary"
+    "tags tags"
+    "footer footer";
 }
 
-.project-mini__head {
+.project-mini__zone {
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  border-radius: calc(var(--radius) - 0.2rem);
+  background: color-mix(in oklab, var(--card) 90%, transparent);
+  padding: 0.7rem;
+}
+
+.project-mini__zone--head {
   grid-area: head;
+  background: var(--zone-head-bg); /* flat bark brown, no gradient wash */
+  display: flex;
+  align-items: center;
+  min-height: 3.2rem;
 }
 
-.project-mini__summary {
+.project-mini__zone--summary {
   grid-area: summary;
+  background: var(--zone-summary-bg); /* near-neutral, text stays readable */
+  min-height: 6.8rem;
 }
 
-.project-mini__pills {
-  grid-area: pills;
+.project-mini__zone--signals {
+  grid-area: signals;
+  background: var(--zone-signals-bg); /* flat lichen green */
   display: inline-flex;
   flex-wrap: wrap;
-  justify-self: start;
+  align-content: flex-start;
   gap: 0.25rem;
+  min-height: 3.2rem;
 }
 
 .project-mini__meta {
-  grid-area: meta;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.3rem;
@@ -598,42 +758,68 @@ h6 {
   font-family: var(--font-mono);
 }
 
-.project-mini__tags {
+.project-mini__zone--tags {
   grid-area: tags;
+  background: var(--zone-tags-bg); /* flat straw gold */
   display: flex;
   flex-wrap: wrap;
   align-content: start;
   gap: 0.32rem;
 }
 
-.project-mini--v0 .project-mini__grid {
-  grid-template-areas:
-    "head head pills pills"
-    "summary summary summary summary"
-    "meta tags tags tags";
+.project-mini__zone--footer {
+  grid-area: footer;
+  background: var(--zone-footer-bg); /* flat muted bark */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
 }
 
-.project-mini--v1 .project-mini__grid {
+.project-mini--v0 .project-mini__layout {
+  grid-template-columns: 1.45fr 1fr;
   grid-template-areas:
-    "head head head head"
-    "pills pills summary summary"
-    "tags tags tags meta";
+    "head signals"
+    "summary summary"
+    "tags tags"
+    "footer footer";
 }
 
-.project-mini--v2 .project-mini__grid {
+.project-mini--v1 .project-mini__layout {
+  grid-template-columns: 1fr 1.25fr;
   grid-template-areas:
-    "head head head pills"
-    "summary summary summary summary"
-    "tags tags meta meta";
+    "signals head"
+    "summary summary"
+    "tags tags"
+    "footer footer";
+}
+
+.project-mini--v2 .project-mini__layout {
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-areas:
+    "head head"
+    "summary summary"
+    "signals tags"
+    "footer footer";
+}
+
+.project-mini--v2 .project-mini__zone--summary {
+  min-height: 5.9rem;
+}
+
+.project-mini--v2 .project-mini__zone--signals {
+  min-height: 5.9rem;
+}
+
+.project-mini--v2 .project-mini__zone--signals {
+  justify-content: flex-start;
 }
 
 .project-mini__actions {
-  position: absolute;
-  right: 0.8rem;
-  bottom: 0.75rem;
   z-index: 3;
   display: inline-flex;
   gap: 0.3rem;
+  flex: 0 0 auto;
 }
 
 .project-mini__action {
@@ -665,31 +851,58 @@ h6 {
 
 @media (max-width: 640px) {
   .project-mini {
-    padding: 1rem 0.95rem 2.45rem;
+    padding: 0.85rem;
   }
 
-  .project-mini__grid {
+  .project-mini__layout,
+  .project-mini--v0 .project-mini__layout,
+  .project-mini--v1 .project-mini__layout,
+  .project-mini--v2 .project-mini__layout {
     grid-template-columns: 1fr;
     grid-template-areas:
       "head"
-      "pills"
+      "signals"
       "summary"
-      "meta"
-      "tags";
+      "tags"
+      "footer";
   }
 
-  .project-mini__actions {
-    right: 0.6rem;
-    bottom: 0.6rem;
+  .project-mini__zone {
+    padding: 0.62rem;
   }
 
-  .project-mini__meta {
+  .project-mini__zone--head,
+  .project-mini__zone--summary,
+  .project-mini__zone--signals,
+  .project-mini--v2 .project-mini__zone--summary,
+  .project-mini--v2 .project-mini__zone--signals {
+    min-height: unset;
+  }
+
+  .project-mini__zone--footer {
+    gap: 0.5rem;
+  }
+
+  .project-mini__meta .meta-chip:nth-child(n + 2) {
     display: none;
   }
 
-  .project-mini__tags .tag-pill:nth-child(n + 3) {
+  .project-mini__zone--tags .tag-pill:nth-child(n + 3) {
     display: none;
   }
+}
+
+.project-mini__layout > .project-mini__zone {
+  backdrop-filter: blur(1px);
+}
+
+.project-mini--v0 .project-mini__zone--summary {
+  background: color-mix(in oklab, var(--mini-bg-a) 12%, var(--card));
+}
+
+.project-mini--v1 .project-mini__zone--signals,
+.project-mini--v2 .project-mini__zone--signals {
+  background: var(--zone-signals-bg);
 }
 
 .bento-grid {

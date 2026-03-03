@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { BookOpenText, Github } from "lucide-react";
+import Link from "next/link";
 import type { ProjectMeta } from "@/lib/projects";
 
 type ProjectCardProps = {
@@ -27,8 +27,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const variant =
     project.slug
       .split("")
-      .reduce((total, char) => total + char.charCodeAt(0), 0) %
-      3;
+      .reduce((total, char) => total + char.charCodeAt(0), 0) % 3;
 
   return (
     <article className={`card project-mini project-mini--v${variant} h-full`}>
@@ -38,16 +37,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
         aria-label={`${project.title} docs`}
       />
 
-      <div className="project-mini__grid">
-        <div className="project-mini__head">
-          <h3 className="text-xl font-semibold tracking-tight">{project.title}</h3>
+      <div className="project-mini__layout">
+        <div className="project-mini__zone project-mini__zone--head">
+          <h3 className="text-xl font-semibold tracking-tight">
+            {project.title}
+          </h3>
         </div>
 
-        <div className="project-mini__summary">
-          <p className="text-sm text-muted-foreground leading-6">{project.summary}</p>
+        <div className="project-mini__zone project-mini__zone--summary">
+          <p className="text-sm text-muted-foreground leading-6">
+            {project.summary}
+          </p>
         </div>
 
-        <div className="project-mini__pills">
+        <div className="project-mini__zone project-mini__zone--signals">
           <span className={`status-pill ${statusTone[project.status]}`}>
             {statusLabel[project.status]}
           </span>
@@ -58,40 +61,42 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </span>
         </div>
 
-        <div className="project-mini__meta">
-          <span className="meta-chip">{project.category}</span>
-          <span className="meta-chip">{project.tags.length} tags</span>
-        </div>
-
-        <div className="project-mini__tags">
+        <div className="project-mini__zone project-mini__zone--tags">
           {project.tags.slice(0, 3).map((tag) => (
             <span key={`${project.slug}-${tag}`} className="tag-pill">
               {tag}
             </span>
           ))}
         </div>
-      </div>
 
-      <div className="project-mini__actions" aria-label="Project actions">
-        <Link
-          href={project.docsPath}
-          className="project-mini__action"
-          aria-label={`${project.title} docs`}
-        >
-          <BookOpenText className="h-4 w-4" aria-hidden="true" />
-        </Link>
+        <div className="project-mini__zone project-mini__zone--footer">
+          <div className="project-mini__meta">
+            <span className="meta-chip">{project.category}</span>
+            <span className="meta-chip">{project.tags.length} tags</span>
+          </div>
 
-        {githubUrl ? (
-        <Link
-          href={githubUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="project-mini__action"
-          aria-label={`${project.title} GitHub repository`}
-        >
-          <Github className="h-4 w-4" aria-hidden="true" />
-        </Link>
-        ) : null}
+          <div className="project-mini__actions">
+            <Link
+              href={project.docsPath}
+              className="project-mini__action"
+              aria-label={`${project.title} docs`}
+            >
+              <BookOpenText className="h-4 w-4" aria-hidden="true" />
+            </Link>
+
+            {githubUrl ? (
+              <Link
+                href={githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="project-mini__action"
+                aria-label={`${project.title} GitHub repository`}
+              >
+                <Github className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            ) : null}
+          </div>
+        </div>
       </div>
     </article>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { Provider } from "@/components/provider";
 import { SITE } from "@/lib/site";
 import "./global.css";
@@ -63,42 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       <body className="min-h-screen antialiased">
         <Provider>{children}</Provider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.ANALYTICS_SITE_ID = "itamiforge";
-              window.ANALYTICS_ENDPOINT = "https://sitestats.varunrajan.workers.dev/collect";
-            `,
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                'use strict';
-                var endpoint = window.ANALYTICS_ENDPOINT;
-                var siteId = window.ANALYTICS_SITE_ID;
-                if (!siteId) return;
-                
-                var payload = {
-                  site: siteId,
-                  path: location.pathname,
-                  referrer: document.referrer,
-                  screen: screen.width + 'x' + screen.height,
-                  language: navigator.language,
-                  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-                };
-                
-                fetch(endpoint, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(payload),
-                  keepalive: true
-                }).catch(function() {});
-              })();
-            `,
-          }}
-        />
+        <AnalyticsTracker />
       </body>
     </html>
   );
