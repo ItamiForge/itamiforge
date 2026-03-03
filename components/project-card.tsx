@@ -39,15 +39,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
       <div className="project-mini__layout">
         <div className="project-mini__zone project-mini__zone--head">
-          <h3 className="text-xl font-semibold tracking-tight">
+          <h3 className="text-2xl font-semibold tracking-tight">
             {project.title}
           </h3>
         </div>
 
         <div className="project-mini__zone project-mini__zone--summary">
-          <p className="text-sm text-muted-foreground leading-6">
-            {project.summary}
-          </p>
+          <p className="text-sm leading-6">{project.summary}</p>
         </div>
 
         <div className="project-mini__zone project-mini__zone--signals">
