@@ -9,7 +9,7 @@ export interface ProjectMeta {
   category: ProjectCategory;
   tags: string[];
   docsPath: `/docs/projects/${string}`;
-  sourcePath?: `tools/${string}`;
+  sourcePath?: string;
   featured: boolean;
   public: boolean;
   links?: {
@@ -20,6 +20,24 @@ export interface ProjectMeta {
 }
 
 export const PROJECTS: ProjectMeta[] = [
+  {
+    slug: "astro-sumi",
+    title: "Astro Sumi",
+    summary:
+      "Astro-based writing and blog template built for GitHub Pages deployment.",
+    status: "active",
+    category: "app",
+    tags: ["astro", "template", "blog", "github-pages"],
+    docsPath: "/docs/projects/astro-sumi",
+    sourcePath: "https://github.com/ItamiForge/astro-sumi",
+    featured: true,
+    public: true,
+    links: {
+      github: "https://github.com/ItamiForge/astro-sumi",
+      live: "https://itamiforge.github.io/astro-sumi/",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/astro-sumi",
+    },
+  },
   {
     slug: "kirei",
     title: "Kirei",
@@ -44,9 +62,13 @@ export const PROJECTS: ProjectMeta[] = [
     category: "cli",
     tags: ["rust", "networking", "terminal"],
     docsPath: "/docs/projects/port-finder",
-    sourcePath: "tools/port-finder",
+    sourcePath: "https://github.com/ItamiForge/port-finder",
     featured: true,
     public: true,
+    links: {
+      github: "https://github.com/ItamiForge/port-finder",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/port-finder",
+    },
   },
   {
     slug: "goto",
@@ -57,59 +79,89 @@ export const PROJECTS: ProjectMeta[] = [
     category: "shell",
     tags: ["rust", "productivity", "shell"],
     docsPath: "/docs/projects/goto",
-    sourcePath: "tools/goto",
+    sourcePath: "https://github.com/ItamiForge/goto",
     featured: false,
     public: true,
+    links: {
+      github: "https://github.com/ItamiForge/goto",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/goto",
+    },
   },
   {
-    slug: "brew-run",
-    title: "BrewRun",
+    slug: "mcp-react-native-toolkit",
+    title: "MCP React Native Toolkit",
     summary:
-      "Interactive SOP runner concept for brewery operations and auditability.",
-    status: "concept",
-    category: "concept",
-    tags: ["brewery", "operations", "tui", "consulting"],
-    docsPath: "/docs/projects/brew-run",
-    sourcePath: "tools/brew-run",
+      "Local MCP server for React Native + Expo docs, tooling, and device automation.",
+    status: "active",
+    category: "app",
+    tags: ["typescript", "mcp", "react-native", "expo"],
+    docsPath: "/docs/projects/mcp-react-native-toolkit",
+    sourcePath: "https://github.com/ItamiForge/mcp-react-native-toolkit",
     featured: true,
     public: true,
+    links: {
+      github: "https://github.com/ItamiForge/mcp-react-native-toolkit",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/mcp-react-native-toolkit",
+    },
   },
   {
-    slug: "yield-viz",
-    title: "YieldViz",
+    slug: "kageasset",
+    title: "KageAsset",
     summary:
-      "Analytics concept to visualize process yield losses and financial impact.",
-    status: "concept",
-    category: "concept",
-    tags: ["analytics", "visualization", "brewery"],
-    docsPath: "/docs/projects/yield-viz",
-    sourcePath: "tools/yield-viz",
+      "Cross-platform CLI that scans image assets and generates structured metadata summaries.",
+    status: "experimental",
+    category: "cli",
+    tags: ["rust", "assets", "cli", "tooling"],
+    docsPath: "/docs/projects/kageasset",
+    sourcePath: "https://github.com/ItamiForge/kageasset",
     featured: false,
     public: true,
+    links: {
+      github: "https://github.com/ItamiForge/kageasset",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/kageasset",
+    },
   },
   {
-    slug: "shadcn-theme-builder",
-    title: "Shadcn Theme Builder",
+    slug: "itamiforge-site",
+    title: "ItamiForge Site",
     summary:
-      "Theme prototyping workspace for quickly testing UI tokens and components.",
+      "Portfolio and documentation hub built with Next.js App Router and Fumadocs.",
     status: "experimental",
     category: "app",
-    tags: ["nextjs", "shadcn", "design-system"],
-    docsPath: "/docs/projects/shadcn-theme-builder",
-    sourcePath: "tools/shadcn-theme-builder",
+    tags: ["nextjs", "fumadocs", "typescript", "portfolio"],
+    docsPath: "/docs/projects/itamiforge-site",
+    sourcePath: "https://github.com/ItamiForge/itamiforge",
     featured: false,
     public: true,
+    links: {
+      github: "https://github.com/ItamiForge/itamiforge",
+      live: "https://itamiforge.github.io/itamiforge/",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/itamiforge-site",
+    },
+  },
+  {
+    slug: "ai-erp-core",
+    title: "AI ERP Core",
+    summary:
+      "Private operations platform for SOP execution, production visibility, and analytics.",
+    status: "active",
+    category: "app",
+    tags: ["private", "erp", "ai", "operations"],
+    docsPath: "/docs/projects/ai-erp-core",
+    sourcePath: "private/ai-erp-core",
+    featured: false,
+    public: false,
   },
   {
     slug: "developer-blog-theme",
     title: "Developer Blog Theme",
     summary:
-      "Internal work-in-progress template that is intentionally excluded from public docs.",
+      "Private in-progress template and content workflow for internal publishing.",
     status: "experimental",
     category: "app",
-    tags: ["astro", "wip", "internal"],
+    tags: ["private", "astro", "theme", "internal"],
     docsPath: "/docs/projects/developer-blog-theme",
-    sourcePath: "tools/developer-blog-theme",
+    sourcePath: "private/developer-blog-theme",
     featured: false,
     public: false,
   },

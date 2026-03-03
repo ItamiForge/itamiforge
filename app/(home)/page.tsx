@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { InkSplashReveal } from "@/components/ink-splash-reveal";
 import { ProjectCard } from "@/components/project-card";
 import { featuredProjects, publicProjects } from "@/lib/projects";
 import { SITE } from "@/lib/site";
@@ -8,9 +9,12 @@ export default function HomePage() {
     <div className="space-y-16 pb-10">
       <section className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
         <div className="space-y-6">
-          <h1 className="display text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-            Building systems.
-          </h1>
+          <InkSplashReveal
+            as="h1"
+            className="display text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl"
+          >
+            Game and App studio.
+          </InkSplashReveal>
           <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
             {SITE.description}
           </p>

@@ -15,20 +15,6 @@ export default function AiErpPage() {
           core app is being built in a separate repository. This page will
           evolve into the full marketing and product documentation surface.
         </p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <Link
-            href="/docs/projects/brew-run"
-            className="rounded-full border px-4 py-2 text-sm hover:bg-accent"
-          >
-            View related concept docs
-          </Link>
-          <Link
-            href="/blog"
-            className="rounded-full border px-4 py-2 text-sm hover:bg-accent"
-          >
-            Read build updates
-          </Link>
-        </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
@@ -36,13 +22,6 @@ export default function AiErpPage() {
           <h2 className="text-2xl font-semibold">Execution engine</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Live SOP workflows, operator prompts, and validated run logs.
-          </p>
-        </article>
-        <article className="card">
-          <h2 className="text-2xl font-semibold">Yield intelligence</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Batch analytics, loss tracing, and benchmark-informed
-            recommendations.
           </p>
         </article>
         <article className="card">

@@ -259,27 +259,172 @@ h6 {
   color: var(--secondary-foreground);
 }
 
+.ink-reveal {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.ink-reveal__content {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(1.5px);
+  will-change: transform, opacity, filter;
+}
+
+.ink-reveal::after {
+  content: "";
+  position: absolute;
+  inset: -0.02em -0.08em;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 110% at 0% 50%,
+    color-mix(in oklab, var(--background) 76%, transparent) 0%,
+    transparent 72%
+  );
+  opacity: 0;
+  transform: translateX(-12%);
+  will-change: transform, opacity;
+}
+
+.ink-reveal::before {
+  content: "";
+  position: absolute;
+  inset: -0.05em -0.1em;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      circle at 12% 48%,
+      color-mix(in oklab, var(--foreground) 18%, transparent) 0 2px,
+      transparent 3.2px
+    ),
+    radial-gradient(
+      circle at 24% 42%,
+      color-mix(in oklab, var(--foreground) 14%, transparent) 0 2.2px,
+      transparent 3.8px
+    ),
+    radial-gradient(
+      circle at 18% 58%,
+      color-mix(in oklab, var(--foreground) 15%, transparent) 0 1.9px,
+      transparent 3.4px
+    ),
+    radial-gradient(
+      circle at 30% 52%,
+      color-mix(in oklab, var(--foreground) 13%, transparent) 0 1.7px,
+      transparent 3px
+    );
+  opacity: 0;
+  transform: translateX(-8%) scale(0.98);
+  will-change: transform, opacity;
+}
+
+.ink-reveal.is-active .ink-reveal__content {
+  animation: ink-reveal-subtle-in var(--ink-duration, 1100ms)
+    cubic-bezier(0.2, 0.7, 0.2, 1) var(--ink-delay, 250ms) forwards;
+}
+
+.ink-reveal.is-active::after {
+  animation: ink-reveal-subtle-wash calc(var(--ink-duration, 1100ms) * 0.9)
+    cubic-bezier(0.18, 0.72, 0.2, 1) var(--ink-delay, 250ms) forwards;
+}
+
+.ink-reveal.is-active::before {
+  animation: ink-reveal-tiny-splash calc(var(--ink-duration, 1100ms) * 0.9)
+    cubic-bezier(0.24, 0.74, 0.2, 1) calc(var(--ink-delay, 250ms) + 35ms)
+    forwards;
+}
+
+@keyframes ink-reveal-subtle-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(1.5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ink-reveal-subtle-wash {
+  0% {
+    opacity: 0.58;
+    transform: translateX(-12%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(12%);
+  }
+}
+
+@keyframes ink-reveal-tiny-splash {
+  0% {
+    opacity: 0.62;
+    transform: translateX(-8%) scale(0.98);
+  }
+
+  65% {
+    opacity: 0.3;
+    transform: translateX(5%) scale(1.01);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(8%) scale(1.01);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-reveal__content {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .ink-reveal::before,
+  .ink-reveal::after {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+}
+
 .status-pill {
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 0.2rem 0.65rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  inline-size: auto;
+  min-inline-size: 3.45rem;
+  block-size: 1.15rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  padding: 0 0.4rem;
+  font-size: 0.57rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   font-family: var(--font-mono);
 }
 
 .status-active {
-  background: var(--secondary);
-  color: var(--secondary-foreground);
+  background: color-mix(in oklab, var(--secondary) 34%, transparent);
+  color: color-mix(in oklab, var(--foreground) 82%, var(--secondary-foreground));
 }
 
 .status-experimental {
-  background: var(--muted);
+  background: color-mix(in oklab, var(--muted) 48%, transparent);
+  color: var(--muted-foreground);
 }
 
 .status-concept {
-  background: transparent;
+  background: color-mix(in oklab, var(--accent) 26%, transparent);
+  color: var(--muted-foreground);
 }
 
 .tag-pill {
@@ -292,6 +437,259 @@ h6 {
   color: var(--muted-foreground);
   text-transform: lowercase;
   font-family: var(--font-mono);
+}
+
+.visibility-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  inline-size: auto;
+  min-inline-size: 3.45rem;
+  block-size: 1.15rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  padding: 0 0.4rem;
+  font-size: 0.57rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.visibility-oss {
+  background: color-mix(in oklab, var(--secondary) 34%, transparent);
+  color: color-mix(in oklab, var(--foreground) 82%, var(--secondary-foreground));
+}
+
+.visibility-private {
+  background: color-mix(in oklab, var(--muted) 46%, transparent);
+  color: var(--muted-foreground);
+}
+
+.project-mini {
+  position: relative;
+  padding: 1.35rem 1.3rem 2.95rem;
+  border-width: 1px;
+  border-color: color-mix(in oklab, var(--border) 82%, transparent);
+  border-radius: var(--radius);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+  overflow: hidden;
+}
+
+.project-mini::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--background) 96%, transparent),
+    color-mix(in oklab, var(--muted) 15%, transparent)
+  );
+}
+
+.project-mini::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.project-mini--v1::after,
+.project-mini--v2::after {
+  opacity: 0.42;
+}
+
+.project-mini--v1::after {
+  background:
+    repeating-linear-gradient(
+      14deg,
+      color-mix(in oklab, var(--secondary) 12%, transparent) 0 1px,
+      transparent 1px 8px
+    ),
+    linear-gradient(
+      165deg,
+      color-mix(in oklab, var(--accent) 18%, transparent),
+      transparent 52%
+    );
+}
+
+.project-mini--v2::after {
+  background:
+    repeating-linear-gradient(
+      -10deg,
+      color-mix(in oklab, var(--muted) 22%, transparent) 0 1px,
+      transparent 1px 10px
+    ),
+    radial-gradient(
+      80% 60% at 15% 0%,
+      color-mix(in oklab, var(--secondary) 16%, transparent),
+      transparent 70%
+    );
+}
+
+.dark .project-mini--v1::after,
+.dark .project-mini--v2::after {
+  opacity: 0.26;
+}
+
+.project-mini:hover {
+  border-color: color-mix(in oklab, var(--primary) 42%, var(--border));
+  transform: translateY(-1px);
+}
+
+.project-mini__stretched {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.project-mini__stretched:focus-visible {
+  outline: 1px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.project-mini__grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 0.78rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.project-mini__head {
+  grid-area: head;
+}
+
+.project-mini__summary {
+  grid-area: summary;
+}
+
+.project-mini__pills {
+  grid-area: pills;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-self: start;
+  gap: 0.25rem;
+}
+
+.project-mini__meta {
+  grid-area: meta;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.meta-chip {
+  display: inline-flex;
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+}
+
+.project-mini__tags {
+  grid-area: tags;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: 0.32rem;
+}
+
+.project-mini--v0 .project-mini__grid {
+  grid-template-areas:
+    "head head pills pills"
+    "summary summary summary summary"
+    "meta tags tags tags";
+}
+
+.project-mini--v1 .project-mini__grid {
+  grid-template-areas:
+    "head head head head"
+    "pills pills summary summary"
+    "tags tags tags meta";
+}
+
+.project-mini--v2 .project-mini__grid {
+  grid-template-areas:
+    "head head head pills"
+    "summary summary summary summary"
+    "tags tags meta meta";
+}
+
+.project-mini__actions {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.75rem;
+  z-index: 3;
+  display: inline-flex;
+  gap: 0.3rem;
+}
+
+.project-mini__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in oklab, var(--border) 84%, transparent);
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  color: var(--muted-foreground);
+  border-radius: 999px;
+  width: 1.72rem;
+  height: 1.72rem;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.project-mini__action:hover {
+  color: var(--foreground);
+  border-color: var(--primary);
+  background: color-mix(in oklab, var(--secondary) 55%, transparent);
+}
+
+.project-mini__action:focus-visible {
+  outline: 1px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .project-mini {
+    padding: 1rem 0.95rem 2.45rem;
+  }
+
+  .project-mini__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "pills"
+      "summary"
+      "meta"
+      "tags";
+  }
+
+  .project-mini__actions {
+    right: 0.6rem;
+    bottom: 0.6rem;
+  }
+
+  .project-mini__meta {
+    display: none;
+  }
+
+  .project-mini__tags .tag-pill:nth-child(n + 3) {
+    display: none;
+  }
 }
 
 .bento-grid {

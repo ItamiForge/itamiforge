@@ -4,7 +4,7 @@ Project context and conventions for AI-assisted development.
 
 ## Project Overview
 
-**ItamiForge** is a personal build log and documentation hub for a game and app studio. It's a statically exported Next.js site deployed to GitHub Pages at `https://itamiforge.github.io/itamiforge/`.
+**ItamiForge** is a portfolio and documentation hub for a game and app studio. It's a statically exported Next.js site deployed to GitHub Pages at `https://itamiforge.github.io/itamiforge/`.
 
 The site has two main content areas:
 - **Docs** — technical documentation, project pages, and field notes

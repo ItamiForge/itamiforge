@@ -35,8 +35,8 @@ export function ThemeToggle() {
       direction="ttb"
     >
       {({ effective, toggleTheme }) => {
-        const nextTheme = effective === "dark" ? "light" : "dark";
-        const isDark = effective === "dark";
+        const isDark = resolvedTheme === "dark";
+        const nextTheme = isDark ? "light" : "dark";
 
         return (
           <button

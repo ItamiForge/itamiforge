@@ -1,13 +1,14 @@
 {
   "title": "Projects",
   "pages": [
+    "astro-sumi",
     "kirei",
     "port-finder",
     "goto",
-    "brew-run",
-    "yield-viz",
-    "shadcn-theme-builder",
-    "vibe-check",
-    "device-finder"
+    "mcp-react-native-toolkit",
+    "kageasset",
+    "itamiforge-site",
+    "ai-erp-core",
+    "developer-blog-theme"
   ]
 }

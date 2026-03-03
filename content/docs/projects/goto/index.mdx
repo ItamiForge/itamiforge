@@ -5,32 +5,156 @@ description: Tab-completed project navigation for daily shell workflows.
 
 ## Overview
 
-`goto` is a single binary for jumping between common roots and projects using namespace-based paths.
+`goto` is a lightweight Rust CLI that helps you jump across project folders using short namespace paths like `gh/repo` instead of long `cd` commands.
+
+- Repository: [github.com/ItamiForge/goto](https://github.com/ItamiForge/goto)
+- Source of truth: standalone `goto` repository (no longer under `itamiforge/tools/`)
 
 ## Install
 
+### From GitHub
+
 ```bash
-cargo install --path tools/goto
+cargo install --git https://github.com/ItamiForge/goto.git
 ```
 
-Or from the project root:
+### From local clone
 
 ```bash
 cargo install --path .
 ```
 
-Run `goto setup` after install to wire the zsh helper into `~/.zshrc`. Restart your shell to pick up the `goto` function and tab completion. To remove it later, run `goto uninstall` before `cargo uninstall goto`.
-
-**Note**: Without running `goto setup`, the `goto` command will only print resolved paths to stdout without changing directories or providing tab completion.
-
-## Typical usage
+### Verify install
 
 ```bash
-goto gh
-goto gh/project
-goto gh/project/src
+goto --version
 ```
+
+### Enable shell integration (zsh)
+
+```bash
+goto setup
+exec zsh
+```
+
+This installs a managed helper in `~/.zshrc` so `goto` can change your current shell directory and provide completions.
+
+To remove integration later:
+
+```bash
+goto uninstall
+```
+
+Without setup, `goto` only prints paths to stdout.
+
+## Quick start
+
+```bash
+# list namespaces / entries
+goto list
+
+# jump target path (prints path without shell helper)
+goto gh/project
+
+# inspect config path
+goto config-path
+
+# run health checks
+goto doctor
+```
+
+## User guide
+
+### Namespace model
+
+Each namespace maps a short key to a directory root:
+
+- `gh` -> `~/Documents/GitHub`
+- `work` -> `~/Projects`
+
+Then `goto gh/repo-name` resolves to `~/Documents/GitHub/repo-name`.
+
+### Managing namespaces
+
+```bash
+# add namespace
+goto add work ~/Projects --alias office
+
+# rename namespace
+goto rename work client
+
+# change namespace root path
+goto set-path client ~/Code/Client
+
+# add/remove aliases
+goto alias-add gh github
+goto alias-remove gh github
+
+# remove by namespace OR alias
+goto remove client
+goto remove office
+```
+
+### Inspecting config
+
+```bash
+goto list-raw
+```
+
+## Configuration
+
+Print the active config file location:
+
+```bash
+goto config-path
+```
+
+If no config exists, `goto` falls back to built-in defaults.
+
+`goto` does not perform hidden legacy config imports. You explicitly manage namespaces with CLI commands or by editing config TOML.
+
+Example:
+
+```toml
+[[namespace]]
+name = "gh"
+path = "~/Documents/GitHub"
+aliases = ["github"]
+
+[[namespace]]
+name = "work"
+path = "~/Projects"
+aliases = ["office"]
+```
+
+Rules:
+
+- Namespace names are case-insensitive during lookup.
+- Paths support shell expansion like `~` and `$HOME`.
+- Aliases are optional and case-insensitive.
+
+## Diagnostics and troubleshooting
+
+Run:
+
+```bash
+goto doctor
+```
+
+It checks:
+
+- Config file readability/parsing
+- Namespace and alias validity
+- Namespace root path existence
+- Shell integration presence
+
+Common fixes:
+
+- If shell integration is missing: run `goto setup`.
+- If a namespace root is missing: run `goto set-path <name> <path>`.
+- If config is malformed: run `goto list-raw`, fix invalid entries, and retry `goto doctor`.
 
 ## Why it exists
 
-It removes repetitive `cd` patterns and lowers friction when moving between many repositories.
+It removes repetitive navigation friction when switching across many repos during day-to-day development.
+

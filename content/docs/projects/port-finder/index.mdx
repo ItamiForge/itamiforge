@@ -5,22 +5,29 @@ description: Cross-platform CLI/TUI for inspecting and reclaiming ports.
 
 ## Overview
 
-Port Finder (`pf`) is a Rust CLI that quickly answers "what is on this port?" and helps terminate blockers.
+Port Finder (`pf`) is a Rust CLI + TUI that helps you identify what is using a port and reclaim it quickly.
 
-## Core features
-
-- List active listening ports.
-- Find process details by port.
-- Kill process by port.
-- Check availability.
-- Scan ranges.
-- Interactive TUI mode.
+- Repository: [github.com/ItamiForge/port-finder](https://github.com/ItamiForge/port-finder)
+- Source of truth: standalone `port-finder` repository
 
 ## Install
 
+### From GitHub
+
 ```bash
-cd tools/port-finder
+cargo install --git https://github.com/ItamiForge/port-finder.git
+```
+
+### From local clone
+
+```bash
 cargo install --path .
+```
+
+### Verify
+
+```bash
+pf --version
 ```
 
 ## Quick usage
@@ -33,3 +40,36 @@ pf kill 3000
 pf check 8080
 pf scan 3000-4000
 ```
+
+## Commands
+
+- `pf`: launch interactive TUI
+- `pf list [--all]`: list active ports (`--all` includes non-listen states)
+- `pf find <port>`: show process details for one port
+- `pf kill <port> [--force]`: terminate process on a port
+- `pf check <port>`: check availability
+- `pf scan <start-end>`: scan range like `3000-4000`
+
+## TUI controls
+
+- `q` / `Esc`: quit
+- `r`: refresh
+- `↑` / `↓` or `j` / `k`: move selection
+- `PgUp` / `PgDn`: page navigation
+- `Home` / `End`: jump first/last row
+- `Enter`: inspect selected process
+- `K`: kill selected process
+- `Space`: toggle row selection
+- `x`: clear selected rows
+- `B`: batch kill selected rows
+- `a`: toggle all/listening view
+- `g`: toggle grouped view
+- `s`: cycle sort mode
+- `d`: toggle sort direction
+- `/`: start filter mode (type, `Enter` apply, `Esc` clear)
+- `c`: copy selected local address
+
+## Notes
+
+- Cross-platform support: macOS, Linux, and Windows
+- Use `--force` on `kill` to skip confirmation prompts
