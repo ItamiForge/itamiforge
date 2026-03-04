@@ -1,11 +1,11 @@
 ---
 title: Installation & Setup
-description: Installing Device Finder from source or pre-built binaries.
+description: Install Device Finder via crates.io or build from source.
 ---
 
-# Installation & Setup
+## Installation & Setup
 
-Device Finder is distributed as a Rust crate and can be installed from source or via cargo.
+Device Finder is published to [crates.io](https://crates.io/crates/device-finder) and can be installed with a single `cargo install` command.
 
 ## Prerequisites
 
@@ -17,76 +17,215 @@ Device Finder is distributed as a Rust crate and can be installed from source or
 ### Platform-Specific
 
 **macOS (for iOS support):**
-- Xcode with Command Line Tools
+- Xcode with Command Line Tools (`xcode-select --install`)
 - `xcrun` available in PATH
 
 **Android (all platforms):**
 - Android SDK with `adb` in PATH
-- `emulator` command available (for emulator detection)
+- Installation: `brew install android-platform-tools` (macOS) or [Android SDK](https://developer.android.com/studio)
 
 **All platforms:**
-- Terminal with Unicode support (for emoji rendering)
+- Terminal with Unicode support (for nice rendering)
 
-## Install from Source
+## Install
 
-### Method 1: Clone and Install
-
-```bash
-# Clone the repository
-git clone https://github.com/varun/itamiforge.git
-cd itamiforge/tools/device-finder
-
-# Build and install
-cargo install --path .
-```
-
-### Method 2: Direct cargo install (if published)
+### From crates.io (recommended)
 
 ```bash
 cargo install device-finder
 ```
 
-### Build Options
+This installs the `df` binary to `~/.cargo/bin/df`. Ensure `~/.cargo/bin` is in your `PATH`.
+
+### From GitHub (latest unreleased)
 
 ```bash
-# Debug build (faster compile, slower runtime)
+cargo install --git https://github.com/ItamiForge/device-finder.git
+```
+
+### From local source
+
+```bash
+git clone https://github.com/ItamiForge/device-finder.git
+cd device-finder
+cargo install --path .
+```
+
+### Verify
+
+```bash
+df --version
+# df 0.1.0
+
+df list
+# Lists all installed simulators, emulators, and connected devices
+```
+
+## Setup by Platform
+
+### macOS
+
+1. **Install Xcode Command Line Tools** (if not already installed):
+
+   ```bash
+   xcode-select --install
+   ```
+
+2. **Install Android SDK tools** (optional, for Android support):
+
+   ```bash
+   brew install android-platform-tools
+   adb version  # Verify
+   ```
+
+3. **Install Device Finder**:
+
+   ```bash
+   cargo install device-finder
+   ```
+
+4. **Verify**:
+
+   ```bash
+   df list
+   ```
+
+### Linux
+
+1. **Install Android SDK tools**:
+
+   ```bash
+   # Ubuntu/Debian
+   sudo apt install android-tools-adb
+
+   # Arch
+   sudo pacman -S android-tools
+
+   # Fedora
+   sudo dnf install android-tools
+   ```
+
+2. **Install Rust** (if not already installed):
+
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+
+3. **Install Device Finder**:
+
+   ```bash
+   cargo install device-finder
+   ```
+
+### Windows
+
+1. **Install Rust**:
+   Download and run [rustup-init.exe](https://rustup.rs/)
+
+2. **Install Android SDK** (optional):
+   - Download [Android SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools)
+   - Add to PATH
+
+3. **Install Device Finder**:
+
+   ```bash
+   cargo install device-finder
+   ```
+
+## Configuration (Optional)
+
+Create `~/.config/itamiforge/device-finder/config.toml`:
+
+```toml
+[platforms]
+# Filter devices by platform on startup
+default_filter = ["ios", "android"]
+
+# Exclude specific devices
+exclude_devices = ["old-simulator"]
+
+[tools]
+# Override tool paths if they're not in PATH
+adb_path = "/opt/android-sdk/platform-tools/adb"
+xcrun_path = "/Applications/Xcode.app/Contents/Developer/usr/bin/xcrun"
+```
+
+## Troubleshooting
+
+### `df: command not found`
+
+Ensure `~/.cargo/bin` is in your PATH:
+
+```bash
+echo $PATH | grep ".cargo/bin"
+```
+
+If not, add it to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.):
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+### `xcrun: command not found` (macOS)
+
+Install Xcode Command Line Tools:
+
+```bash
+xcode-select --install
+```
+
+### `adb: command not found` (Android)
+
+Ensure Android Platform Tools are installed:
+
+```bash
+# macOS
+brew install android-platform-tools
+
+# Linux
+sudo apt install android-tools-adb
+
+# Verify
+adb version
+```
+
+### No devices detected
+
+1. Ensure tools are installed and in PATH
+2. For iOS: Start a simulator first (`xcrun simctl boot <device-id>`)
+3. For Android: Connect device via USB or start an emulator
+4. Check permissions: Device may need USB debugging enabled
+
+## Building from Source
+
+```bash
+git clone https://github.com/ItamiForge/device-finder.git
+cd device-finder
+
+# Debug build
 cargo build
 
 # Release build (optimized)
 cargo build --release
 
-# Binary location after build
-./target/release/device-finder
+# Binary location
+./target/release/df --version
 ```
 
-## Verify Installation
+## Updating
+
+Update to the latest version from crates.io:
 
 ```bash
-# Check version
-device-finder --version
-
-# Quick test
-device-finder list
+cargo install device-finder --force
 ```
 
-## Shell Completion
-
-### Bash
+Or from local source:
 
 ```bash
-device-finder completions bash > /etc/bash_completion.d/device-finder
-```
-
-### Zsh
-
-```bash
-device-finder completions zsh > "${fpath[1]}/_device-finder"
-```
-
-### Fish
-
-```bash
-device-finder completions fish > ~/.config/fish/completions/device-finder.fish
+cd device-finder
+git pull
+cargo install --path . --force
 ```
 
 ## Uninstall
@@ -95,64 +234,7 @@ device-finder completions fish > ~/.config/fish/completions/device-finder.fish
 cargo uninstall device-finder
 ```
 
-## Troubleshooting
-
-### "command not found: device-finder"
-
-Cargo installs to `~/.cargo/bin` by default. Ensure it's in your PATH:
-
-```bash
-# Add to ~/.bashrc, ~/.zshrc, or equivalent
-export PATH="$HOME/.cargo/bin:$PATH"
-```
-
-### iOS devices not detected
-
-Verify Xcode Command Line Tools:
-
-```bash
-xcode-select --install
-xcrun simctl list devices available
-```
-
-### Android devices not detected
-
-Verify ADB is accessible:
-
-```bash
-adb devices -l
-which emulator
-```
-
-### Unicode/emoji display issues
-
-If emojis appear as boxes or question marks:
-
-1. Use a terminal with Unicode support (iTerm2, Warp, Alacritty, Windows Terminal)
-2. Install a Nerd Font or font with emoji support
-3. Set your terminal's character encoding to UTF-8
-
-## Development Setup
-
-If you want to contribute or modify:
-
-```bash
-cd tools/device-finder
-
-# Run tests
-cargo test
-
-# Check for warnings
-cargo clippy
-
-# Format code
-cargo fmt
-
-# Build documentation
-cargo doc --open
-```
-
 ## Next Steps
 
-- [CLI Reference](./cli) for command usage
-- [TUI Guide](./tui) for interactive mode
+- [CLI Reference](./cli)
+- [TUI Guide](./tui)

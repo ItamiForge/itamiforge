@@ -3,62 +3,73 @@ title: TUI Guide
 description: Interactive Terminal User Interface for Device Finder.
 ---
 
-# TUI Guide
+## TUI Mode
 
-The Terminal User Interface (TUI) provides an immersive, interactive way to browse and manage your devices.
+<Callout type="info">
+  **Current status**: The TUI launches and displays a device list. Full interactive features (sorting, vim keys, mouse, details panel) are in progress.
+</Callout>
 
-## Launching the TUI
+Launch the interactive Terminal User Interface by running Device Finder without arguments:
 
 ```bash
-device-finder tui
+df
 ```
 
-## Interface Layout
+## Navigation
 
-The TUI is divided into four sections:
+**Keyboard controls:**
+
+| Key | Action |
+|-----|--------|
+| `↑` / `↓` | Navigate devices |
+| `Tab` | Cycle platform filters (All → iOS → Android → Web → All) |
+| `r` | Refresh device list |
+| `q` / `Esc` | Quit |
+
+## Device List View
+
+The TUI displays devices in a table format:
 
 ```
-┌ Header ──────────────────────────────────────────────────────────────┐
-│  Device Finder [All] | Sort: type ▲ | Tab: Filter | s: Sort | ...     │
-├──────────────────────────────────────────────────────────────────────┤
-│▶ 📱  iOS    iPhone 16 Pro      Simulator   Shutdown (off)   18.2   █│
-│  🤖  Android Pixel_9           Emulator     Shutdown (off)   -      █│
-│  📱  iOS     iPad Pro          Simulator    not installed     18.4   ║│
-│                                                                      ▼│
-├ Details ─────────────────────────────────────────────────────────────┤
-│ Platform: iOS | Type: Simulator | Status: Shutdown                    │
-│ ID: 589413D1-CCAC-4950-A968-83348F5BCF05                              │
-├──────────────────────────────────────────────────────────────────────┤
-│  5/38 devices | ↑↓: Navigate | PgUp/PgDn: Page | r: Refresh | q:... │
-└──────────────────────────────────────────────────────────────────────┘
+Device Finder
+┌─────────────────────────────────────────────────────────┐
+│ PLATFORM NAME                TYPE         STATUS   ID   │
+├─────────────────────────────────────────────────────────┤
+│ iOS      iPhone 16 Pro       Simulator    Shutdown ABC.. │
+│ Android  Pixel 9             Emulator     Connected ... │
+│ iOS      iPad Air 6          Simulator    Connected ... │
+└─────────────────────────────────────────────────────────┘
+↑↓: Navigate | Tab: Filter | r: Refresh | q: Quit
 ```
 
-### 1. Header Bar
+## Features
 
-Shows current state:
-- **Filter**: [All], [iOS], [Android], or [Web]
-- **Sort**: Current sort column and direction (▲ ascending, ▼ descending)
-- **Hints**: Available key commands
+- **Real-time refresh**: Press `r` to reload the device list
+- **Platform filtering**: Press `Tab` to filter by iOS, Android, Web, or show all
+- **Color indicators**: Device status is color-coded for quick scanning
+  - 🟢 Green: Connected/Running
+  - ⚫ Dark Gray: Shutdown/Offline
+  - 🟡 Yellow: Booting/Loading
+  - ⚪ Gray: Unknown/Unavailable
 
-### 2. Device Table
+## Tips
 
-The main content area showing devices in columns:
-- **Platform**: Emoji + platform name (colored)
-- **Name**: Device name
-- **Type**: Simulator, Emulator, Physical, or Container
-- **Status**: Color-coded state
-- **OS Version**: iOS/Android version if available
+1. Use `Tab` repeatedly to quickly switch between platform views
+2. Press `r` to refresh if you just connected a new device
+3. Combine TUI with CLI commands for scripting:
 
-### 3. Details Panel
+   ```bash
+   # Get device list from TUI view, then use in CLI
+   df find "iPhone" --json
+   ```
 
-Sticky footer showing extended information for the selected device:
-- Platform, Type, Status
-- OS Version, Model (if available)
-- Device ID and UDID
+## Performance
 
-### 4. Status Bar
+The TUI loads devices on startup. On systems with many devices, initial load may take a few seconds.
 
-Shows navigation position and available commands.
+- Initial load: 1–2s (macOS with iOS simulators), 2–5s (Android with active emulators)
+- Refresh (`r`): Same as initial load
+- Navigation: Instant
 
 ## Keyboard Navigation
 
@@ -236,4 +247,3 @@ The TUI currently uses sensible defaults. Future versions may support:
 ## See Also
 
 - [CLI Reference](./cli) - Command-line documentation
-- [Architecture](./architecture) - How the TUI works internally

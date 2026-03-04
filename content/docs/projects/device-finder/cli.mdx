@@ -3,228 +3,390 @@ title: CLI Reference
 description: Complete command-line interface reference for Device Finder.
 ---
 
-# CLI Reference
+## CLI Reference
 
-Device Finder provides a comprehensive command-line interface for device discovery and management.
+Device Finder (`df`) provides a comprehensive command-line interface for device discovery and management.
 
-## Global Options
+### Entry point
 
+```bash
+df [COMMAND] [OPTIONS]
 ```
-device-finder [OPTIONS] <COMMAND>
-```
 
-| Option | Description |
-|--------|-------------|
-| `-h, --help` | Print help information |
-| `-V, --version` | Print version information |
+Run without a command to launch interactive TUI mode:
+
+```bash
+df                  # Interactive device browser
+```
 
 ## Commands
 
-### `list`
+### list
 
 Display all detected devices in a formatted table.
 
 ```bash
-device-finder list [OPTIONS]
+df list [OPTIONS]
 ```
 
-#### Options
+**Options:**
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--platform <PLATFORM>` | `-p` | Filter by platform (ios, android, web) |
-| `--json` | `-j` | Output as JSON |
-| `--verbose` | `-v` | Include additional details |
+| Option | Description |
+|--------|-------------|
+| `--platform <ios\|android\|web>` | Filter by platform |
+| `--verbose` | Show detailed device information |
+| `--json` | Output as JSON array |
 
-#### Examples
+**Examples:**
 
 ```bash
 # List all devices
-device-finder list
+df list
 
 # List only iOS simulators
-device-finder list --platform ios
+df list --platform ios
 
-# List Android devices with full details
-device-finder list -p android --verbose
+# List Android with verbose details
+df list --platform android --verbose
 
-# Export to JSON for scripting
-device-finder list --json > devices.json
+# JSON output for scripting
+df list --json
 ```
 
-#### Sample Output
+**Terminal output:**
 
 ```
-PLATFORM   NAME                     TYPE         STATUS            OS VERSION
-📱 iOS     iPhone 16 Pro            Simulator    Shutdown (off)    18.2
-📱 iOS     iPhone 16 Pro Max        Simulator    Shutdown (off)    18.2
-🤖 Android Medium_Phone_API_35    Emulator     Shutdown (off)    -
-🤖 Android Pixel_9                Emulator     Shutdown (off)    -
-🌐 Web     Web Browser              Container    Unknown           -
+PLATFORM NAME                 TYPE            STATUS       ID
+-------------------------------------------------------------
+iOS      iPhone 17 Pro        Simulator       Shutdown     7754174C-C8D6-4248-BB30-A6EE9539C63E
+iOS      iPhone 17 Pro Max    Simulator       Shutdown     EE230FBC-8126-41C2-8526-7E4F615EB6A6
+iOS      iPhone 16 Pro        Simulator       Shutdown     589413D1-CCAC-4950-A968-83348F5BCF05
+iOS      iPhone 16            Simulator       Shutdown     B52873B1-6C52-41C9-8941-5E81CDC00DA4
 ```
 
-### `find`
+**JSON output shape:**
 
-Search for devices by name or ID.
+```json
+[
+  {
+    "id": "589413D1-CCAC-4950-A968-83348F5BCF05",
+    "name": "iPhone 16 Pro",
+    "platform": "ios",
+    "type": "Simulator",
+    "status": "Shutdown",
+    "os_version": "18.2",
+    "model": null,
+    "udid": "589413D1-CCAC-4950-A968-83348F5BCF05"
+  }
+]
+```
+
+### find
+
+Search devices by name, ID, or model.
 
 ```bash
-device-finder find <QUERY>
+df find <QUERY> [OPTIONS]
 ```
 
-#### Arguments
+**Options:**
 
-| Argument | Description |
-|----------|-------------|
-| `QUERY` | Search string (matches name or ID) |
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON object |
 
-#### Examples
+**Examples:**
 
 ```bash
-# Find iPhone devices
-device-finder find "iPhone"
+# Find all iPhones
+df find "iPhone"
 
 # Find specific emulator
-device-finder find "Pixel"
+df find "emulator-5554"
 
-# Find by partial ID
-device-finder find "B52873B1"
+# JSON output
+df find "Pixel" --json
 ```
 
-### `info`
+**Exit codes:**
 
-Display detailed information about a specific device.
+- `0`: Device(s) found
+- `3`: No matching device
+
+**JSON output shape:**
+
+```json
+{
+  "query": "iPhone",
+  "found": true,
+  "devices": [ { ...device objects... } ]
+}
+```
+
+### info
+
+Show detailed information for a specific device.
 
 ```bash
-device-finder info <DEVICE_ID>
+df info <DEVICE_ID> [OPTIONS]
 ```
 
-#### Arguments
+**Options:**
 
-| Argument | Description |
-|----------|-------------|
-| `DEVICE_ID` | Device identifier (UDID for iOS, name for Android) |
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON object |
 
-#### Examples
+**Examples:**
 
 ```bash
-# Get iOS simulator details
-device-finder info "589413D1-CCAC-4950-A968-83348F5BCF05"
+# Show device details
+df info "7754174C-C8D6-4248-BB30-A6EE9539C63E"
 
-# Get Android emulator details
-device-finder info "Pixel_9"
+# JSON output
+df info "7754174C-C8D6-4248-BB30-A6EE9539C63E" --json
 ```
 
-#### Sample Output
+**Terminal output:**
 
 ```
+Device Details
+========================================
+ID: 7754174C-C8D6-4248-BB30-A6EE9539C63E
+Name: iPhone 17 Pro
 Platform: iOS
-Name: iPhone 16 Pro
 Type: Simulator
 Status: Shutdown
-ID: 589413D1-CCAC-4950-A968-83348F5BCF05
-OS Version: 18.2
-Model: iPhone
+OS Version: 26.2
+UDID: 7754174C-C8D6-4248-BB30-A6EE9539C63E
 ```
 
-### `tui`
+**Exit codes:**
 
-Launch the interactive Terminal User Interface.
+- `0`: Device found
+- `3`: Device not found
+
+### launch
+
+Boot or launch a device.
 
 ```bash
-device-finder tui
+df launch <DEVICE_ID> [OPTIONS]
 ```
 
-The TUI provides:
-- Real-time device list with sorting
-- Sticky details panel
-- Platform filtering
-- Mouse/keyboard navigation
-- Color-coded status indicators
+**Options:**
 
-See the [TUI Guide](./tui) for complete navigation reference.
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON object |
 
-### `completions`
-
-Generate shell completion scripts.
+**Examples:**
 
 ```bash
-device-finder completions <SHELL>
+# Launch iOS simulator
+df launch "ABC123DEF456"
+
+# Launch Android emulator
+df launch "emulator-5554"
+
+# JSON output for automation
+df launch "device-id" --json
 ```
 
-#### Arguments
+**Exit codes:**
 
-| Argument | Options |
-|----------|---------|
-| `SHELL` | bash, zsh, fish, powershell, elvish |
+- `0`: Launch initiated
+- `1`: Launch failed
 
-#### Examples
+**JSON output shape:**
+
+```json
+{
+  "action": "launch",
+  "device_id": "device-id",
+  "status": "initiated",
+  "message": "Device launch initiated"
+}
+```
+
+### install
+
+Install an app or bundle on a device.
 
 ```bash
-# Bash
-device-finder completions bash > /etc/bash_completion.d/device-finder
-
-# Zsh
-device-finder completions zsh > "${fpath[1]}/_device-finder"
-
-# Fish
-device-finder completions fish > ~/.config/fish/completions/device-finder.fish
+df install <DEVICE_ID> <BUNDLE_PATH> [OPTIONS]
 ```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON object |
+
+**Examples:**
+
+```bash
+# Install app on device
+df install "device-id" "/path/to/app.ipa"
+
+# Install on Android
+df install "emulator-5554" "/path/to/app.apk"
+
+# JSON output
+df install "device-id" "/path/to/app" --json
+```
+
+**Exit codes:**
+
+- `0`: Installation initiated
+- `1`: Installation failed
+
+**JSON output shape:**
+
+```json
+{
+  "action": "install",
+  "device_id": "device-id",
+  "bundle": "/path/to/bundle",
+  "status": "initiated",
+  "message": "App installation initiated"
+}
+```
+
+### connect
+
+Establish connection to a device.
+
+```bash
+df connect <DEVICE_ID> [OPTIONS]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON object |
+
+**Examples:**
+
+```bash
+# Connect to wireless device
+df connect "192.168.1.100:5555"
+
+# Connect to USB device
+df connect "device-serial"
+
+# JSON output
+df connect "device-id" --json
+```
+
+**Exit codes:**
+
+- `0`: Connection initiated
+- `1`: Connection failed
 
 ## Exit Codes
 
+Device Finder uses standardized exit codes for automation:
+
 | Code | Meaning |
 |------|---------|
-| 0 | Success |
-| 1 | General error |
-| 2 | Device not found |
-| 3 | Platform tool missing (e.g., adb, xcrun) |
+| `0` | Success (device found, action executed, etc.) |
+| `1` | Error (invalid input, tool not available, etc.) |
+| `3` | Not found (for `find` and `info` commands) |
+
+## JSON Output
+
+All commands support `--json` for machine-readable output:
+
+```bash
+# List devices as JSON
+df list --json
+
+# Find with JSON
+df find "query" --json
+
+# Get device details as JSON
+df info "device-id" --json
+
+# Action commands return JSON status
+df launch "device-id" --json
+```
+
+JSON output can be piped to tools like `jq`:
+
+```bash
+# Get device IDs
+df list --json | jq -r '.[].id'
+
+# Get connected devices only
+df list --json | jq '.[] | select(.status == "Connected")'
+
+# Count devices by platform
+df list --json | jq 'group_by(.platform) | map({platform: .[0].platform, count: length})'
+```
+
+## Configuration
+
+Device Finder reads optional config from `~/.config/itamiforge/device-finder/config.toml`:
+
+```toml
+[platforms]
+# Filter devices by platform on startup
+default_filter = ["ios", "android"]
+
+# Exclude specific devices from listings
+exclude_devices = ["old-simulator"]
+
+[tools]
+# Override tool paths if they're not in PATH
+adb_path = "/usr/local/bin/adb"
+xcrun_path = "/Applications/Xcode.app/Contents/Developer/usr/bin/xcrun"
+emulator_path = "/Users/varunv/Library/Android/sdk/emulator/emulator"
+```
+
+Create the config directory:
+
+```bash
+mkdir -p ~/.config/itamiforge/device-finder
+```
 
 ## Scripting Examples
 
-### Check if specific device exists
+### Get all device IDs
 
 ```bash
-if device-finder list --json | jq -e '.[] | select(.name == "iPhone 16 Pro")' > /dev/null; then
-    echo "Device found"
-else
-    echo "Device not found"
-fi
+df list --json | jq -r '.[].id'
 ```
 
-### Start all shutdown iOS simulators
+### Boot all shutdown iOS simulators
 
 ```bash
-device-finder list --platform ios --json | \
-    jq -r '.[] | select(.status == "Shutdown") | .id' | \
-    while read -r id; do
-        xcrun simctl boot "$id"
-    done
+df list --platform ios --json | \
+  jq -r '.[] | select(.status == "Shutdown") | .id' | \
+  while read -r id; do xcrun simctl boot "$id"; done
 ```
 
-### Monitor device connections
+### Check if a specific device exists
+
+```bash
+df find "iPhone 17 Pro" --json | jq -e '.found'
+# true → exit 0, false → exit 3
+```
+
+### Monitor device count changes
 
 ```bash
 #!/bin/bash
-prev_count=0
+prev=0
 while true; do
-    count=$(device-finder list --json | jq 'length')
-    if [ "$count" -ne "$prev_count" ]; then
-        echo "$(date): Device count changed from $prev_count to $count"
-        prev_count=$count
-    fi
-    sleep 5
+  count=$(df list --json | jq 'length')
+  [ "$count" -ne "$prev" ] && echo "$(date): $prev → $count devices" && prev=$count
+  sleep 5
 done
 ```
 
-## Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `DEVICE_FINDER_LOG` | Set to `debug` for verbose logging |
-| `ANDROID_HOME` | Android SDK location (auto-detected if not set) |
-| `XCODE_PATH` | Xcode.app location (auto-detected on macOS) |
-
 ## See Also
 
-- [TUI Guide](./tui) - Interactive mode documentation
-- [Installation](./installation) - Setup instructions
+- [TUI Guide](./tui)
+- [Installation](./installation)
