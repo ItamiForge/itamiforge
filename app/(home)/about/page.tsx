@@ -2,8 +2,27 @@ import { Download, MoveRight, Clock, MapPin, Mail, Phone, Code2 } from "lucide-r
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
+type Project = {
+  text: string;
+  duration?: string;
+  client?: string;
+  tech?: string[];
+  subProjects?: {
+    text: string;
+    tech?: string[];
+  }[];
+};
+
+type Experience = {
+  role: string;
+  company: string;
+  period: string;
+  location: string;
+  projects: Project[];
+};
+
 export default function AboutPage() {
-  const experiences = [
+  const experiences: Experience[] = [
     {
       role: "Senior Manager",
       company: "AbInBev",
