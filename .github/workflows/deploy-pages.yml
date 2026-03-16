@@ -34,6 +34,9 @@ jobs:
           echo "::endgroup::"
 
       - name: Build static site
+        env:
+          NEXT_PUBLIC_SITESTATS_URL: ${{ vars.NEXT_PUBLIC_SITESTATS_URL }}
+          NEXT_PUBLIC_SITESTATS_KEY: ${{ secrets.NEXT_PUBLIC_SITESTATS_KEY }}
         run: |
           echo "::group::Next.js Build"
           bun run build:pages

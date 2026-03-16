@@ -14,7 +14,7 @@ Game and App studio blogging and docs site with integrated developer tools.
 ## Commands
 
 | Command | Description |
-|---------|-------------|
+| --------- | ------------- |
 | `bun run dev` | Start development server at localhost:3000 |
 | `bun run build` | Build static site to `out/` |
 | `bun run build:pages` | Build the exact GitHub Pages output |
@@ -38,6 +38,7 @@ Game and App studio blogging and docs site with integrated developer tools.
 ## Developer tools
 
 Located in `tools/`:
+
 - `goto/` - Namespace-based project navigation with tab completion (requires `goto setup` for full functionality)
 - `port-finder/` - Find and reclaim ports
 - `device-finder/` - Cross-platform device discovery

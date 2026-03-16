@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { PrivacyBanner } from "@/components/privacy-banner";
 import { Provider } from "@/components/provider";
 import { SITE } from "@/lib/site";
 import "./global.css";
@@ -65,6 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body className="min-h-screen antialiased">
         <Provider>{children}</Provider>
         <AnalyticsTracker />
+        <PrivacyBanner />
       </body>
     </html>
   );
