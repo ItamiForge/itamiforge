@@ -1,0 +1,27 @@
+---
+title: YAAML
+description: Lightweight, production-ready AutoML built entirely on scikit-learn with Python 3.12+ modernization
+---
+
+[YAAML (Yet Another AutoML)](https://github.com/JordanRex/yaaml) is an old attempt at creating a fully-automated machine learning package. It is built entirely on `scikit-learn` without complex dependencies, focusing on modernization and zero-bloat.
+
+## Overview
+
+Designed to sit directly on top of `sklearn`, YAAML aims to streamline the modeling workflow through an intelligent `YAAMLAutoML` wrapper pipeline. 
+
+### Key Capabilities
+
+- **Dependency-Free Backbone**: No massive deep learning libraries required—runs natively with scikit-learn.
+- **Smart Data Preprocessing**: Handles missing data imputation, target encoding, and multi-type dataframes.
+- **Multi-Task Support**: Automatically detects and adapts execution for classification vs regression.
+- **Modern Python Validation**: Fully typed with Python 3.12+ features, using union types and the walrus operator.
+
+## Architecture
+
+The system treats feature engineering and model selection as a unified Search Space, utilizing `hyperopt` or randomized search internally to discover the best sequence of transformations and estimator configurations. 
+
+This provides a true end-to-end framework where categorical casting, target encoding, data scaling, and model hyperparameters are optimized holistically.
+
+## Source
+
+Available on [GitHub](https://github.com/JordanRex/yaaml) and built to handle complex, messy real-world datasets in a transparent `sklearn` pipeline object.

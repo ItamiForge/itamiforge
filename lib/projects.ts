@@ -1,5 +1,5 @@
 export type ProjectStatus = "active" | "experimental" | "concept";
-export type ProjectCategory = "cli" | "desktop" | "shell" | "app" | "concept";
+export type ProjectCategory = "cli" | "desktop" | "shell" | "app" | "concept" | "library";
 
 export interface ProjectMeta {
   slug: string;
@@ -20,6 +20,23 @@ export interface ProjectMeta {
 }
 
 export const PROJECTS: ProjectMeta[] = [
+  {
+    slug: "yaaml",
+    title: "YAAML",
+    summary:
+      "Lightweight, zero-dependency AutoML package built entirely on scikit-learn for Python 3.12+.",
+    status: "experimental",
+    category: "library",
+    tags: ["python", "machine-learning", "automl", "scikit-learn"],
+    docsPath: "/docs/projects/yaaml",
+    sourcePath: "https://github.com/JordanRex/yaaml",
+    featured: true,
+    public: true,
+    links: {
+      github: "https://github.com/JordanRex/yaaml",
+      docs: "https://itamiforge.github.io/itamiforge/docs/projects/yaaml",
+    },
+  },
   {
     slug: "astro-sumi",
     title: "Astro Sumi",
