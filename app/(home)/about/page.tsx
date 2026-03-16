@@ -1,4 +1,4 @@
-import { Download, MoveRight } from "lucide-react";
+import { Download, MoveRight, Clock, MapPin, Mail, Phone, Code2 } from "lucide-react";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
@@ -9,9 +9,12 @@ export default function AboutPage() {
       company: "AbInBev",
       period: "03/2024 - 01/2025",
       location: "Bengaluru, KA",
-      description: [
-        "Led the effort to build in-house supply chain solution for end-to-end automated process control in breweries.",
-        "Core product collected data from brewery floor real time, made predictions from pre-built ML models, and controlled equipments to achieve various desired outputs throughout the brewery and packaging lines.",
+      projects: [
+        {
+          text: "Spearheaded the 'SODA AI' initiative—building an in-house Advanced Process Control (APC) framework for end-to-end automation in breweries. Designed the architecture to stream real-time data from edge devices on the brewery floor to the cloud, execute pre-built predictive ML models, and actuate physical equipment controls to optimize brewing and packaging output.",
+          duration: "10 months",
+          tech: ["FastAPI", "Azure", "Databricks / Unity Catalog", "Medallion Arch", "Linux / VMs", "Docker / Portainer", "CI/CD"],
+        },
       ],
     },
     {
@@ -19,19 +22,32 @@ export default function AboutPage() {
       company: "AbInBev",
       period: "05/2022 - 03/2024",
       location: "Bengaluru, KA",
-      description: [
-        "Lead data scientist for analytics projects undertaken globally in Supply.",
-        "Liaison between the 6 zones and the global function for projects around brewing quality and efficiency, AIML platform and analytical solution building; aggregate to the tune of 1M USD capex/opex with benefits around 2-3M USD.",
+      projects: [
+        {
+          text: "Spearheaded global analytics projects within the Supply function as the Lead Data Scientist.",
+          tech: ["Analytics Strategy"],
+        },
+        {
+          text: "Acted as the primary liaison between six global zones and the central function to drive initiatives around brewing quality, efficiency, AI/ML platform development, and analytical solutions.",
+          tech: ["AI/ML Platforms", "Stakeholder Management"],
+        },
+        {
+          text: "Managed a portfolio with approximately $1M USD in CAPEX/OPEX, delivering $2-3M USD in operational benefits.",
+          tech: ["Portfolio Management"],
+        },
       ],
     },
     {
       role: "Lead Data Scientist",
-      company: "Tesco Bengaluru",
+      company: "Tesco",
       period: "05/2020 - 05/2022",
       location: "Bengaluru, KA",
-      description: [
-        "Designed and built an in-house product for test-control experimentation and review, to test experiments ranging from Store layout changes to product core set launch/tweaks and digital platform A/B testing.",
-        "The tech stack was Hadoop Eco-system, dash web framework, deployment on the inhouse cloud platform with custom VMs and load balancer setup.",
+      projects: [
+        {
+          text: "Designed and engineered an end-to-end, in-house experimentation platform for measuring A/B tests and test-control initiatives—covering everything from physical store layout adjustments to digital product launches. Built the system entirely from the ground up using the Hadoop ecosystem and Dash web framework, orchestrating the deployment across custom VMs and load balancers on their internal cloud infrastructure.",
+          duration: "24 months",
+          tech: ["A/B Testing", "Experimentation", "Hadoop", "Dash", "Cloud Infrastructure"],
+        },
       ],
     },
     {
@@ -39,10 +55,17 @@ export default function AboutPage() {
       company: "Bain & Company",
       period: "06/2019 - 05/2020",
       location: "Bengaluru, KA",
-      description: [
-        "A varied experience working across business problems in the strategy consulting side, to creating products as part of the internal IP development.",
-        "Bain provided a generous platform that enabled me to find my strengths and interests, and the stint, albeit short, added significant maturity and understanding of fundamental problem solving.",
-        "Built a Supplier Negotiation Tool for the Retail practice with MetroChina being one of the customers.",
+      projects: [
+        {
+          text: "Collaborated across a variety of business challenges, bridging the gap between strategy consulting and internal IP product development.",
+          duration: "7 months",
+          tech: ["Strategy Consulting"],
+        },
+        {
+          text: "Developed a Supplier Negotiation Tool for the Retail practice, successfully servicing major clients including Metro China.",
+          duration: "4 months",
+          tech: ["Retail Analytics", "Tool Development"],
+        },
       ],
     },
     {
@@ -50,12 +73,26 @@ export default function AboutPage() {
       company: "TheMathCompany",
       period: "07/2018 - 06/2019",
       location: "Bengaluru, KA",
-      description: [
-        "Onsite consultant at one of the largest beverage companies in the world.",
-        "Global framework to identify and retain employees at risk of attrition (~6k employees worldwide).",
-        "Tool for quantifying yearly performance of employees.",
-        "Part of the core Hiring and Training people in Data Science.",
-        "Deployed solutions on Azure (Databricks, Datalakes, MySQL) with mostly frameworks.",
+      projects: [
+        {
+          text: "Acted as an onsite consultant at AB InBev, embedded directly within their People Analytics team to drive global HR transformation initiatives.",
+          duration: "11 months",
+          tech: ["Onsite Consulting", "People Analytics"],
+          subProjects: [
+            {
+              text: "Built a global framework to identify and retain employees at risk of attrition, processing data and generating insights for approximately 6,000 employees worldwide.",
+              tech: ["Predictive Modeling", "Azure", "Databricks"],
+            },
+            {
+              text: "Developed an analytical tool for accurately quantifying and assessing the functional yearly performance of employees.",
+              tech: ["Data Lakes", "MySQL"],
+            }
+          ]
+        },
+        {
+          text: "Played a core internal role at TheMathCompany, leading technical hiring panels and training new talent entering the Data Science practice.",
+          tech: ["Team Leadership", "Hiring & Training"],
+        },
       ],
     },
     {
@@ -63,67 +100,128 @@ export default function AboutPage() {
       company: "Mu Sigma",
       period: "05/2015 - 07/2018",
       location: "Bengaluru, KA",
-      description: [
-        "Part of a customer churn/retention problem, creating a prediction model for a major insurance client to help make low level decisions easier, and scaled for their entire Asia - Pacific region (4 months).",
-        "Created the foundation for enabling machine learning based decision making for their global analytics department (platform - R).",
-        "Created Excel VBA automation tools, Qlikview decision boards for one of the biggest life insurance companies as part of a process of optimising their business. Prototype towards creating value for their Russian entity (10 months).",
-        "Presales experience in both pitching and handling discovery phase of projects across insurance, retail and government transportation domains. One specific one being for a US state department of transportation, in partnership with a leading design consultancy firm (3 months).",
-        "Forecasting project for a food services company to improve logistics efforts with more accurate sales predictions (4 months).",
-        "Retail project doing batch forecasting of new products and their cannibalisation of existing products. Part of the process involved in deploying them into the digital platform back-end (7 months).",
-        "Primary contributor in a novel project for a huge Swiss bank, involving generating synthetic test data for offshore app-development, with minimal touch points with production (4 months).",
-        "Consolidation project for a major footwear company to integrate their manufacturing supply/demand dashboards/workflows (4 months).",
+      projects: [
+        {
+          text: "Created a predictive churn and retention model for a major insurance client, scaling the solution across the Asia-Pacific region.",
+          duration: "4 months",
+          tech: ["Predictive Modeling", "Insurance"],
+        },
+        {
+          text: "Built the foundational R-based platform to enable machine learning-driven decision-making within a global analytics department.",
+          duration: "4 months",
+          tech: ["R", "Platform Engineering"],
+        },
+        {
+          text: "Developed Excel VBA automation tools and QlikView decision boards to optimize business processes for a leading life insurance company, including prototyping tools for their Russian entity.",
+          duration: "10 months",
+          tech: ["Excel VBA", "QlikView", "Business Optimization"],
+        },
+        {
+          text: "Participated in presales execution, pitching and handling the discovery phase of projects across the insurance, retail, and government transportation domains.",
+          duration: "3 months",
+          tech: ["Presales", "Discovery"],
+        },
+        {
+          text: "Executed a forecasting project for a food services company, improving logistics efficiency through highly accurate sales predictions.",
+          duration: "4 months",
+          tech: ["Forecasting", "Logistics"],
+        },
+        {
+          text: "Delivered a batch forecasting solution for retail products, analyzing the cannibalization of existing products and deploying the model to a digital back-end platform.",
+          duration: "7 months",
+          tech: ["Batch Forecasting", "Retail"],
+        },
+        {
+          text: "Contributed to a novel project for a major Swiss bank that involved generating synthetic test data for offshore app development.",
+          duration: "4 months",
+          tech: ["Synthetic Data Generation"],
+        },
       ],
     },
   ];
 
-  const skills = [
-    "HTML & CSS",
-    "Docker/CICD",
-    "SQL",
-    "Git",
-    "Machine Learning",
-    "Python",
-    "Dash/Flask",
-    "R",
-    "Azure Eco-System",
-    "GenAI",
+  const skillCategories = [
+    {
+      name: "Languages",
+      skills: ["Python", "R", "SQL", "TypeScript / JS", "Bash / Shell", "HTML & CSS"],
+    },
+    {
+      name: "Data Science & AI",
+      skills: ["XGBoost", "Machine Learning", "Generative AI", "Predictive Modeling", "Forecasting", "A/B Testing"],
+    },
+    {
+      name: "Databases & Big Data",
+      skills: ["PostgreSQL", "SQLite", "Snowflake", "Redis", "Neo4j", "Hadoop / Hive", "MySQL"],
+    },
+    {
+      name: "Cloud & Infrastructure",
+      skills: ["Azure (Primary)", "AWS", "GCP", "On-Premises Systems"],
+    },
+    {
+      name: "Web Frameworks",
+      skills: ["React / Next.js", "Astro", "Dash / Flask"],
+    },
+    {
+      name: "DevOps & Utilities",
+      skills: ["Docker", "CI/CD", "Git", "Automation", "Linux / VMs"],
+    },
+    {
+      name: "Games & Apps",
+      skills: ["Bevy", "Ebitengine", "Pygame", "Expo", "Ignite Boilerplate"],
+    },
   ];
 
   return (
-    <div className="container mx-auto max-w-5xl py-12 space-y-16 px-6 md:px-0">
+    <div className="container mx-auto max-w-6xl py-12 space-y-16 px-6 md:px-0">
       {/* Header Section */}
-      <section className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-border pb-8">
-          <div className="space-y-4">
+      <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 border-b border-border pb-10">
+        <div className="space-y-8">
+          
+          {/* Title & Bio */}
+          <div className="space-y-6 max-w-3xl">
             <h1 className="font-display text-7xl md:text-8xl font-medium tracking-tight text-primary">
               Varun V
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground font-light max-w-2xl leading-relaxed">
-              Engineer and Consultant with a decade of experience in Data,
-              Analytics, and Software.
-            </p>
           </div>
-          <div className="flex flex-col items-start md:items-end gap-2 text-sm font-mono text-muted-foreground uppercase tracking-wider">
+          
+          {/* Minimal Details Row */}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2 text-sm font-mono tracking-wider text-muted-foreground/80">
+            
+            {/* Location */}
+            <div className="flex items-center gap-2.5">
+              <MapPin className="w-4 h-4 text-foreground/50" />
+              <span className="uppercase text-foreground/80 font-medium">Bengaluru, India</span>
+            </div>
+            
+            {/* Email */}
+            <Link
+              href="mailto:varunrajan@protonmail.com"
+              className="flex items-center gap-2.5 hover:text-foreground transition-colors group"
+            >
+              <Mail className="w-4 h-4 text-foreground/50 group-hover:text-foreground transition-colors" />
+              <span className="uppercase text-foreground/80 font-medium group-hover:text-foreground transition-colors">varunrajan@protonmail.com</span>
+            </Link>
+
+            {/* Phone */}
+            <div className="flex items-center gap-2.5">
+              <Phone className="w-4 h-4 text-foreground/50" />
+              <span className="font-medium text-foreground/80">+91 9916014327</span>
+            </div>
+
+            {/* Resume Download */}
             <a
               href="/resume.txt"
               download
-              className="group flex items-center gap-2 px-4 py-2 border border-border rounded-full hover:bg-secondary hover:text-secondary-foreground transition-all duration-300 mb-2"
+              className="flex items-center gap-2.5 group cursor-pointer"
             >
-              <Download className="w-4 h-4" />
-              <span>Download Resume</span>
+              <Download className="w-4 h-4 text-foreground/50 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" />
+              <span className="font-medium uppercase bg-clip-text group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-orange-600 group-hover:via-amber-600 group-hover:to-emerald-600 dark:group-hover:from-orange-400 dark:group-hover:via-amber-400 dark:group-hover:to-emerald-400 transition-all duration-300">
+                Download Resume
+              </span>
             </a>
-            <div className="flex gap-4">
-              <p>Bengaluru, India</p>
-              <span>/</span>
-              <Link
-                href="mailto:varunrajan@protonmail.com"
-                className="hover:text-foreground transition-colors border-b border-transparent hover:border-foreground"
-              >
-                varunrajan@protonmail.com
-              </Link>
-            </div>
-            <p>+91 9916014327</p>
+            
           </div>
+
         </div>
       </section>
 
@@ -136,28 +234,36 @@ export default function AboutPage() {
           <p className="eyebrow text-muted-foreground">Professional Summary</p>
           <div className="space-y-4 text-lg md:text-xl font-display text-foreground/90 leading-relaxed max-w-3xl">
             <p>
-              Worked in Retail, Banking, Insurance, FMCG, and Manufacturing
-              industries. Expertise lies in building analytics strategy, product
-              development, and AIML solutioning.
+              I am an engineer and consultant with a decade of rich experience in Data,
+              Analytics, and Software. I've delivered solutions across Retail, Banking, Insurance, FMCG, and Manufacturing
+              industries, with deep expertise in building analytics strategy, product
+              development, and scalable AI/ML solutions.
             </p>
             <p>
-              Recent experience has been in game dev and mobile apps, working as
-              an indie solo developer.
+              Recently, I've pivoted my creative focus towards game development and mobile apps, operating as
+              an independent solo developer building immersive interactive experiences.
             </p>
           </div>
         </div>
 
         {/* Skills Card */}
-        <div className="bento-card-wide card p-8 space-y-6">
+        <div className="bento-card-wide card p-8 space-y-8 relative overflow-hidden">
           <p className="eyebrow text-muted-foreground">Technical Arsenal</p>
-          <div className="flex flex-wrap gap-3">
-            {skills.map((skill) => (
-              <span
-                key={skill}
-                className="tag-pill bg-secondary/50 text-secondary-foreground hover:bg-muted hover:text-foreground transition-all duration-200 font-medium px-3 py-1 text-sm border-transparent hover:border-border"
-              >
-                {skill}
-              </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+            {skillCategories.map((category) => (
+              <div key={category.name} className="space-y-4">
+                <h4 className="text-sm font-semibold text-foreground/80 font-mono uppercase tracking-wider">{category.name}</h4>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="tag-pill bg-secondary/50 text-secondary-foreground hover:bg-muted hover:text-foreground transition-all duration-200 font-medium px-3 py-1.5 text-xs md:text-sm border-transparent hover:border-border"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -244,14 +350,85 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <ul className="list-none space-y-3 text-muted-foreground/90 font-light leading-relaxed">
-                {exp.description.map((item) => (
-                  <li key={item} className="flex gap-3 items-start">
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0 group-hover:bg-primary transition-colors duration-300" />
-                    <span>{item}</span>
-                  </li>
+              <div className="flex flex-col mt-6">
+                {exp.projects.map((project, pIdx) => (
+                  <div key={pIdx} className="group/project">
+                    {pIdx !== 0 && (
+                      <hr className="w-full border-t border-border/50 my-6" />
+                    )}
+                    
+                    <div className="space-y-4">
+                      <p className="text-foreground/80 font-normal leading-relaxed text-sm md:text-base">
+                        {project.text}
+                      </p>
+
+                      {/* Sub-projects list if any exist */}
+                      {project.subProjects && project.subProjects.length > 0 && (
+                        <div className="pl-5 space-y-4 border-l border-border/50 ml-2 mt-4 pt-1 pb-1">
+                          {project.subProjects.map((sub, sIdx) => (
+                            <div key={sIdx} className="space-y-2 relative">
+                              <span className="absolute -left-[25px] top-2 w-1.5 h-1.5 rounded-full bg-border" />
+                              <p className="text-muted-foreground/90 text-sm leading-relaxed">
+                                {sub.text}
+                              </p>
+                              {sub.tech && sub.tech.length > 0 && (
+                                <div className="flex flex-wrap items-center gap-2 pt-1">
+                                  {sub.tech.map((t) => (
+                                    <span
+                                      key={t}
+                                      className="text-[10px] text-muted-foreground font-medium px-2 py-0.5 rounded border border-border/30 bg-secondary/10 uppercase tracking-wider"
+                                    >
+                                      {t}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Project Metadata (Duration & Tech Stack) */}
+                      {(project.client || project.duration || (project.tech && project.tech.length > 0)) && (
+                        <div className="flex flex-wrap items-center gap-4 mt-2">
+                          
+                          {/* Client specific badge */}
+                          {project.client && (
+                             <div className="flex items-center gap-1.5 text-[11px] font-mono font-semibold text-secondary-foreground uppercase bg-secondary/50 px-2 py-1 rounded-sm tracking-wider">
+                               {project.client}
+                             </div>
+                          )}
+
+                          {project.duration && (
+                            <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground/80 lowercase bg-secondary/20 px-2 py-1 rounded-md border border-border/30">
+                              <Clock className="w-3.5 h-3.5 opacity-70" />
+                              <span>{project.duration}</span>
+                            </div>
+                          )}
+                          
+                          {/* Vertical Separator */}
+                          {(project.duration || project.client) && project.tech && project.tech.length > 0 && (
+                            <div className="w-px h-4 bg-border/40 hidden sm:block"></div>
+                          )}
+
+                          {project.tech && project.tech.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-2">
+                              {project.tech.map((t) => (
+                                <span
+                                  key={t}
+                                  className="text-[11px] text-muted-foreground/90 font-medium px-2.5 py-1 rounded-full border border-border/40 bg-background shadow-sm tracking-wide"
+                                >
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>

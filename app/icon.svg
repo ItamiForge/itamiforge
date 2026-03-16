@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    .stroke { fill: none; stroke: #111; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+    .fill { fill: #111; }
+    @media (prefers-color-scheme: dark) {
+      .stroke { stroke: #eee; }
+      .fill { fill: #eee; }
+    }
+  </style>
+  <path class="stroke" d="M50 15 C20 45 25 75 50 85 C75 75 80 45 50 15 Z" />
+  <path class="fill" d="M50 40 C40 55 42 70 50 72 C58 70 60 55 50 40 Z" />
+  <circle class="fill" cx="75" cy="30" r="3.5" />
+  <circle class="fill" cx="28" cy="25" r="2" />
+</svg>
