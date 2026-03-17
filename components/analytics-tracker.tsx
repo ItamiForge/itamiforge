@@ -4,7 +4,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const ANALYTICS_SITE_ID = "itamiforge";
-const ANALYTICS_ENDPOINT = "https://sitestats.varunrajan.workers.dev/collect";
+const ANALYTICS_ENDPOINT =
+  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT ??
+  "https://sitestats.varunrajan.workers.dev/collect";
 const COLLECT_KEY = process.env.NEXT_PUBLIC_SITESTATS_KEY ?? "";
 
 // ── Visitor name wordlist (adjective + noun, deterministic for the session) ──
