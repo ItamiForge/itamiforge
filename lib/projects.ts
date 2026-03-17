@@ -1,5 +1,11 @@
 export type ProjectStatus = "active" | "experimental" | "concept";
-export type ProjectCategory = "cli" | "desktop" | "shell" | "app" | "concept" | "library";
+export type ProjectCategory =
+  | "cli"
+  | "desktop"
+  | "shell"
+  | "app"
+  | "concept"
+  | "library";
 
 export interface ProjectMeta {
   slug: string;

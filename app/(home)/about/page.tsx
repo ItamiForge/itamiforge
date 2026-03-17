@@ -1,4 +1,4 @@
-import { Download, MoveRight, Clock, MapPin, Mail, Phone, Code2 } from "lucide-react";
+import { Clock, Download, Mail, MapPin, MoveRight, Phone } from "lucide-react";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
@@ -32,7 +32,15 @@ export default function AboutPage() {
         {
           text: "Spearheaded the 'SODA AI' initiative—building an in-house Advanced Process Control (APC) framework for end-to-end automation in breweries. Designed the architecture to stream real-time data from edge devices on the brewery floor to the cloud, execute pre-built predictive ML models, and actuate physical equipment controls to optimize brewing and packaging output.",
           duration: "10 months",
-          tech: ["FastAPI", "Azure", "Databricks / Unity Catalog", "Medallion Arch", "Linux / VMs", "Docker / Portainer", "CI/CD"],
+          tech: [
+            "FastAPI",
+            "Azure",
+            "Databricks / Unity Catalog",
+            "Medallion Arch",
+            "Linux / VMs",
+            "Docker / Portainer",
+            "CI/CD",
+          ],
         },
       ],
     },
@@ -65,7 +73,13 @@ export default function AboutPage() {
         {
           text: "Designed and engineered an end-to-end, in-house experimentation platform for measuring A/B tests and test-control initiatives—covering everything from physical store layout adjustments to digital product launches. Built the system entirely from the ground up using the Hadoop ecosystem and Dash web framework, orchestrating the deployment across custom VMs and load balancers on their internal cloud infrastructure.",
           duration: "24 months",
-          tech: ["A/B Testing", "Experimentation", "Hadoop", "Dash", "Cloud Infrastructure"],
+          tech: [
+            "A/B Testing",
+            "Experimentation",
+            "Hadoop",
+            "Dash",
+            "Cloud Infrastructure",
+          ],
         },
       ],
     },
@@ -105,8 +119,8 @@ export default function AboutPage() {
             {
               text: "Developed an analytical tool for accurately quantifying and assessing the functional yearly performance of employees.",
               tech: ["Data Lakes", "MySQL"],
-            }
-          ]
+            },
+          ],
         },
         {
           text: "Played a core internal role at TheMathCompany, leading technical hiring panels and training new talent entering the Data Science practice.",
@@ -162,15 +176,37 @@ export default function AboutPage() {
   const skillCategories = [
     {
       name: "Languages",
-      skills: ["Python", "R", "SQL", "TypeScript / JS", "Bash / Shell", "HTML & CSS"],
+      skills: [
+        "Python",
+        "R",
+        "SQL",
+        "TypeScript / JS",
+        "Bash / Shell",
+        "HTML & CSS",
+      ],
     },
     {
       name: "Data Science & AI",
-      skills: ["XGBoost", "Machine Learning", "Generative AI", "Predictive Modeling", "Forecasting", "A/B Testing"],
+      skills: [
+        "XGBoost",
+        "Machine Learning",
+        "Generative AI",
+        "Predictive Modeling",
+        "Forecasting",
+        "A/B Testing",
+      ],
     },
     {
       name: "Databases & Big Data",
-      skills: ["PostgreSQL", "SQLite", "Snowflake", "Redis", "Neo4j", "Hadoop / Hive", "MySQL"],
+      skills: [
+        "PostgreSQL",
+        "SQLite",
+        "Snowflake",
+        "Redis",
+        "Neo4j",
+        "Hadoop / Hive",
+        "MySQL",
+      ],
     },
     {
       name: "Cloud & Infrastructure",
@@ -195,36 +231,40 @@ export default function AboutPage() {
       {/* Header Section */}
       <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 border-b border-border pb-10">
         <div className="space-y-8">
-          
           {/* Title & Bio */}
           <div className="space-y-6 max-w-3xl">
             <h1 className="font-display text-7xl md:text-8xl font-medium tracking-tight text-primary">
               Varun V
             </h1>
           </div>
-          
+
           {/* Minimal Details Row */}
           <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pt-2 text-sm font-mono tracking-wider text-muted-foreground/80">
-            
             {/* Location */}
             <div className="flex items-center gap-2.5">
               <MapPin className="w-4 h-4 text-foreground/50" />
-              <span className="uppercase text-foreground/80 font-medium">Bengaluru, India</span>
+              <span className="uppercase text-foreground/80 font-medium">
+                Bengaluru, India
+              </span>
             </div>
-            
+
             {/* Email */}
             <Link
               href="mailto:varunrajan@protonmail.com"
               className="flex items-center gap-2.5 hover:text-foreground transition-colors group"
             >
               <Mail className="w-4 h-4 text-foreground/50 group-hover:text-foreground transition-colors" />
-              <span className="uppercase text-foreground/80 font-medium group-hover:text-foreground transition-colors">varunrajan@protonmail.com</span>
+              <span className="uppercase text-foreground/80 font-medium group-hover:text-foreground transition-colors">
+                varunrajan@protonmail.com
+              </span>
             </Link>
 
             {/* Phone */}
             <div className="flex items-center gap-2.5">
               <Phone className="w-4 h-4 text-foreground/50" />
-              <span className="font-medium text-foreground/80">+91 9916014327</span>
+              <span className="font-medium text-foreground/80">
+                +91 9916014327
+              </span>
             </div>
 
             {/* Resume Download */}
@@ -238,9 +278,7 @@ export default function AboutPage() {
                 Download Resume
               </span>
             </a>
-            
           </div>
-
         </div>
       </section>
 
@@ -253,14 +291,16 @@ export default function AboutPage() {
           <p className="eyebrow text-muted-foreground">Professional Summary</p>
           <div className="space-y-4 text-lg md:text-xl font-display text-foreground/90 leading-relaxed max-w-3xl">
             <p>
-              I am an engineer and consultant with a decade of rich experience in Data,
-              Analytics, and Software. I've delivered solutions across Retail, Banking, Insurance, FMCG, and Manufacturing
-              industries, with deep expertise in building analytics strategy, product
+              I am an engineer and consultant with a decade of rich experience
+              in Data, Analytics, and Software. I've delivered solutions across
+              Retail, Banking, Insurance, FMCG, and Manufacturing industries,
+              with deep expertise in building analytics strategy, product
               development, and scalable AI/ML solutions.
             </p>
             <p>
-              Recently, I've pivoted my creative focus towards game development and mobile apps, operating as
-              an independent solo developer building immersive interactive experiences.
+              Recently, I've pivoted my creative focus towards game development
+              and mobile apps, operating as an independent solo developer
+              building immersive interactive experiences.
             </p>
           </div>
         </div>
@@ -271,7 +311,9 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
             {skillCategories.map((category) => (
               <div key={category.name} className="space-y-4">
-                <h4 className="text-sm font-semibold text-foreground/80 font-mono uppercase tracking-wider">{category.name}</h4>
+                <h4 className="text-sm font-semibold text-foreground/80 font-mono uppercase tracking-wider">
+                  {category.name}
+                </h4>
                 <div className="flex flex-wrap gap-2">
                   {category.skills.map((skill) => (
                     <span
@@ -371,51 +413,59 @@ export default function AboutPage() {
 
               <div className="flex flex-col mt-6">
                 {exp.projects.map((project, pIdx) => (
-                  <div key={pIdx} className="group/project">
+                  <div
+                    key={`${exp.company}-${exp.role}-${project.text}`}
+                    className="group/project"
+                  >
                     {pIdx !== 0 && (
                       <hr className="w-full border-t border-border/50 my-6" />
                     )}
-                    
+
                     <div className="space-y-4">
                       <p className="text-foreground/80 font-normal leading-relaxed text-sm md:text-base">
                         {project.text}
                       </p>
 
                       {/* Sub-projects list if any exist */}
-                      {project.subProjects && project.subProjects.length > 0 && (
-                        <div className="pl-5 space-y-4 border-l border-border/50 ml-2 mt-4 pt-1 pb-1">
-                          {project.subProjects.map((sub, sIdx) => (
-                            <div key={sIdx} className="space-y-2 relative">
-                              <span className="absolute -left-[25px] top-2 w-1.5 h-1.5 rounded-full bg-border" />
-                              <p className="text-muted-foreground/90 text-sm leading-relaxed">
-                                {sub.text}
-                              </p>
-                              {sub.tech && sub.tech.length > 0 && (
-                                <div className="flex flex-wrap items-center gap-2 pt-1">
-                                  {sub.tech.map((t) => (
-                                    <span
-                                      key={t}
-                                      className="text-[10px] text-muted-foreground font-medium px-2 py-0.5 rounded border border-border/30 bg-secondary/10 uppercase tracking-wider"
-                                    >
-                                      {t}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      
+                      {project.subProjects &&
+                        project.subProjects.length > 0 && (
+                          <div className="pl-5 space-y-4 border-l border-border/50 ml-2 mt-4 pt-1 pb-1">
+                            {project.subProjects.map((sub) => (
+                              <div
+                                key={sub.text}
+                                className="space-y-2 relative"
+                              >
+                                <span className="absolute -left-[25px] top-2 w-1.5 h-1.5 rounded-full bg-border" />
+                                <p className="text-muted-foreground/90 text-sm leading-relaxed">
+                                  {sub.text}
+                                </p>
+                                {sub.tech && sub.tech.length > 0 && (
+                                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                                    {sub.tech.map((t) => (
+                                      <span
+                                        key={t}
+                                        className="text-[10px] text-muted-foreground font-medium px-2 py-0.5 rounded border border-border/30 bg-secondary/10 uppercase tracking-wider"
+                                      >
+                                        {t}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
                       {/* Project Metadata (Duration & Tech Stack) */}
-                      {(project.client || project.duration || (project.tech && project.tech.length > 0)) && (
+                      {(project.client ||
+                        project.duration ||
+                        (project.tech && project.tech.length > 0)) && (
                         <div className="flex flex-wrap items-center gap-4 mt-2">
-                          
                           {/* Client specific badge */}
                           {project.client && (
-                             <div className="flex items-center gap-1.5 text-[11px] font-mono font-semibold text-secondary-foreground uppercase bg-secondary/50 px-2 py-1 rounded-sm tracking-wider">
-                               {project.client}
-                             </div>
+                            <div className="flex items-center gap-1.5 text-[11px] font-mono font-semibold text-secondary-foreground uppercase bg-secondary/50 px-2 py-1 rounded-sm tracking-wider">
+                              {project.client}
+                            </div>
                           )}
 
                           {project.duration && (
@@ -424,11 +474,13 @@ export default function AboutPage() {
                               <span>{project.duration}</span>
                             </div>
                           )}
-                          
+
                           {/* Vertical Separator */}
-                          {(project.duration || project.client) && project.tech && project.tech.length > 0 && (
-                            <div className="w-px h-4 bg-border/40 hidden sm:block"></div>
-                          )}
+                          {(project.duration || project.client) &&
+                            project.tech &&
+                            project.tech.length > 0 && (
+                              <div className="w-px h-4 bg-border/40 hidden sm:block"></div>
+                            )}
 
                           {project.tech && project.tech.length > 0 && (
                             <div className="flex flex-wrap items-center gap-2">
