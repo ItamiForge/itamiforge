@@ -23,6 +23,11 @@ export function baseOptions(): BaseLayoutProps {
         url: "/blog",
       },
       {
+        text: "Learn",
+        url: "/learn",
+        active: "nested-url",
+      },
+      {
         text: "AI ERP",
         url: "/ai-erp",
       },
