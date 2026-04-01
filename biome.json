@@ -16,7 +16,8 @@
       "!build",
       "!out",
       "!.source",
-      "!content/learn/**/*.html"
+      "!content/learn/**/*.html",
+      "!components/kibo-ui"
     ]
   },
   "formatter": {

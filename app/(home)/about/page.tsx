@@ -1,6 +1,65 @@
 import { Clock, Download, Mail, MapPin, MoveRight, Phone } from "lucide-react";
 import Link from "next/link";
+import { GitHubActivity } from "@/components/github-activity";
+import {
+  buildYearlyMonthlyData,
+  fetchAllContributions,
+  fetchAllUserRepos,
+  fetchOrgRepos,
+  padCurrentYearToDecember,
+  splitByYear,
+} from "@/lib/github";
 import { SITE } from "@/lib/site";
+
+const EXCLUDED_REPOS = new Set(["itamiforge.github.io", "jordanrex.github.io"]);
+
+async function fetchGitHubData() {
+  const token = process.env.GH_PAT;
+
+  const [contribData, userRepoStats, orgRepos] = await Promise.all([
+    fetchAllContributions("JordanRex"),
+    fetchAllUserRepos(token),
+    fetchOrgRepos("ItamiForge", token),
+  ]);
+
+  // Merge all repos, de-dupe by full_name, exclude profile/site repos
+  const seenFullNames = new Set<string>();
+  const allRepos = [...userRepoStats.repos, ...orgRepos].filter((r) => {
+    if (EXCLUDED_REPOS.has(r.name.toLowerCase())) return false;
+    if (seenFullNames.has(r.full_name)) return false;
+    seenFullNames.add(r.full_name);
+    return true;
+  });
+
+  // Sort by updated_at (matches GitHub UI "updated" time — covers pushes, issues, PRs, etc.)
+  const recentRepos = allRepos
+    .filter((r) => !r.private)
+    .sort(
+      (a, b) =>
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+    )
+    .slice(0, 6);
+
+  const contributionsByYear = padCurrentYearToDecember(
+    splitByYear(contribData.contributions),
+  );
+  const yearlyMonthlyData = buildYearlyMonthlyData(
+    contribData.contributions,
+    contribData.total,
+    contribData.years,
+  );
+
+  return {
+    years: contribData.years,
+    yearTotals: contribData.total,
+    contributionsByYear,
+    yearlyMonthlyData,
+    publicCount: userRepoStats.publicCount,
+    privateCount: userRepoStats.privateCount,
+    languageMap: userRepoStats.languageMap,
+    recentRepos,
+  };
+}
 
 type Project = {
   text: string;
@@ -21,7 +80,17 @@ type Experience = {
   projects: Project[];
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const {
+    years,
+    yearTotals,
+    contributionsByYear,
+    yearlyMonthlyData,
+    publicCount,
+    privateCount,
+    languageMap,
+    recentRepos,
+  } = await fetchGitHubData();
   const experiences: Experience[] = [
     {
       role: "Senior Manager",
@@ -504,6 +573,31 @@ export default function AboutPage() {
           ))}
         </div>
       </div>
+
+      {/* GitHub Activity Section */}
+      {years.length > 0 && (
+        <div className="space-y-6 pt-4">
+          <div className="flex items-center gap-4">
+            <h2 className="font-display text-4xl font-medium tracking-tight text-primary">
+              Contributions
+            </h2>
+            <div className="h-px bg-border flex-1 opacity-50" />
+          </div>
+
+          <div className="card p-6 md:p-8 overflow-hidden">
+            <GitHubActivity
+              years={years}
+              yearTotals={yearTotals}
+              contributionsByYear={contributionsByYear}
+              yearlyMonthlyData={yearlyMonthlyData}
+              publicCount={publicCount}
+              privateCount={privateCount}
+              languageMap={languageMap}
+              recentRepos={recentRepos}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

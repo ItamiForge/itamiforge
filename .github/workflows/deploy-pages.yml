@@ -37,6 +37,7 @@ jobs:
         env:
           NEXT_PUBLIC_SITESTATS_URL: ${{ vars.NEXT_PUBLIC_SITESTATS_URL }}
           NEXT_PUBLIC_SITESTATS_KEY: ${{ secrets.NEXT_PUBLIC_SITESTATS_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           echo "::group::Next.js Build"
           bun run build:pages

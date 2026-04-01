@@ -17,10 +17,13 @@
     "check:fix": "biome check --write --unsafe && bun run build"
   },
   "dependencies": {
+    "@nivo/core": "^0.99.0",
+    "@nivo/line": "^0.99.0",
     "@orama/orama": "^3.1.18",
     "animate-ui": "^0.0.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.34.0",
     "fumadocs-core": "16.6.1",
     "fumadocs-mdx": "14.2.7",
