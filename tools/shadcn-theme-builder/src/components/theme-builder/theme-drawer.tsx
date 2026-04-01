@@ -1,30 +1,20 @@
 "use client";
 
 import {
-  Check,
   Moon,
   PanelRightClose,
-  PanelRightOpen,
   Settings2,
   Sun,
 } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { useTheme } from "@/lib/theme/ThemeContext";
+import { useTheme } from "@/lib/theme/theme-context";
 import { cn } from "@/lib/utils";
-import { ColorPicker } from "./ColorPicker";
-import { ExportCode } from "./ExportCode";
-import { FontSelector } from "./FontSelector";
-import { RadiusSelector } from "./RadiusSelector";
+import { ColorPicker } from "./color-picker";
+import { ExportCode } from "./export-code";
+import { FontSelector } from "./font-selector";
+import { RadiusSelector } from "./radius-selector";
 
 interface ThemeDrawerProps {
   isOpen: boolean;

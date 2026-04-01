@@ -13,7 +13,7 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
   const MDX = page.data.body;
 
   return (
-    <article className="mx-auto max-w-3xl py-10">
+    <article className="main-page-content mx-auto max-w-3xl pb-10">
       <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
         {page.data.date.toLocaleDateString("en-US", {
           year: "numeric",

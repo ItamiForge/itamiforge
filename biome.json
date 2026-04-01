@@ -15,7 +15,8 @@
       "!dist",
       "!build",
       "!out",
-      "!.source"
+      "!.source",
+      "!content/learn/**/*.html"
     ]
   },
   "formatter": {

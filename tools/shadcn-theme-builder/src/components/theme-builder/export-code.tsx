@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useTheme } from "@/lib/theme/ThemeContext";
+import { useTheme } from "@/lib/theme/theme-context";
 
 export function ExportCode() {
   const { colors, radius } = useTheme();

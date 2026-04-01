@@ -7,7 +7,7 @@ import {
   useTransform,
 } from "motion/react";
 import { type ReactNode, useCallback, useRef, useState } from "react";
-import "./GradientText.css";
+import "./gradient-text.css";
 
 interface GradientTextProps {
   children: ReactNode;

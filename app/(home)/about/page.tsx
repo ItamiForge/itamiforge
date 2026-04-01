@@ -227,7 +227,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="container mx-auto max-w-6xl py-12 space-y-16 px-6 md:px-0">
+    <div className="main-page-content container mx-auto max-w-6xl pb-12 space-y-16 px-6 md:px-0">
       {/* Header Section */}
       <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 border-b border-border pb-10">
         <div className="space-y-8">

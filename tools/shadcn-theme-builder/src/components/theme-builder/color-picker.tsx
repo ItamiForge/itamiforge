@@ -15,7 +15,7 @@ export function ColorPicker({ label, color, onChange }: ColorPickerProps) {
   let hex = "#000000";
   try {
     hex = hslToHex(color);
-  } catch (e) {
+  } catch {
     console.error("Invalid color:", color);
   }
 
@@ -25,7 +25,7 @@ export function ColorPicker({ label, color, onChange }: ColorPickerProps) {
     if (/^#[0-9A-F]{3}$/i.test(newHex) || /^#[0-9A-F]{6}$/i.test(newHex)) {
       try {
         onChange(hexToHsl(newHex));
-      } catch (e) {
+      } catch {
         // Ignore invalid hsl conversion
       }
     }

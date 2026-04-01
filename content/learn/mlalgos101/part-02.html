@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Algorithms 101 — Part 2: Advanced ML & Time Series</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0f14;--bg2:#13161d;--bg3:#1a1e28;--bg4:#222736;
+  --border:#2a2f3e;--border2:#353c52;
+  --text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6480;
+  --accent:#5b8dee;--accent2:#3a6bd4;
+  --green:#4ade80;--green-bg:#0f2518;
+  --amber:#fbbf24;--amber-bg:#201a08;
+  --red:#f87171;--red-bg:#200f0f;
+  --purple:#a78bfa;--purple-bg:#16102a;
+  --teal:#2dd4bf;--teal-bg:#0a1e1c;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --serif:'IBM Plex Serif',serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:15px;line-height:1.7}
+
+/* SIDEBAR */
+#sidebar{width:260px;min-width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow-y:auto}
+#sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+#sidebar-header .badge{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+#sidebar-header h1{font-size:18px;font-weight:600;color:var(--text);line-height:1.3}
+#sidebar-header p{font-size:12px;color:var(--text3);margin-top:4px}
+.module-group{padding:8px 0}
+.module-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:8px 20px 4px}
+.chapter-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 20px;background:none;border:none;cursor:pointer;text-align:left;color:var(--text2);font-family:var(--sans);font-size:13px;line-height:1.4;transition:all .15s}
+.chapter-btn:hover{background:var(--bg3);color:var(--text)}
+.chapter-btn.active{background:var(--bg4);color:var(--accent);border-left:2px solid var(--accent)}
+.chapter-btn .num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:22px}
+.chapter-btn.active .num{color:var(--accent)}
+.progress-bar{height:2px;background:var(--border);position:relative}
+.progress-fill{height:2px;background:var(--accent);transition:width .3s}
+
+/* MAIN */
+#main{flex:1;overflow-y:auto;height:100vh}
+.chapter{display:none;padding:48px 56px;max-width:820px}
+.chapter.active{display:block}
+
+/* CHAPTER HEADER */
+.ch-eyebrow{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ch-title{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:8px}
+.ch-subtitle{font-size:16px;color:var(--text2);font-weight:300;margin-bottom:36px;font-family:var(--serif);font-style:italic}
+.ch-divider{height:1px;background:var(--border);margin:32px 0}
+
+/* CONTENT BLOCKS */
+h2{font-size:18px;font-weight:600;margin:32px 0 12px;color:var(--text)}
+h3{font-size:15px;font-weight:500;margin:24px 0 8px;color:var(--text2);font-family:var(--mono);letter-spacing:.03em}
+p{color:var(--text2);margin-bottom:14px;line-height:1.75}
+p strong{color:var(--text);font-weight:500}
+
+/* CALLOUT BOXES */
+.box{border-radius:8px;padding:16px 20px;margin:20px 0}
+.box-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.box ul,.box ol{padding-left:20px;color:inherit}
+.box li{margin-bottom:6px;font-size:14px;line-height:1.6}
+
+.concept{background:var(--purple-bg);border:1px solid #2e2050;color:#c4b5fd}
+.concept .box-title{color:var(--purple)}
+.math{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.math .box-title{color:var(--accent)}
+.impl{background:var(--green-bg);border:1px solid #1a3d2a;color:#86efac}
+.impl .box-title{color:var(--green)}
+.gotcha{background:var(--amber-bg);border:1px solid #3a2d10;color:#fde68a}
+.gotcha .box-title{color:var(--amber)}
+.danger{background:var(--red-bg);border:1px solid #3a1515;color:#fca5a5}
+.danger .box-title{color:var(--red)}
+.teal{background:var(--teal-bg);border:1px solid #0f2e2c;color:#5eead4}
+.teal .box-title{color:var(--teal)}
+
+/* EQUATION */
+.eq{font-family:var(--mono);font-size:14px;background:var(--bg3);border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--text);overflow-x:auto}
+.eq .comment{color:var(--text3);font-size:12px}
+
+/* INLINE CODE */
+code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--teal);border:1px solid var(--border)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+th{text-align:left;padding:10px 14px;background:var(--bg3);color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-bottom:1px solid var(--border2)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td strong{color:var(--text)}
+
+/* NAV ARROWS */
+.ch-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:24px;border-top:1px solid var(--border)}
+.nav-btn{background:var(--bg3);border:1px solid var(--border2);padding:10px 18px;border-radius:6px;cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--text2);transition:all .15s}
+.nav-btn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.nav-btn.primary{background:var(--accent2);border-color:var(--accent);color:#fff}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.ch-counter{font-family:var(--mono);font-size:12px;color:var(--text3)}
+
+/* STEPS */
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.step-num{min-width:28px;height:28px;border-radius:50%;background:var(--accent2);color:#fff;font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{color:var(--text2);font-size:14px;line-height:1.6}
+.step-body strong{color:var(--text)}
+
+/* TAG */
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;margin:2px}
+.tag-xgb{background:#0f2040;color:var(--accent);border:1px solid #1a3060}
+.tag-lgb{background:#0f2040;color:var(--accent);border:1px solid #1a3060}
+.tag-green{background:var(--green-bg);color:var(--green);border:1px solid #1a3d2a}
+.tag-amber{background:var(--amber-bg);color:var(--amber);border:1px solid #3a2d10}
+.tag-red{background:var(--red-bg);color:var(--red);border:1px solid #3a1515}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-icon{font-size:20px;margin-bottom:8px}
+.card h4{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
+.card p{font-size:13px;color:var(--text2);margin:0}
+
+@media(max-width:900px){
+  #sidebar{width:220px;min-width:220px}
+  .chapter{padding:32px 24px}
+  .ch-title{font-size:26px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  body{flex-direction:column}
+  #sidebar{width:100%;height:auto;position:static}
+  #main{height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="badge">ML Algos 101</div>
+    <h1>Algorithms<br>Reference</h1>
+    <p>Part 2 · 7 chapters · advanced</p>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:14.3%"></div></div>
+
+  <div class="module-group">
+    <div class="module-label">Gradient Boosting</div>
+    <button class="chapter-btn active" onclick="go(0)"><span class="num">09</span>Gradient Boosting (sklearn)</button>
+    <button class="chapter-btn" onclick="go(1)"><span class="num">10</span>XGBoost</button>
+    <button class="chapter-btn" onclick="go(2)"><span class="num">11</span>LightGBM</button>
+    <button class="chapter-btn" onclick="go(3)"><span class="num">12</span>CatBoost</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Time Series</div>
+    <button class="chapter-btn" onclick="go(4)"><span class="num">13</span>ARIMA & Classical</button>
+    <button class="chapter-btn" onclick="go(5)"><span class="num">14</span>Prophet & Modern TS</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Anomaly Detection</div>
+    <button class="chapter-btn" onclick="go(6)"><span class="num">15</span>Anomaly Detection</button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- =========== CHAPTER 0 =========== -->
+<div class="chapter active" id="ch0">
+  <div class="ch-eyebrow">Part 2, Chapter 09 / Gradient Boosting</div>
+  <h1 class="ch-title">Gradient Boosting (sklearn)</h1>
+  <p class="ch-subtitle">Build trees sequentially, each correcting errors of the previous. The foundation for XGBoost and LightGBM.</p>
+
+  <h2>How It Works</h2>
+  <p>Gradient Boosting trains trees sequentially. Each new tree is fit to the <strong>residuals</strong> (errors) of all previous trees. The final prediction is the sum of all trees.</p>
+
+  <div class="eq">
+    F(x) = f₁(x) + learning_rate · f₂(x) + learning_rate · f₃(x) + ...<br>
+    <span class="comment">// Each tree f_t predicts the negative gradient of the loss w.r.t. previous predictions</span>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Key Insight</div>
+    <ul>
+      <li>Unlike Random Forests (parallel), boosting is sequential — each tree "sees" and corrects mistakes of previous trees.</li>
+      <li>This sequential refinement typically leads to <strong>lower bias than RF</strong>. But boosting can overfit if not regularized.</li>
+      <li><strong>learning_rate</strong> (shrinkage) is critical — it scales each tree's contribution, preventing overfitting.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.ensemble import GradientBoostingClassifier, GradientBoostingRegressor</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>n_estimators</code>: Number of boosting stages. More → lower bias, risk overfit. Typical: 50–500.</li>
+      <li><code>learning_rate</code>: Shrinkage (0–1). Lower = more conservative, requires more trees, but often better generalization. Typical: 0.01–0.1.</li>
+      <li><code>max_depth</code>: Tree depth. Usually shallow (3–7). Deeper trees = more complex interactions captured, but slower and more prone to overfit.</li>
+      <li><code>min_samples_split/leaf</code>: Minimum samples to split/in leaf. Increase to regularize.</li>
+      <li><code>subsample</code>: Row subsampling ratio (0–1). Like bagging effect. 0.8–1.0 typical.</li>
+      <li><code>validation_fraction</code>: Fraction held for early stopping. When val error stops decreasing, stop training.</li>
+    </ul>
+  </div>
+
+  <h2>Hyperparameter Tuning Strategy</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Start with low learning_rate (0.01–0.05)</strong> and high n_estimators (200–500). Use early stopping.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Tune max_depth (3–8)</strong> and min_samples_split/leaf via GridSearchCV.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>If still overfitting, increase subsample or decrease learning_rate.</strong></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Use early stopping to avoid tuning n_estimators manually.</strong></div></div>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Common Pitfalls</div>
+    <ul>
+      <li><strong>High learning_rate + high n_estimators = overfitting.</strong> Low learning rate requires more trees — this is by design.</li>
+      <li><strong>Deep trees in boosting overfit.</strong> Unlike Random Forests, keep boosted trees shallow (depth 2–7).</li>
+      <li><strong>Imbalanced classes:</strong> Use <code>scale_pos_weight</code> or subsample minority class.</li>
+    </ul>
+  </div>
+
+  <h2>sklearn GradientBoosting vs XGBoost/LightGBM</h2>
+  <table>
+    <tr><th>Aspect</th><th>sklearn GB</th><th>XGBoost/LightGBM</th></tr>
+    <tr><td>Speed</td><td>Slow (pure Python)</td><td>Fast (C++ optimized)</td></tr>
+    <tr><td>Features</td><td>Core boosting only</td><td>Regularization, early stopping, GPU support</td></tr>
+    <tr><td>Best for</td><td>Learning / interpretability</td><td>Production / large data / Kaggle</td></tr>
+  </table>
+
+  <div class="ch-nav">
+    <button class="nav-btn" disabled>← Previous</button>
+    <span class="ch-counter">1 / 7</span>
+    <button class="nav-btn primary" onclick="go(1)">Next: XGBoost →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 1 =========== -->
+<div class="chapter" id="ch1">
+  <div class="ch-eyebrow">Part 2, Chapter 10 / Gradient Boosting</div>
+  <h1 class="ch-title">XGBoost</h1>
+  <p class="ch-subtitle">The dominant machine learning model for structured data. Speed, regularization, and flexibility.</p>
+
+  <h2>What Makes XGBoost Better?</h2>
+  <p>XGBoost (eXtreme Gradient Boosting) is an optimized implementation of gradient boosting with:</p>
+  <div class="box concept">
+    <div class="box-title">Key Advances</div>
+    <ul>
+      <li><strong>Speed:</strong> C++ backend, GPU support, parallelization. 10–100x faster than sklearn's GradientBoosting.</li>
+      <li><strong>Regularization:</strong> Built-in L1/L2 penalties on tree weights. Reduces overfitting without external tricks.</li>
+      <li><strong>Handling missing values:</strong> Learns the optimal direction for missing data per feature.</li>
+      <li><strong>Custom loss functions:</strong> Implement any differentiable loss.</li>
+      <li><strong>Built-in cross-validation and early stopping.</strong></li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Installation & Implementation</div>
+    <ul>
+      <li>Install: <code>pip install xgboost</code></li>
+      <li><code>from xgboost import XGBClassifier, XGBRegressor</code></li>
+      <li><strong>Core parameters (familiar from sklearn):</strong></li>
+      <li><code>n_estimators</code>, <code>max_depth</code>, <code>learning_rate</code>, <code>subsample</code></li>
+      <li><strong>XGBoost-specific:</strong></li>
+      <li><code>gamma</code>: Minimum loss reduction to split. Higher = more conservative (less overfitting).</li>
+      <li><code>lambda</code>, <code>alpha</code>: L2 and L1 regularization. Default 1.0 and 0. Increase to reduce overfitting.</li>
+      <li><code>early_stopping_rounds</code>: Stop if val metric doesn't improve for N rounds.</li>
+      <li>Usage: <code>XGBClassifier(n_estimators=100, max_depth=5, learning_rate=0.1).fit(X_train, y_train, eval_set=[(X_val, y_val)], early_stopping_rounds=10)</code></li>
+    </ul>
+  </div>
+
+  <h2>Training with Validation Set</h2>
+  <div class="box math">
+    <div class="box-title">Early Stopping Pattern</div>
+    <ul>
+      <li><code>eval_set</code>: Pass a list of (X, y) tuples. XGBoost monitors the primary metric on these.</li>
+      <li><code>eval_metric</code>: Which metric to monitor ('logloss' for binary, 'mlogloss' for multiclass, 'rmse' for regression).</li>
+      <li><code>early_stopping_rounds</code>: If metric doesn't improve for N consecutive rounds, stop training. Avoids overfitting automatically.</li>
+      <li>Example: Stop if validation AUC doesn't improve for 20 rounds.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">XGBoost Gotchas</div>
+    <ul>
+      <li><strong>Features must be numeric:</strong> Encode categorical variables or use <code>max_cat_to_onehot</code> parameter.</li>
+      <li><strong>Hyperparameter tuning is important.</strong> Default params are often too high (risk overfit). Start conservative.</li>
+      <li><strong>Tree-based models don't need feature scaling,</strong> but they do need clean data (no NaNs passed post-training).</li>
+      <li><strong>Watch out for data leakage:</strong> If val_set overlaps with train_set, early stopping is meaningless.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(0)">← Gradient Boosting</button>
+    <span class="ch-counter">2 / 7</span>
+    <button class="nav-btn primary" onclick="go(2)">Next: LightGBM →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 2 =========== -->
+<div class="chapter" id="ch2">
+  <div class="ch-eyebrow">Part 2, Chapter 11 / Gradient Boosting</div>
+  <h1 class="ch-title">LightGBM</h1>
+  <p class="ch-subtitle">Microsoft's answer to XGBoost. Faster on large datasets, handles categorical variables natively, competitive accuracy.</p>
+
+  <h2>Why LightGBM?</h2>
+  <p>LightGBM (Light Gradient Boosting Machine) is a faster alternative to XGBoost, especially on large datasets. Key differences:</p>
+
+  <div class="box concept">
+    <div class="box-title">LightGBM vs XGBoost</div>
+    <ul>
+      <li><strong>Leaf-wise tree growth (vs level-wise):</strong> LightGBM grows the leaf with max loss reduction. This can lead to deeper, more accurate trees faster.</li>
+      <li><strong>Categorical support:</strong> LightGBM handles categorical features natively — no need to encode. Faster and often more accurate.</li>
+      <li><strong>Speed:</strong> 10–20x faster on large data (1M+ rows) because of binning and leaf-wise growth.</li>
+      <li><strong>Memory efficiency:</strong> Uses histogram-based learning. More RAM-efficient.</li>
+      <li><strong>Trade-off:</strong> May overfit on small datasets. Needs more regularization tuning.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Installation & Implementation</div>
+    <ul>
+      <li>Install: <code>pip install lightgbm</code></li>
+      <li><code>from lightgbm import LGBMClassifier, LGBMRegressor</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>num_leaves</code>: Max leaves per tree (replaces max_depth; more direct control over tree complexity).</li>
+      <li><code>learning_rate</code>, <code>n_estimators</code>, <code>subsample</code>: Same as XGBoost.</li>
+      <li><code>min_data_in_leaf</code>: Minimum samples in a leaf. Increase to reduce overfitting.</li>
+      <li><code>feature_fraction</code>: Fraction of features to consider per tree. Default 1.0.</li>
+      <li><code>categorical_feature</code>: List of categorical feature indices. LightGBM will split on them without encoding.</li>
+      <li>Usage: <code>LGBMClassifier(num_leaves=31, learning_rate=0.05, n_estimators=100).fit(X_train, y_train, categorical_feature=[...])</code></li>
+    </ul>
+  </div>
+
+  <h2>When to Use LightGBM</h2>
+  <div class="box math">
+    <div class="box-title">Decision Guide</div>
+    <ul>
+      <li><strong>Use LightGBM if:</strong> (1) Dataset &gt; 100K rows, (2) Many categorical features, (3) Speed matters, (4) Memory is limited.</li>
+      <li><strong>Use XGBoost if:</strong> (1) Dataset &lt; 100K rows, (2) Already have XGBoost pipeline, (3) Need stability (XGBoost is slightly more robust).</li>
+      <li><strong>In practice:</strong> Start with LightGBM if you have large data. Try both if unsure.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">LightGBM Gotchas</div>
+    <ul>
+      <li><strong>Overfits on small data.</strong> If n &lt; 10K, use XGBoost or increase min_data_in_leaf, decrease num_leaves.</li>
+      <li><strong>Categorical encoding:</strong> Pass categorical features by index, not one-hot encoded. More efficient.</li>
+      <li><strong>Monotonicity constraints:</strong> LightGBM can enforce <code>monotone_constraints</code> (feature always increases/decreases prediction). Useful for fairness/interpretability.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(1)">← XGBoost</button>
+    <span class="ch-counter">3 / 7</span>
+    <button class="nav-btn primary" onclick="go(3)">Next: CatBoost →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 3 =========== -->
+<div class="chapter" id="ch3">
+  <div class="ch-eyebrow">Part 2, Chapter 12 / Gradient Boosting</div>
+  <h1 class="ch-title">CatBoost</h1>
+  <p class="ch-subtitle">Yandex's gradient boosting. Excels with categorical data and is remarkably robust to overfitting out of the box.</p>
+
+  <h2>What's Special About CatBoost?</h2>
+  <p>CatBoost (Categorical Boosting) is optimized for datasets with many categorical features. It handles them differently than XGBoost/LightGBM:</p>
+
+  <div class="box concept">
+    <div class="box-title">CatBoost Advantages</div>
+    <ul>
+      <li><strong>Categorical handling:</strong> Automatically handles categorical features without explicit encoding. Can use target encoding intelligently.</li>
+      <li><strong>Robust by default:</strong> Less overfitting with default parameters compared to XGBoost/LightGBM. "Works out of the box."</li>
+      <li><strong>Target encoding:</strong> Uses permutation-based target encoding to avoid target leakage in cross-validation.</li>
+      <li><strong>GPU support:</strong> Multiple GPU training for very large datasets.</li>
+      <li><strong>Trade-off:</strong> Slower training than LightGBM on large datasets (not as optimized for speed).</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Installation & Implementation</div>
+    <ul>
+      <li>Install: <code>pip install catboost</code></li>
+      <li><code>from catboost import CatBoostClassifier, CatBoostRegressor</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>iterations</code>: Number of boosting rounds (equivalent to n_estimators). Default 100.</li>
+      <li><code>depth</code>: Tree depth. Default 6. CatBoost tends to use deeper trees than XGBoost.</li>
+      <li><code>learning_rate</code>: Default 0.03. Lower for more stability.</li>
+      <li><code>cat_features</code>: List of indices/names of categorical features. Must be specified.</li>
+      <li><code>early_stopping_rounds</code>: Same as XGBoost.</li>
+      <li>Usage: <code>CatBoostClassifier(iterations=100, depth=6, cat_features=['feature_1', 'feature_2']).fit(X_train, y_train, eval_set=(X_val, y_val))</code></li>
+    </ul>
+  </div>
+
+  <h2>When to Use CatBoost</h2>
+  <div class="box math">
+    <div class="box-title">Decision</div>
+    <ul>
+      <li><strong>Use CatBoost if:</strong> (1) Many categorical features, (2) Want less tuning (robust defaults), (3) Trust that target encoding won't cause leakage (uses permutation-based approach).</li>
+      <li><strong>Avoid if:</strong> (1) Dataset &gt; 1M rows and speed is critical (LightGBM is faster), (2) Need explainability (CatBoost's target encoding is less interpretable).</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(2)">← LightGBM</button>
+    <span class="ch-counter">4 / 7</span>
+    <button class="nav-btn primary" onclick="go(4)">Next: ARIMA →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 4 =========== -->
+<div class="chapter" id="ch4">
+  <div class="ch-eyebrow">Part 2, Chapter 13 / Time Series</div>
+  <h1 class="ch-title">ARIMA & Classical Time Series</h1>
+  <p class="ch-subtitle">AutoRegressive Integrated Moving Average. The workhorse of classical forecasting for decades.</p>
+
+  <h2>The ARIMA Model</h2>
+  <p>ARIMA(p, d, q) has three components:</p>
+  <div class="box concept">
+    <div class="box-title">ARIMA Components</div>
+    <ul>
+      <li><strong>AR (AutoRegressive, p):</strong> Regress on past values. y_t = c + φ₁·y_{t-1} + φ₂·y_{t-2} + ... + ε_t</li>
+      <li><strong>I (Integrated, d):</strong> Differencing to make series stationary. d=0 (stationary already), d=1 (first difference), d=2 (second difference).</li>
+      <li><strong>MA (Moving Average, q):</strong> Regress on past forecast errors. y_t = ε_t + θ₁·ε_{t-1} + θ₂·ε_{t-2} + ...</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Implementation (statsmodels)</div>
+    <ul>
+      <li>Install: <code>pip install statsmodels</code></li>
+      <li><code>from statsmodels.tsa.arima.model import ARIMA</code></li>
+      <li><code>model = ARIMA(y_train, order=(p, d, q)).fit()</code></li>
+      <li><code>forecast = model.get_forecast(steps=10).conf_int()</code> — returns mean + confidence intervals.</li>
+      <li>Key parameter: <code>order</code> — tuple (p, d, q).</li>
+    </ul>
+  </div>
+
+  <h2>Choosing p, d, q — The Hard Part</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Check stationarity:</strong> Plot ACF/PACF, run ADF test. If non-stationary, difference (increase d) until stationary.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>ACF/PACF plots:</strong> PACF tells you p (AR order); ACF tells you q (MA order). Look for cutoff in plots.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Grid search:</strong> Try p, q in [0, 5], d in [0, 2]. Fit each. Pick via AIC/BIC.</div></div>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">ARIMA Limitations</div>
+    <ul>
+      <li><strong>Assumes linear dynamics.</strong> Non-linear patterns (seasonality, regime changes) need extensions (SARIMA, VAR).</li>
+      <li><strong>Requires stationarity.</strong> Non-stationary series need differencing. Differencing loses information.</li>
+      <li><strong>Short-horizon forecasting:</strong> Good for 1–12 steps ahead. Beyond that, predictions revert to the mean.</li>
+      <li><strong>Seasonal data:</strong> Use SARIMA (Seasonal ARIMA). Add seasonal parameters (P, D, Q, s).</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(3)">← CatBoost</button>
+    <span class="ch-counter">5 / 7</span>
+    <button class="nav-btn primary" onclick="go(5)">Next: Prophet →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 5 =========== -->
+<div class="chapter" id="ch5">
+  <div class="ch-eyebrow">Part 2, Chapter 14 / Time Series</div>
+  <h1 class="ch-title">Prophet & Modern Time Series</h1>
+  <p class="ch-subtitle">Facebook's Prophet: handles seasonality, trend changes, and holidays elegantly. Nixtla's StatsForecast for speed.</p>
+
+  <h2>Prophet — User-Friendly Forecasting</h2>
+  <p>Prophet decomposes a time series into trend, seasonality, and holiday components. Robust to missing data and outliers.</p>
+
+  <div class="box impl">
+    <div class="box-title">Implementation</div>
+    <ul>
+      <li>Install: <code>pip install pystan prophet</code> (or <code>cmdstanpy</code> backend)</li>
+      <li><code>from prophet import Prophet</code></li>
+      <li>Data format: DataFrame with columns 'ds' (date) and 'y' (value).</li>
+      <li><code>model = Prophet(yearly_seasonality=True, weekly_seasonality=True)</code></li>
+      <li><code>model.fit(df)</code></li>
+      <li><code>future = model.make_future_dataframe(periods=30)</code> — 30 periods forward.</li>
+      <li><code>forecast = model.predict(future)</code> — returns 'yhat' (prediction), 'yhat_lower', 'yhat_upper'.</li>
+    </ul>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Prophet Advantages</div>
+    <ul>
+      <li><strong>Handles seasonality automatically.</strong> Detects yearly, weekly, daily patterns.</li>
+      <li><strong>Trend changepoints:</strong> Automatically detects when trends shift.</li>
+      <li><strong>Holiday effects:</strong> <code>holidays</code> parameter can specify known holidays' impact.</li>
+      <li><strong>Robust:</strong> Built-in handling of missing data, outliers.</li>
+      <li><strong>Interpretable:</strong> Decomposes into components. Easy to understand drivers.</li>
+      <li><strong>Easy to use:</strong> Few hyperparameters to tune. Works out-of-box.</li>
+    </ul>
+  </div>
+
+  <h2>Modern Alternative: StatsForecast (Nixtla)</h2>
+  <p>For faster, ensemble forecasting with automatic model selection:</p>
+  <div class="box math">
+    <div class="box-title">StatsForecast</div>
+    <ul>
+      <li>Install: <code>pip install statsforecast</code></li>
+      <li>Multiple algorithms: ARIMA, ExponentialSmoothing, AutoRegressive, etc.</li>
+      <li>Ensemble forecasting: combines multiple models automatically.</li>
+      <li>Fast (vectorized, ML-optimized).</li>
+      <li>Ideal for many time series (10s to 1000s). Prophet better for single series.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">When to Use</div>
+    <ul>
+      <li><strong>Prophet:</strong> Single to few time series, need interpretability, have holidays/events to account for.</li>
+      <li><strong>ARIMA:</strong> Stationary series, need statistical rigor, small amount of data.</li>
+      <li><strong>StatsForecast/Nixtla:</strong> Many time series, want ensemble, speed matters.</li>
+      <li><strong>Deep Learning (Transformer-based):</strong> Very long series, complex multivariate patterns. Part 3.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(4)">← ARIMA</button>
+    <span class="ch-counter">6 / 7</span>
+    <button class="nav-btn primary" onclick="go(6)">Next: Anomaly Detection →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 6 =========== -->
+<div class="chapter" id="ch6">
+  <div class="ch-eyebrow">Part 2, Chapter 15 / Anomaly Detection</div>
+  <h1 class="ch-title">Anomaly Detection</h1>
+  <p class="ch-subtitle">Finding outliers and unusual patterns. Isolation Forest and Local Outlier Factor are the standards.</p>
+
+  <h2>Why Anomaly Detection is Hard</h2>
+  <p>"Anomaly" is context-dependent. A value that's anomalous in one distribution might be normal in another. Most algorithms look for points that are statistically unlikely or far from the bulk of data.</p>
+
+  <h2>Isolation Forest</h2>
+  <p>Isolation Forest isolates anomalies recursively by randomly selecting features and split values. Anomalies isolate faster (fewer splits needed) than normal points.</p>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.ensemble import IsolationForest</code></li>
+      <li><code>clf = IsolationForest(contamination=0.05).fit(X_train)</code> — assumes 5% anomalies.</li>
+      <li><code>predictions = clf.predict(X_test)</code> — returns 1 (normal) or -1 (anomaly).</li>
+      <li><code>scores = clf.score_samples(X_test)</code> — returns anomaly scores (lower = more anomalous).</li>
+      <li>Key parameter: <code>contamination</code> — expected fraction of outliers (0–0.5). If unknown, estimate via domain knowledge or statistical methods.</li>
+    </ul>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Isolation Forest Advantages</div>
+    <ul>
+      <li><strong>No distance computation:</strong> Uses tree-based isolation, works in high dimensions.</li>
+      <li><strong>Fast:</strong> O(n log n) time and O(n log n) space.</li>
+      <li><strong>Works on raw features:</strong> No scaling needed.</li>
+      <li><strong>Handles high-dimensional data gracefully.</strong> Unlike k-NN.</li>
+    </ul>
+  </div>
+
+  <h2>Local Outlier Factor (LOF)</h2>
+  <p>LOF compares the local density of each point to its neighbors' densities. Points with much lower density than neighbors are anomalies (e.g., points in a sparse region surrounded by dense clusters).</p>
+
+  <div class="box impl">
+    <div class="box-title">Implementation</div>
+    <ul>
+      <li><code>from sklearn.neighbors import LocalOutlierFactor</code></li>
+      <li><code>lof = LocalOutlierFactor(n_neighbors=20, contamination=0.05).fit(X_train)</code></li>
+      <li><code>predictions = lof.negative_outlier_factor_</code> — use this for scoring.</li>
+      <li>Key parameter: <code>n_neighbors</code> — affects sensitivity. More neighbors = coarser detection.</li>
+    </ul>
+  </div>
+
+  <h2>Isolation Forest vs LOF</h2>
+  <table>
+    <tr><th>Aspect</th><th>Isolation Forest</th><th>LOF</th></tr>
+    <tr><td>Speed</td><td>Fast O(n log n)</td><td>Slower O(n²) for large n</td></tr>
+    <tr><td>Scalability</td><td>✓ High-dim OK</td><td>Curse of dimensionality</td></tr>
+    <tr><td>Detection type</td><td>Global outliers</td><td>Local outliers</td></tr>
+    <tr><td>Best for</td><td>Most datasets; go-to baseline</td><td>When outliers are contextual</td></tr>
+  </table>
+
+  <div class="box teal">
+    <div class="box-title">Part 2 Complete: Advanced Algorithms</div>
+    <ul>
+      <li>You've covered the state-of-the-art for tabular ML: GBM variants, time series, anomaly detection.</li>
+      <li><strong>Next:</strong> Part 3 covers deep learning (PyTorch, Keras), neural architectures, RL, AutoML.</li>
+      <li><strong>Key Takeway:</strong> For most real-world problems, start with XGBoost/LightGBM. Deep learning is for unstructured data (images, text, audio) or very large datasets.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(5)">← Prophet</button>
+    <span class="ch-counter">7 / 7</span>
+    <button class="nav-btn primary" onclick="window.location.href='part-03.html'">Part 3: Deep Learning →</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+const chapters = document.querySelectorAll('.chapter');
+const btns = document.querySelectorAll('.chapter-btn');
+const progress = document.getElementById('progress');
+let current = 0;
+
+function _go(n) {
+  chapters[current].classList.remove('active');
+  btns[current].classList.remove('active');
+  current = n;
+  chapters[current].classList.add('active');
+  btns[current].classList.add('active');
+  document.getElementById('main').scrollTo({top:0, behavior:'smooth'});
+  progress.style.width = `${Math.round(((n+1)/7)*100)}%`;
+}
+</script>
+</body>
+</html>

@@ -9,16 +9,7 @@ export default function BlogIndexPage() {
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   return (
-    <div className="space-y-10 py-10">
-      <header className="card">
-        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
-          Blog
-        </p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-          Shipping notes, engineering decisions, and project updates.
-        </h1>
-      </header>
-
+    <div className="main-page-content space-y-10 pb-10">
       <section className="bento-grid">
         {posts.map((post) => {
           const slug = post.slugs[0];

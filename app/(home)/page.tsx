@@ -1,5 +1,5 @@
 import Link from "next/link";
-import GradientText from "@/components/GradientText";
+import GradientText from "@/components/gradient-text";
 import { ProjectCard } from "@/components/project-card";
 import { featuredProjects, publicProjects } from "@/lib/projects";
 

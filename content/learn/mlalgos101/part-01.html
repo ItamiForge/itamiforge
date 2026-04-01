@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Algorithms 101 — Part 1: Scikit-Learn Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0f14;--bg2:#13161d;--bg3:#1a1e28;--bg4:#222736;
+  --border:#2a2f3e;--border2:#353c52;
+  --text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6480;
+  --accent:#5b8dee;--accent2:#3a6bd4;
+  --green:#4ade80;--green-bg:#0f2518;
+  --amber:#fbbf24;--amber-bg:#201a08;
+  --red:#f87171;--red-bg:#200f0f;
+  --purple:#a78bfa;--purple-bg:#16102a;
+  --teal:#2dd4bf;--teal-bg:#0a1e1c;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --serif:'IBM Plex Serif',serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:15px;line-height:1.7}
+
+/* SIDEBAR */
+#sidebar{width:260px;min-width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow-y:auto}
+#sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+#sidebar-header .badge{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+#sidebar-header h1{font-size:18px;font-weight:600;color:var(--text);line-height:1.3}
+#sidebar-header p{font-size:12px;color:var(--text3);margin-top:4px}
+.module-group{padding:8px 0}
+.module-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:8px 20px 4px}
+.chapter-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 20px;background:none;border:none;cursor:pointer;text-align:left;color:var(--text2);font-family:var(--sans);font-size:13px;line-height:1.4;transition:all .15s}
+.chapter-btn:hover{background:var(--bg3);color:var(--text)}
+.chapter-btn.active{background:var(--bg4);color:var(--accent);border-left:2px solid var(--accent)}
+.chapter-btn .num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:22px}
+.chapter-btn.active .num{color:var(--accent)}
+.progress-bar{height:2px;background:var(--border);position:relative}
+.progress-fill{height:2px;background:var(--accent);transition:width .3s}
+
+/* MAIN */
+#main{flex:1;overflow-y:auto;height:100vh}
+.chapter{display:none;padding:48px 56px;max-width:820px}
+.chapter.active{display:block}
+
+/* CHAPTER HEADER */
+.ch-eyebrow{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ch-title{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:8px}
+.ch-subtitle{font-size:16px;color:var(--text2);font-weight:300;margin-bottom:36px;font-family:var(--serif);font-style:italic}
+.ch-divider{height:1px;background:var(--border);margin:32px 0}
+
+/* CONTENT BLOCKS */
+h2{font-size:18px;font-weight:600;margin:32px 0 12px;color:var(--text)}
+h3{font-size:15px;font-weight:500;margin:24px 0 8px;color:var(--text2);font-family:var(--mono);letter-spacing:.03em}
+p{color:var(--text2);margin-bottom:14px;line-height:1.75}
+p strong{color:var(--text);font-weight:500}
+
+/* CALLOUT BOXES */
+.box{border-radius:8px;padding:16px 20px;margin:20px 0}
+.box-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.box ul,.box ol{padding-left:20px;color:inherit}
+.box li{margin-bottom:6px;font-size:14px;line-height:1.6}
+
+.concept{background:var(--purple-bg);border:1px solid #2e2050;color:#c4b5fd}
+.concept .box-title{color:var(--purple)}
+.math{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.math .box-title{color:var(--accent)}
+.impl{background:var(--green-bg);border:1px solid #1a3d2a;color:#86efac}
+.impl .box-title{color:var(--green)}
+.gotcha{background:var(--amber-bg);border:1px solid #3a2d10;color:#fde68a}
+.gotcha .box-title{color:var(--amber)}
+.danger{background:var(--red-bg);border:1px solid #3a1515;color:#fca5a5}
+.danger .box-title{color:var(--red)}
+.teal{background:var(--teal-bg);border:1px solid #0f2e2c;color:#5eead4}
+.teal .box-title{color:var(--teal)}
+
+/* EQUATION */
+.eq{font-family:var(--mono);font-size:14px;background:var(--bg3);border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--text);overflow-x:auto}
+.eq .comment{color:var(--text3);font-size:12px}
+
+/* INLINE CODE */
+code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--teal);border:1px solid var(--border)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+th{text-align:left;padding:10px 14px;background:var(--bg3);color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-bottom:1px solid var(--border2)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td strong{color:var(--text)}
+
+/* NAV ARROWS */
+.ch-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:24px;border-top:1px solid var(--border)}
+.nav-btn{background:var(--bg3);border:1px solid var(--border2);padding:10px 18px;border-radius:6px;cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--text2);transition:all .15s}
+.nav-btn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.nav-btn.primary{background:var(--accent2);border-color:var(--accent);color:#fff}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.ch-counter{font-family:var(--mono);font-size:12px;color:var(--text3)}
+
+/* STEPS */
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.step-num{min-width:28px;height:28px;border-radius:50%;background:var(--accent2);color:#fff;font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{color:var(--text2);font-size:14px;line-height:1.6}
+.step-body strong{color:var(--text)}
+
+/* TAG */
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;margin:2px}
+.tag-blue{background:#0f2040;color:var(--accent);border:1px solid #1a3060}
+.tag-sklearn{background:#0f2040;color:var(--accent);border:1px solid #1a3060}
+.tag-green{background:var(--green-bg);color:var(--green);border:1px solid #1a3d2a}
+.tag-amber{background:var(--amber-bg);color:var(--amber);border:1px solid #3a2d10}
+.tag-red{background:var(--red-bg);color:var(--red);border:1px solid #3a1515}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-icon{font-size:20px;margin-bottom:8px}
+.card h4{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
+.card p{font-size:13px;color:var(--text2);margin:0}
+
+/* COPY LINK */
+.copy-link{font-size:11px;color:var(--text3);margin-top:12px;padding-top:12px;border-top:1px solid var(--border3)}
+
+@media(max-width:900px){
+  #sidebar{width:220px;min-width:220px}
+  .chapter{padding:32px 24px}
+  .ch-title{font-size:26px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  body{flex-direction:column}
+  #sidebar{width:100%;height:auto;position:static}
+  #main{height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="badge">ML Algos 101</div>
+    <h1>Algorithms<br>Reference</h1>
+    <p>Part 1 · 8 chapters · sklearn</p>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:12.5%"></div></div>
+
+  <div class="module-group">
+    <div class="module-label">Linear Models</div>
+    <button class="chapter-btn active" onclick="go(0)"><span class="num">01</span>Ridge & Lasso</button>
+    <button class="chapter-btn" onclick="go(1)"><span class="num">02</span>Elastic Net</button>
+    <button class="chapter-btn" onclick="go(2)"><span class="num">03</span>Logistic Regression</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Tree-Based</div>
+    <button class="chapter-btn" onclick="go(3)"><span class="num">04</span>Decision Trees</button>
+    <button class="chapter-btn" onclick="go(4)"><span class="num">05</span>Random Forests</button>
+    <button class="chapter-btn" onclick="go(5)"><span class="num">06</span>Naive Bayes</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Distance-Based</div>
+    <button class="chapter-btn" onclick="go(6)"><span class="num">07</span>k-Nearest Neighbors</button>
+    <button class="chapter-btn" onclick="go(7)"><span class="num">08</span>Support Vector Machines</button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- =========== CHAPTER 0 =========== -->
+<div class="chapter active" id="ch0">
+  <div class="ch-eyebrow">Part 1, Chapter 01 / Linear Models</div>
+  <h1 class="ch-title">Ridge & Lasso Regression</h1>
+  <p class="ch-subtitle">L2 and L1 regularization: when and why to use them. The difference between shrinking and zeroing.</p>
+
+  <h2>Ridge Regression (L2 Regularization)</h2>
+  <p>Ridge smoothly shrinks coefficients toward zero without eliminating them. Use when you suspect all features are relevant but some are noisy.</p>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.linear_model import Ridge</code></li>
+      <li>Key parameter: <code>alpha</code> (λ). Larger → more shrinkage. Start with alpha=1.0.</li>
+      <li>Usage: <code>Ridge(alpha=1.0).fit(X_train, y_train)</code></li>
+      <li>Get coefficients: <code>.coef_</code></li>
+    </ul>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Ridge vs Linear Regression</div>
+    <ul>
+      <li><strong>Linear Reg (OLS):</strong> minimize MSE only. No penalty for large coefficients.</li>
+      <li><strong>Ridge:</strong> minimize MSE + alpha·(sum of squared coefficients).</li>
+      <li>Ridge trades a small increase in bias for a large decrease in variance — especially useful with multicollinearity.</li>
+      <li>All coefficients remain non-zero (unless alpha → ∞).</li>
+    </ul>
+  </div>
+
+  <h2>Lasso Regression (L1 Regularization)</h2>
+  <p>Lasso produces <strong>sparse solutions</strong> — many coefficients become exactly zero. Automatic feature selection. Use when you suspect most features are irrelevant.</p>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.linear_model import Lasso</code></li>
+      <li>Key parameter: <code>alpha</code> (λ). Larger → more coefficients driven to zero.</li>
+      <li>Usage: <code>Lasso(alpha=0.1).fit(X_train, y_train)</code></li>
+      <li>Higher alpha typically needed for Lasso than Ridge for similar effect.</li>
+    </ul>
+  </div>
+
+  <h2>Ridge vs Lasso — When to Use Each</h2>
+  <table>
+    <tr><th>Situation</th><th>Ridge</th><th>Lasso</th></tr>
+    <tr><td>Many correlated features</td><td>✓ Keeps all, shrinks smoothly</td><td>⚠ Arbitrarily picks one</td></tr>
+    <tr><td>Suspected irrelevant features</td><td>Doesn't eliminate</td><td>✓ Zeros them out</td></tr>
+    <tr><td>Interpretability priority</td><td>Hard (many small coefs)</td><td>✓ Easier (many zeros)</td></tr>
+    <tr><td>High-dim, few samples</td><td>✓ Stable</td><td>✓ Does feature selection</td></tr>
+  </table>
+
+  <div class="box gotcha">
+    <div class="box-title">Critical Gotchas</div>
+    <ul>
+      <li><strong>Scale your features:</strong> Ridge/Lasso penalties treat all coefficients equally. Unscaled features with large ranges get unfairly penalized. Always standardize before fitting.</li>
+      <li><strong>Lasso arbitrariness:</strong> With correlated features, Lasso arbitrarily selects one and zeros the rest. Not reproducible across runs/seeds. If you need stability, use Elastic Net.</li>
+      <li><strong>alpha = 0 means no regularization</strong> — equivalent to OLS.</li>
+      <li><strong>Tuning alpha:</strong> Use cross-validation. sklearn's <code>RidgeCV</code> and <code>LassoCV</code> do this automatically.</li>
+    </ul>
+  </div>
+
+  <h2>Parameter Summary</h2>
+  <div class="box math">
+    <div class="box-title">Key Hyperparameters</div>
+    <ul>
+      <li><strong>alpha:</strong> Regularization strength. Higher = more penalty. Ridge/Lasso respond differently to scale. Use CV to find optimal.</li>
+      <li><strong>solver (Ridge/Lasso):</strong> For Ridge, 'auto' is fine (uses best method for your data). For Lasso, 'cd' (coordinate descent) is standard.</li>
+      <li><strong>fit_intercept:</strong> Whether to fit a constant term (default True). Usually keep True.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" disabled>← Previous</button>
+    <span class="ch-counter">1 / 8</span>
+    <button class="nav-btn primary" onclick="go(1)">Next: Elastic Net →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 1 =========== -->
+<div class="chapter" id="ch1">
+  <div class="ch-eyebrow">Part 1, Chapter 02 / Linear Models</div>
+  <h1 class="ch-title">Elastic Net</h1>
+  <p class="ch-subtitle">The best of both worlds: Ridge's stability with Lasso's interpretability.</p>
+
+  <h2>The Problem Ridge and Lasso Solve Independently</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>Ridge Strengths</h4>
+      <p>Handles correlated features gracefully. Stable coefficient estimates. Continuous shrinkage.</p>
+    </div>
+    <div class="card">
+      <h4>Lasso Strengths</h4>
+      <p>Performs feature selection. Produces sparse, interpretable models. Zero coefficients clearly mean "not important".</p>
+    </div>
+  </div>
+  <p>Elastic Net combines both penalties in a weighted sum:</p>
+
+  <div class="eq">
+    Loss = MSE + α·[λ·(Σ|wᵢ|) + (1−λ)·(Σwᵢ²)]<br>
+    <span class="comment">// λ ∈ [0, 1] controls mix: λ=0 is pure Ridge, λ=1 is pure Lasso</span><br>
+    <span class="comment">// α is overall regularization strength</span>
+  </div>
+
+  <h2>When to Use Elastic Net</h2>
+  <div class="box concept">
+    <div class="box-title">Elastic Net is Your Default Choice When:</div>
+    <ul>
+      <li>You have <strong>many correlated features</strong> (Lasso might pick one arbitrarily, Elastic Net keeps related ones).</li>
+      <li>You want <strong>some feature selection</strong> but also stability — the gold standard.</li>
+      <li>Your data is <strong>high-dimensional with few samples</strong> — both penalties help avoid overfitting.</li>
+      <li>You're unsure whether Ridge or Lasso is better — Elastic Net hedges your bet.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.linear_model import ElasticNet</code></li>
+      <li>Key parameters:</li>
+      <li><strong>alpha:</strong> Overall regularization strength (default 1.0).</li>
+      <li><strong>l1_ratio:</strong> Mix of penalties (default 0.5). Between 0 and 1. 0 = pure Ridge, 1 = pure Lasso.</li>
+      <li>Usage: <code>ElasticNet(alpha=0.1, l1_ratio=0.5).fit(X_train, y_train)</code></li>
+    </ul>
+  </div>
+
+  <h2>Hyperparameter Tuning Strategy</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Start with default l1_ratio=0.5.</strong> This is usually a good middle ground.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Tune alpha using cross-validation.</strong> Use <code>ElasticNetCV(l1_ratio=0.5, cv=5)</code> to auto-tune alpha.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>If you want more feature selection,</strong> increase l1_ratio toward 1. If you want more stability, decrease toward 0.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Optional: grid search both alpha and l1_ratio</strong> using GridSearchCV. Expensive but thorough.</div></div>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Common Mistakes</div>
+    <ul>
+      <li><strong>Forgetting to scale features.</strong> L1 and L2 penalties treat all coefficients equally — large-scale features get unfairly penalized.</li>
+      <li><strong>Using high alpha for high-dimensional data.</strong> Too much regularization → high bias. Start alpha=1.0, decrease if train error is too high.</li>
+      <li><strong>Not understanding l1_ratio.</strong> It's not the "mix" in the intuitive sense — it's the ratio in the loss function. Experiment with values: 0.1, 0.5, 0.9.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(0)">← Ridge & Lasso</button>
+    <span class="ch-counter">2 / 8</span>
+    <button class="nav-btn primary" onclick="go(2)">Next: Logistic Regression →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 2 =========== -->
+<div class="chapter" id="ch2">
+  <div class="ch-eyebrow">Part 1, Chapter 03 / Linear Models</div>
+  <h1 class="ch-title">Logistic Regression</h1>
+  <p class="ch-subtitle">Classification via the sigmoid function. Interpretable, fast, and the baseline for any classification problem.</p>
+
+  <h2>Binary Classification</h2>
+  <p>Logistic regression outputs probabilities P(y=1) directly. Use the sigmoid function to squeeze a linear combiner into [0, 1]:</p>
+
+  <div class="eq">
+    P(y=1|x) = σ(wᵀx + b) = 1 / (1 + e^(−wᵀx − b))<br>
+    <span class="comment">// Threshold at 0.5: if P > 0.5, predict class 1; else class 0</span>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.linear_model import LogisticRegression</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>C</code>: Inverse regularization strength (default 1.0). Larger C = less regularization = more complex model.</li>
+      <li><code>penalty</code>: 'l2' (Ridge, default), 'l1' (Lasso), 'elasticnet', or 'none'.</li>
+      <li><code>solver</code>: Algorithm ('lbfgs' for small data, 'liblinear' for binary, 'saga' for large scale).</li>
+      <li><code>class_weight</code>: 'balanced' to handle class imbalance automatically.</li>
+      <li>Usage: <code>LogisticRegression(C=1.0, penalty='l2', solver='lbfgs').fit(X_train, y_train)</code></li>
+    </ul>
+  </div>
+
+  <h2>Multiclass Extension: One-vs-Rest</h2>
+  <p>For K classes, sklearn trains K separate classifiers — one for each class vs. all others. Then takes the argmax.</p>
+
+  <div class="box concept">
+    <div class="box-title">Key Properties</div>
+    <ul>
+      <li>Logistic Regression has <strong>no hyperparameters beyond C</strong> (regularization strength). Very few knobs to turn.</li>
+      <li><strong>Coefficients are interpretable:</strong> exp(w_i) is the odds ratio for feature i. Positive w_i → feature pushes toward class 1.</li>
+      <li><strong>Fast to train:</strong> Especially with solver='liblinear' for binary. Scales to millions of samples.</li>
+      <li><strong>Probabilistic:</strong> Outputs are true probabilities (calibrated). Use <code>.predict_proba(X)</code>.</li>
+    </ul>
+  </div>
+
+  <h2>Handling Class Imbalance</h2>
+  <p>When one class is much rarer than the other, logistic regression biases toward the common class:</p>
+
+  <div class="box impl">
+    <div class="box-title">Solutions</div>
+    <ul>
+      <li><strong>class_weight='balanced':</strong> Automatically reweights loss for each class inversely proportional to its frequency. Default recommendation.</li>
+      <li><strong>Adjust threshold:</strong> Default threshold is 0.5. If positive class is rarer, lower threshold to 0.3 or 0.2 to get more predictions of the rare class.</li>
+      <li><strong>Use appropriate metric:</strong> Don't optimize accuracy. Use F1, PR-AUC, or recall depending on your problem.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Common Gotchas</div>
+    <ul>
+      <li><strong>C parameter is inverse λ.</strong> Large C = less regularization, small C = more regularization. Counterintuitive but standard sklearn convention.</li>
+      <li><strong>Feature scaling matters.</strong> Not as critical as SVMs, but scaled features lead to more stable coefficient estimates.</li>
+      <li><strong>Assumes linear separability.</strong> If your decision boundary is obviously non-linear, polynomial features or a different model (trees, SVM) will help.</li>
+      <li><strong>Probability outputs are only reliable if you have sufficient training data.</strong> With very few samples, predicted probabilities are overconfident.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(1)">← Elastic Net</button>
+    <span class="ch-counter">3 / 8</span>
+    <button class="nav-btn primary" onclick="go(3)">Next: Decision Trees →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 3 =========== -->
+<div class="chapter" id="ch3">
+  <div class="ch-eyebrow">Part 1, Chapter 04 / Tree-Based</div>
+  <h1 class="ch-title">Decision Trees</h1>
+  <p class="ch-subtitle">Recursive binary splits that partition the feature space. Simple, interpretable, and prone to overfitting.</p>
+
+  <h2>The Algorithm</h2>
+  <p>Recursively partition data by asking binary questions ("Is feature_3 > 7.5?"). At each node, pick the split that best reduces impurity (Gini for classification, MSE for regression).</p>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>max_depth</code>: Maximum tree depth. Lower = simpler, less overfit. Start with 3–7.</li>
+      <li><code>min_samples_split</code>: Minimum samples in a node to split. Default 2. Increase to reduce overfitting.</li>
+      <li><code>min_samples_leaf</code>: Minimum samples in a leaf. Default 1. Increase to reduce overfitting.</li>
+      <li><code>criterion</code>: 'gini' or 'entropy' for classification. Usually 'gini' is faster.</li>
+      <li>Usage: <code>DecisionTreeClassifier(max_depth=5, min_samples_split=10).fit(X_train, y_train)</code></li>
+    </ul>
+  </div>
+
+  <h2>Feature Importance</h2>
+  <p>Built-in feature importance ranks features by how much they reduce impurity across all nodes. Not causal, but useful for feature selection and exploration.</p>
+
+  <div class="box concept">
+    <div class="box-title">Important Notes on Feature Importance</div>
+    <ul>
+      <li>Importance is relative — only inter-feature comparisons are meaningful.</li>
+      <li>Correlated features split importance — if two features are highly correlated, only one will be used at the top splits, and the other will have low importance.</li>
+      <li>High importance does NOT mean "predictive after controlling for other features." It means "was chosen early in the tree."</li>
+      <li>For a more robust importance measure, use permutation importance from <code>sklearn.inspection</code>.</li>
+    </ul>
+  </div>
+
+  <h2>The Overfitting Problem</h2>
+  <div class="box gotcha">
+    <div class="box-title">Trees Are Greedy and Prone to Overfitting</div>
+    <ul>
+      <li>A fully grown tree memorizes training data — each leaf may have a single sample. Perfect train accuracy, terrible test accuracy.</li>
+      <li><strong>Why:</strong> Trees have no built-in regularization term. Greedy algorithm makes locally optimal splits, not globally optimal structure.</li>
+      <li><strong>Fixes:</strong></li>
+      <li>Limit <code>max_depth</code> — simple control, often sufficient.</li>
+      <li>Increase <code>min_samples_split</code> and <code>min_samples_leaf</code> — require nodes to have enough data.</li>
+      <li>Use ensemble methods (Random Forest, Gradient Boosting) — combine many trees to reduce variance.</li>
+    </ul>
+  </div>
+
+  <h2>When to Use Decision Trees</h2>
+  <div class="box math">
+    <div class="box-title">Pros and Cons</div>
+    <ul>
+      <li><strong>Pros:</strong> Interpretable (explain decision path), no scaling needed, handles mixed data types, non-linear boundaries.</li>
+      <li><strong>Cons:</strong> High variance (small data changes → different tree), greedy algorithm, often beaten by ensembles or linear models.</li>
+      <li><strong>Best for:</strong> Interpretability and explaining decisions to stakeholders. For raw predictive power, ensemble methods are superior.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(2)">← Logistic Regression</button>
+    <span class="ch-counter">4 / 8</span>
+    <button class="nav-btn primary" onclick="go(4)">Next: Random Forests →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 4 =========== -->
+<div class="chapter" id="ch4">
+  <div class="ch-eyebrow">Part 1, Chapter 05 / Tree-Based</div>
+  <h1 class="ch-title">Random Forests</h1>
+  <p class="ch-subtitle">The workhorse of tabular ML: trains many trees in parallel, each on a bootstrap sample with random feature subsets. Reduces variance dramatically.</p>
+
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body">Train N trees (e.g., 100). Each tree is trained on a <strong>bootstrap sample</strong> — random sample with replacement from training data.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">At each split, consider only a random subset of features (sqrt(n_features) for classification, typically). Forces trees to be different.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Predictions: For classification, majority vote across all trees. For regression, average.</div></div>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Key Insight: Bagging + Feature Subsampling</div>
+    <ul>
+      <li><strong>Bagging (Bootstrap Aggregating):</strong> Train on random subsets, combine predictions. Reduces variance by averaging uncorrelated predictions.</li>
+      <li><strong>Feature Subsampling:</strong> If you don't subselect features, all trees would pick the same dominant features → highly correlated → averaging doesn't help.</li>
+      <li>Random Forests decorrelate trees → averaging becomes powerful.</li>
+      <li><strong>Out-of-bag (OOB) error:</strong> Each tree sees ~63% of data. Use the remaining 37% as a free validation set. sklearn's oob_score_ computes this automatically.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>n_estimators</code>: Number of trees. More = better (diminishing returns), but slower. Default 100. Try 50–500.</li>
+      <li><code>max_depth</code>: Usually leave unset (grows full). Random Forests don't need to be shallow — bagging handles overfitting.</li>
+      <li><code>min_samples_split/leaf</code>: Usually default (2/1). Tighten to limit individual tree size.</li>
+      <li><code>max_features</code>: Number of features to consider per split. Default 'sqrt' for classification, 'log2' for regression.</li>
+      <li><code>n_jobs</code>: -1 to use all cores. Training is embarrassingly parallel.</li>
+      <li>Usage: <code>RandomForestClassifier(n_estimators=100, n_jobs=-1).fit(X_train, y_train)</code></li>
+    </ul>
+  </div>
+
+  <h2>Feature Importance</h2>
+  <p>Random Forests' feature importance is more robust than single trees because it averages over 100 trees. Still not causal, but directionally useful.</p>
+
+  <div class="box gotcha">
+    <div class="box-title">When Random Forests Struggle</div>
+    <ul>
+      <li><strong>With very high-dimensional data:</strong> If n_features >> n_samples, Random Forests may still overfit despite bagging. Consider feature selection or dimensionality reduction first.</li>
+      <li><strong>With imbalanced classes:</strong> Random Forests don't automatically handle this. Use <code>class_weight='balanced'</code> or resample.</li>
+      <li><strong>Training time:</strong> With many trees and large data, training can be slow. Use <code>n_jobs=-1</code> and consider Gradient Boosting (faster empirically) if speed matters.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(3)">← Decision Trees</button>
+    <span class="ch-counter">5 / 8</span>
+    <button class="nav-btn primary" onclick="go(5)">Next: Naive Bayes →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 5 =========== -->
+<div class="chapter" id="ch5">
+  <div class="ch-eyebrow">Part 1, Chapter 06 / Tree-Based</div>
+  <h1 class="ch-title">Naive Bayes</h1>
+  <p class="ch-subtitle">Probabilistic classifier based on Bayes' theorem. Assumes features are conditionally independent — "naive" but often works well in practice.</p>
+
+  <h2>The Idea</h2>
+  <p>Bayes' theorem: P(y|x) ∝ P(x|y) · P(y). The classifier finds the class y that maximizes this posterior probability. The "naive" assumption: all features are independent given the class. This simplification makes computation tractable.</p>
+
+  <div class="eq">
+    P(y|x₁, x₂, ..., xₙ) ∝ P(y) · ∏ᵢ P(xᵢ|y)<br>
+    <span class="comment">// Predict: argmax_y [log(P(y)) + Σᵢ log(P(xᵢ|y))]</span>
+  </div>
+
+  <h2>Three Flavors</h2>
+  <table>
+    <tr><th>Variant</th><th>Distribution</th><th>Best For</th></tr>
+    <tr><td><strong>Gaussian NB</strong></td><td>Continuous features ~ Normal</td><td>General-purpose; assume features normally dist.</td></tr>
+    <tr><td><strong>Multinomial NB</strong></td><td>Count data (frequencies)</td><td>Text classification; word counts in documents</td></tr>
+    <tr><td><strong>Bernoulli NB</strong></td><td>Binary features</td><td>Binary text data; presence/absence of words</td></tr>
+  </table>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB</code></li>
+      <li><strong>Gaussian (continuous data):</strong> <code>GaussianNB().fit(X_train, y_train)</code></li>
+      <li><strong>Multinomial (text/counts):</strong> <code>MultinomialNB().fit(X_train, y_train)</code> — often paired with <code>TfidfVectorizer</code>.</li>
+      <li><strong>Bernoulli (binary features):</strong> <code>BernoulliNB().fit(X_train, y_train)</code></li>
+      <li>Key parameter: <code>alpha</code> (Laplace smoothing, prevents zero probabilities). Default 1.0; increase if you have sparse data.</li>
+    </ul>
+  </div>
+
+  <h2>Why Naive Bayes Works Despite Naivety</h2>
+  <div class="box concept">
+    <div class="box-title">The Paradox</div>
+    <ul>
+      <li>The independence assumption is almost always violated — features in real data are correlated.</li>
+      <li>Yet Naive Bayes often works well in practice, especially for text and high-dimensional data.</li>
+      <li><strong>Why:</strong> For classification, you only need to rank classes correctly (argmax), not estimate probabilities accurately. Wrong assumptions don't break ranking if they're wrong in a symmetric way.</li>
+      <li>High-dimensional data: curse of dimensionality makes density estimation hard for other methods; Naive Bayes sidesteps this with the independence assumption.</li>
+    </ul>
+  </div>
+
+  <h2>Strengths and Limitations</h2>
+  <div class="box gotcha">
+    <div class="box-title">When to Use / Avoid</div>
+    <ul>
+      <li><strong>Strengths:</strong> Fast, trains in one pass, works well with high-dimensional text, easy to implement, no tuning (besides alpha).</li>
+      <li><strong>Weaknesses:</strong> Independence assumption limits expressiveness. Usually beaten by logistic regression or tree-based models on structured data.</li>
+      <li><strong>Best for:</strong> Text classification (spam filters, sentiment), baseline comparisons, when you need real probability estimates (not just scores).</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(4)">← Random Forests</button>
+    <span class="ch-counter">6 / 8</span>
+    <button class="nav-btn primary" onclick="go(6)">Next: k-Nearest Neighbors →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 6 =========== -->
+<div class="chapter" id="ch6">
+  <div class="ch-eyebrow">Part 1, Chapter 07 / Distance-Based</div>
+  <h1 class="ch-title">k-Nearest Neighbors</h1>
+  <p class="ch-subtitle">The simplest algorithm: classify by majority vote of k nearest training points. No training, just lookup.</p>
+
+  <h2>The Algorithm</h2>
+  <p>Given a test point, find its k nearest neighbors in the training set (by Euclidean distance, by default). For classification, predict the majority class. For regression, predict the mean value.</p>
+
+  <div class="eq">
+    ŷ = argmax_c [count of neighbors of class c] &nbsp; <span class="comment">// classification</span><br>
+    ŷ = mean(y_values of k neighbors) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">// regression</span>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor</code></li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>n_neighbors</code>: Number of neighbors to consider. Default 5. Must tune — too low = noisy, too high = biased.</li>
+      <li><code>metric</code>: Distance metric ('euclidean', 'manhattan', 'cosine', etc.). Default 'euclidean'. Use 'cosine' for high-dim text/sparse data.</li>
+      <li><code>weights</code>: 'uniform' (all neighbors equal) or 'distance' (closer neighbors weighted higher). Default 'uniform'.</li>
+      <li><code>n_jobs</code>: -1 for parallelization. Prediction becomes fast when parallelized.</li>
+      <li>Usage: <code>KNeighborsClassifier(n_neighbors=5, metric='euclidean').fit(X_train, y_train)</code></li>
+    </ul>
+  </div>
+
+  <h2>Choosing k</h2>
+  <div class="box concept">
+    <div class="box-title">The Bias-Variance Tradeoff in k</div>
+    <ul>
+      <li><strong>Small k (e.g., 1, 3):</strong> High variance (sensitive to individual noisy points), low bias. Can overfit.</li>
+      <li><strong>Large k (e.g., n-1):</strong> Low variance, high bias. Eventually predicts the global majority class — useless.</li>
+      <li><strong>Rule of thumb:</strong> Start with k = sqrt(n) where n is number of samples. Tune via cross-validation. Odd k avoids ties in binary classification.</li>
+    </ul>
+  </div>
+
+  <h2>The Curse of Dimensionality</h2>
+  <div class="box gotcha">
+    <div class="box-title">KNN Fails in High Dimensions</div>
+    <ul>
+      <li>As dimensions increase, Euclidean distances become meaningless — all points are roughly equidistant from each other.</li>
+      <li>KNN's "nearest" neighbors aren't actually that similar. The algorithm breaks down.</li>
+      <li><strong>Fixes:</strong></li>
+      <li>Dimensionality reduction (PCA) before KNN.</li>
+      <li>Feature selection to remove irrelevant features.</li>
+      <li>Use distance metric aware of sparsity (cosine for text/sparse data).</li>
+    </ul>
+  </div>
+
+  <h2>Strengths and Limitations</h2>
+  <div class="box math">
+    <div class="box-title">Pros and Cons</div>
+    <ul>
+      <li><strong>Pros:</strong> Simple, non-parametric (adapts to data shape), no training phase, works with any distance metric.</li>
+      <li><strong>Cons:</strong> Slow prediction (compute distance to all training points), high memory (stores all training data), fails in high dimensions without preprocessing.</li>
+      <li><strong>Best for:</strong> Small-to-medium datasets, low/medium dimensions, baseline comparisons, time-sensitive training (no training time is needed).</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(5)">← Naive Bayes</button>
+    <span class="ch-counter">7 / 8</span>
+    <button class="nav-btn primary" onclick="go(7)">Next: Support Vector Machines →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 7 =========== -->
+<div class="chapter" id="ch7">
+  <div class="ch-eyebrow">Part 1, Chapter 08 / Distance-Based</div>
+  <h1 class="ch-title">Support Vector Machines</h1>
+  <p class="ch-subtitle">Find the decision boundary with maximum margin. Powerful non-linear boundaries via the kernel trick. Theoretically elegant.</p>
+
+  <h2>The Core Geometry</h2>
+  <p>SVM finds a hyperplane that separates two classes with <strong>maximum margin</strong> — the gap between the closest points of each class and the boundary. Intuition: a wide margin likely generalizes better.</p>
+
+  <div class="box concept">
+    <div class="box-title">Key Concepts</div>
+    <ul>
+      <li><strong>Support vectors:</strong> The training points closest to the decision boundary (the "toughest" points). Only these matter — the rest are irrelevant. This sparsity is what makes SVMs memory-efficient.</li>
+      <li><strong>Hard margin:</strong> Assumes data is linearly separable. Rarely true in practice.</li>
+      <li><strong>Soft margin:</strong> Allows some points to violate the margin, controlled by regularization hyperparameter C.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Scikit-Learn Implementation</div>
+    <ul>
+      <li><code>from sklearn.svm import SVC, SVR</code> (for classification and regression)</li>
+      <li><strong>Key parameters:</strong></li>
+      <li><code>C</code>: Regularization strength. Large C = smaller margin allowed, risk overfitting. Small C = larger margin, risk underfitting.</li>
+      <li><code>kernel</code>: 'linear' (for linearly separable data), 'rbf' (default, non-linear), 'poly' (polynomial degree d), 'sigmoid'. RBF is the go-to.</li>
+      <li><code>gamma</code> (RBF only): Controls influence of single training sample. High gamma = each point influences far; low gamma = local influence. Default 'scale' (1/(n_features * X.var())).</li>
+      <li><code>probability</code>: If True, outputs probabilities via Platt scaling (slow, inaccurate). Default False.</li>
+      <li>Usage: <code>SVC(C=1.0, kernel='rbf', gamma='scale').fit(X_train, y_train)</code></li>
+    </ul>
+  </div>
+
+  <h2>The Kernel Trick</h2>
+  <p>SVM can implicitly map data into a higher-dimensional space where it becomes linearly separable — without explicitly computing the mapping. This is done via kernel functions K(x, x') that compute dot products in the high-dim space efficiently.</p>
+
+  <table>
+    <tr><th>Kernel</th><th>Formula</th><th>When to use</th></tr>
+    <tr><td><strong>Linear</strong></td><td>xᵀx'</td><td>Linearly separable; high-dim text data</td></tr>
+    <tr><td><strong>RBF (Gaussian)</strong></td><td>exp(−γ‖x−x'‖²)</td><td>Non-linear boundary; default safe choice</td></tr>
+    <tr><td><strong>Polynomial</strong></td><td>(xᵀx' + r)^d</td><td>When you suspect degree-d interactions</td></tr>
+  </table>
+
+  <h2>SVMs in Practice: Strengths & Limitations</h2>
+  <div class="box gotcha">
+    <div class="box-title">Critical Considerations</div>
+    <ul>
+      <li><strong>Feature scaling is essential.</strong> SVM uses distance metrics sensitive to scale. Always standardize before fitting.</li>
+      <li><strong>Tuning C and gamma is crucial.</strong> Use GridSearchCV over logarithmic ranges: C in [0.01, 0.1, 1, 10, 100], gamma in [0.001, 0.01, 0.1, 1].</li>
+      <li><strong>Doesn't scale to large n.</strong> Training complexity is O(n²) to O(n³). Avoid for n > ~100,000. Use SGDClassifier instead.</li>
+      <li><strong>Probability outputs unreliable.</strong> The <code>probability=True</code> option uses Platt scaling, which is slow and inaccurate. If you need probabilities, use Logistic Regression.</li>
+      <li><strong>Works well in high-dimensional spaces.</strong> Unlike KNN, SVMs don't suffer from curse of dimensionality. Great for text, genomics.</li>
+    </ul>
+  </div>
+
+  <h2>SVC vs SVR</h2>
+  <p>SVC is for classification; SVR is for regression. Both use the same kernel trick and margin concepts. SVR minimizes ε-insensitive loss instead of classification error — allows tube of predictions rather than perfect predictions.</p>
+
+  <div class="box teal">
+    <div class="box-title">Part 1 Complete: Core sklearn Algorithms</div>
+    <ul>
+      <li>You now have hands-on understanding of the 8 most important sklearn algorithms.</li>
+      <li><strong>Next:</strong> Part 2 covers Gradient Boosting (XGBoost, LightGBM, CatBoost), Time Series, and Anomaly Detection.</li>
+      <li><strong>Practice:</strong> Implement each on a Kaggle dataset. Start simple: logistic regression baseline, then Random Forests, then SVM.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(6)">← k-Nearest Neighbors</button>
+    <span class="ch-counter">8 / 8</span>
+    <button class="nav-btn primary" onclick="window.location.href='part-02.html'">Part 2: Gradient Boosting →</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+const chapters = document.querySelectorAll('.chapter');
+const btns = document.querySelectorAll('.chapter-btn');
+const progress = document.getElementById('progress');
+let current = 0;
+
+function _go(n) {
+  chapters[current].classList.remove('active');
+  btns[current].classList.remove('active');
+  current = n;
+  chapters[current].classList.add('active');
+  btns[current].classList.add('active');
+  document.getElementById('main').scrollTo({top:0, behavior:'smooth'});
+  progress.style.width = `${Math.round(((n+1)/8)*100)}%`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML 101 — A Ground-Up Course</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Dark mode (default) — Flexoki */
+  --bg:#100f0f;--bg2:#1a1918;--bg3:#222120;--bg4:#2a2825;
+  --border:#3a3935;--border2:#4a4845;
+  --text:#f5f5f0;--text2:#b0aea9;--text3:#7d7b76;
+  --accent:#a3be8c;--accent2:#879a39;
+  --green:#a3be8c;--green-bg:#1a3322;
+  --amber:#d4a373;--amber-bg:#3a2a1a;
+  --red:#d46a6a;--red-bg:#3a1e1e;
+  --purple:#c9a9ff;--purple-bg:#2a1a3a;
+  --teal:#5ccccc;--teal-bg:#1a3a3a;
+  --mono:ui-monospace,menlo,'IBM Plex Mono',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Satoshi',sans-serif;
+  --serif:georgia,serif;
+  color-scheme: light dark;
+}
+@media(prefers-color-scheme: light) {
+  :root {
+    /* Light mode — Flexoki */
+    --bg:#fffcf0;--bg2:#f5f3ee;--bg3:#ebe9e2;--bg4:#dfd9ce;
+    --border:#d1c3b7;--border2:#c4b5a9;
+    --text:#100f0f;--text2:#6f6e69;--text3:#b0aea9;
+    --accent:#66800b;--accent2:#879a39;
+    --green:#66800b;--green-bg:#eef5e6;
+    --amber:#a05a32;--amber-bg:#fae8d9;
+    --red:#d46a6a;--red-bg:#fce8e8;
+    --purple:#c4b5fd;--purple-bg:#f3eeff;
+    --teal:#2dd4bf;--teal-bg:#e0fffe;
+  }
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:15px;line-height:1.7}
+
+/* SIDEBAR */
+#sidebar{width:260px;min-width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow-y:auto;opacity:.95}
+#sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+#sidebar-header .badge{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+#sidebar-header h1{font-size:18px;font-weight:600;color:var(--text);line-height:1.3}
+#sidebar-header p{font-size:12px;color:var(--text3);margin-top:4px}
+.module-group{padding:8px 0}
+.module-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:8px 20px 4px}
+.chapter-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 20px;background:none;border:none;cursor:pointer;text-align:left;color:var(--text2);font-family:var(--sans);font-size:13px;line-height:1.4;transition:all .15s}
+.chapter-btn:hover{background:var(--bg3);color:var(--text)}
+.chapter-btn.active{background:var(--bg4);color:var(--accent);border-left:2px solid var(--accent)}
+.chapter-btn .num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:22px}
+.chapter-btn.active .num{color:var(--accent)}
+.progress-bar{height:2px;background:var(--border);position:relative}
+.progress-fill{height:2px;background:var(--accent);transition:width .3s}
+
+/* MAIN */
+#main{flex:1;overflow-y:auto;height:100vh}
+.chapter{display:none;padding:48px 56px;max-width:820px}
+.chapter.active{display:block}
+
+/* CHAPTER HEADER */
+.ch-eyebrow{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ch-title{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:8px}
+.ch-subtitle{font-size:16px;color:var(--text2);font-weight:300;margin-bottom:36px;font-family:var(--serif);font-style:italic}
+.ch-divider{height:1px;background:var(--border);margin:32px 0}
+
+/* CONTENT BLOCKS */
+h2{font-size:18px;font-weight:600;margin:32px 0 12px;color:var(--text)}
+h3{font-size:15px;font-weight:500;margin:24px 0 8px;color:var(--text2);font-family:var(--mono);letter-spacing:.03em}
+p{color:var(--text2);margin-bottom:14px;line-height:1.75}
+p strong{color:var(--text);font-weight:500}
+
+/* CALLOUT BOXES */
+.box{border-radius:8px;padding:16px 20px;margin:20px 0;border-left:3px solid;background-color:rgba(0,0,0,0.05)}
+@media(prefers-color-scheme:light) {
+  .box{background-color:rgba(0,0,0,0.02)}
+}
+.box-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.box ul,.box ol{padding-left:20px;color:inherit}
+.box li{margin-bottom:6px;font-size:14px;line-height:1.6}
+
+.concept{border-color:var(--purple);color:color-mix(in hsl, var(--purple) 100%, transparent 0%)}
+.math{border-color:var(--accent);color:inherit}
+.impl{border-color:var(--green);color:inherit}
+.gotcha{border-color:var(--amber);color:inherit}
+.danger{border-color:var(--red);color:inherit}
+.teal{border-color:var(--teal);color:inherit}
+
+/* MATH DISPLAY */
+.eq{font-family:var(--mono);font-size:14px;background:var(--bg3);border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;border-radius:0 4px 4px 0;color:var(--text);overflow-x:auto}
+.eq .comment{color:var(--text3);font-size:12px}
+
+/* INLINE CODE */
+code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--teal);border:1px solid var(--border)}
+@media(prefers-color-scheme:light) {
+  code{background:rgba(0,0,0,0.05);color:#2a6a5a}
+}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+th{text-align:left;padding:10px 14px;background:var(--bg3);color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-bottom:1px solid var(--border2)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td strong{color:var(--text)}
+
+/* NAV ARROWS */
+.ch-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:24px;border-top:1px solid var(--border)}
+.nav-btn{background:transparent;border:1px solid var(--border2);padding:10px 18px;border-radius:6px;cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--text2);transition:all .15s}
+.nav-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border)}
+.nav-btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.ch-counter{font-family:var(--mono);font-size:12px;color:var(--text3)}
+
+/* ALGO STEPS */
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.step-num{min-width:28px;height:28px;border-radius:50%;background:var(--accent2);color:#fff;font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{color:var(--text2);font-size:14px;line-height:1.6}
+.step-body strong{color:var(--text)}
+
+/* TAG */
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;margin:2px}
+.tag-blue{background:rgba(166,128,204,0.2);color:var(--accent);border:none}
+.tag-green{background:rgba(163,190,140,0.2);color:var(--green);border:none}
+.tag-amber{background:rgba(212,163,115,0.2);color:var(--amber);border:none}
+.tag-red{background:rgba(212,106,106,0.2);color:var(--red);border:none}
+
+/* OVERVIEW GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-icon{font-size:20px;margin-bottom:8px}
+.card h4{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
+.card p{font-size:13px;color:var(--text2);margin:0}
+
+@media(max-width:900px){
+  #sidebar{width:220px;min-width:220px}
+  .chapter{padding:32px 24px}
+  .ch-title{font-size:26px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  body{flex-direction:column}
+  #sidebar{width:100%;height:auto;position:static}
+  #main{height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="badge">ML 101</div>
+    <h1>Machine Learning<br>Ground-Up</h1>
+    <p>11 modules · key pointers · math intuition</p>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:9%"></div></div>
+
+  <div class="module-group">
+    <div class="module-label">Foundations</div>
+    <button class="chapter-btn active" onclick="go(0)"><span class="num">01</span>The ML Landscape</button>
+    <button class="chapter-btn" onclick="go(1)"><span class="num">02</span>Gradient Descent</button>
+    <button class="chapter-btn" onclick="go(2)"><span class="num">03</span>Bias–Variance Tradeoff</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Supervised Learning</div>
+    <button class="chapter-btn" onclick="go(3)"><span class="num">04</span>Linear Regression</button>
+    <button class="chapter-btn" onclick="go(4)"><span class="num">05</span>Logistic Regression</button>
+    <button class="chapter-btn" onclick="go(5)"><span class="num">06</span>Decision Trees & Ensembles</button>
+    <button class="chapter-btn" onclick="go(6)"><span class="num">07</span>Support Vector Machines</button>
+    <button class="chapter-btn" onclick="go(7)"><span class="num">08</span>Neural Networks</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Unsupervised Learning</div>
+    <button class="chapter-btn" onclick="go(8)"><span class="num">09</span>Clustering (K-Means)</button>
+    <button class="chapter-btn" onclick="go(9)"><span class="num">10</span>Dimensionality Reduction</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Evaluation</div>
+    <button class="chapter-btn" onclick="go(10)"><span class="num">11</span>Model Evaluation Metrics</button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- =========== CHAPTER 0 =========== -->
+<div class="chapter active" id="ch0">
+  <div class="ch-eyebrow">Module 01 / Foundations</div>
+  <h1 class="ch-title">The ML Landscape</h1>
+  <p class="ch-subtitle">What machine learning actually is, and how its three paradigms are fundamentally different.</p>
+
+  <h2>What is Machine Learning?</h2>
+  <p>Traditional programming is <strong>rules → data → output</strong>. You encode logic explicitly. Machine learning flips this: you give it <strong>data + desired outputs → it infers the rules</strong>. The "rules" are parameters of a mathematical model, and "learning" is optimizing those parameters to minimize error.</p>
+  <p>Arthur Samuel's classic definition: <em>"Field of study that gives computers the ability to learn without being explicitly programmed."</em> More precisely — a program learns from experience E with respect to task T and performance P, if its P on T improves with E.</p>
+
+  <div class="box concept">
+    <div class="box-title">Core Vocabulary</div>
+    <ul>
+      <li><strong>Features (X):</strong> Input variables — the raw data your model sees.</li>
+      <li><strong>Labels / Targets (y):</strong> What you're trying to predict (in supervised learning).</li>
+      <li><strong>Model:</strong> A mathematical function f(X; θ) parameterized by θ that maps X → ŷ.</li>
+      <li><strong>Training:</strong> Adjusting θ to minimize the gap between ŷ and y on a training set.</li>
+      <li><strong>Inference:</strong> Running the trained model on new, unseen data.</li>
+      <li><strong>Generalization:</strong> How well the model performs on data it hasn't seen — the real goal.</li>
+    </ul>
+  </div>
+
+  <h2>Three Paradigms</h2>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h4>Supervised Learning</h4>
+      <p>Learn a mapping X→y from labeled examples. Error signal is explicit — you know the right answer.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <h4>Unsupervised Learning</h4>
+      <p>Find structure in unlabeled data. No ground truth — the model discovers patterns, clusters, or representations.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎮</div>
+      <h4>Reinforcement Learning</h4>
+      <p>An agent takes actions in an environment to maximize cumulative reward. No labeled data — learns by trial and error.</p>
+    </div>
+  </div>
+
+  <h2>The Data Split — Always</h2>
+  <div class="box math">
+    <div class="box-title">Why you need three splits</div>
+    <ul>
+      <li><strong>Training set (~70%):</strong> Model sees and learns from this. Parameters are optimized here.</li>
+      <li><strong>Validation set (~15%):</strong> Hyperparameter tuning and model selection. Model never trains on this, but you peek at it to make decisions — so it's "contaminated" for final evaluation.</li>
+      <li><strong>Test set (~15%):</strong> Touched exactly ONCE at the very end. This is your unbiased estimate of real-world performance.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Key Gotchas</div>
+    <ul>
+      <li><strong>Data leakage:</strong> If test-set information bleeds into training (e.g., scaling using the full dataset's mean), your evaluation is optimistically biased. Fit scalers/preprocessors on train, apply to val/test.</li>
+      <li><strong>i.i.d. assumption:</strong> Most ML theory assumes data is independently and identically distributed. Time-series, geo-clustered, or grouped data violates this — use temporal/grouped splits instead of random splits.</li>
+      <li><strong>More data beats better algorithms</strong> more often than you'd think. Before tuning models, verify your data pipeline is clean.</li>
+    </ul>
+  </div>
+
+  <h2>The ML Workflow</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Problem framing:</strong> Is it regression, classification, clustering? Define the loss you actually care about, not just what's easy to optimize.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Data collection & EDA:</strong> Understand distributions, check for nulls, outliers, class imbalance. Garbage in = garbage out.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Feature engineering:</strong> Transform raw data into a form the model can use. Often the highest-leverage activity in classical ML.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Model selection & training:</strong> Start simple (linear models, trees). Complexity only if needed.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Evaluation:</strong> On held-out data. Use the right metric for your problem, not just accuracy.</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Iteration:</strong> Diagnose errors, improve data or model, repeat. Most time is spent here.</div></div>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" disabled>← Previous</button>
+    <span class="ch-counter">1 / 11</span>
+    <button class="nav-btn primary" onclick="go(1)">Next: Gradient Descent →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 1 =========== -->
+<div class="chapter" id="ch1">
+  <div class="ch-eyebrow">Module 02 / Foundations</div>
+  <h1 class="ch-title">Gradient Descent</h1>
+  <p class="ch-subtitle">The engine behind almost everything. Understanding this is understanding how models learn.</p>
+
+  <h2>The Core Idea</h2>
+  <p>You have a <strong>loss function L(θ)</strong> that measures how wrong your model is. Learning = finding θ that minimizes L. Gradient descent does this by iteratively moving θ in the direction of steepest decrease — opposite to the gradient.</p>
+
+  <div class="eq">
+    θ ← θ − α · ∇<sub>θ</sub>L(θ)<br>
+    <span class="comment">// α = learning rate, ∇L = gradient (direction of steepest ascent)</span>
+  </div>
+
+  <p>Think of it as a ball rolling down a hilly landscape. The gradient tells you the slope at your current position. You take a small step downhill, recompute the slope, repeat.</p>
+
+  <div class="box concept">
+    <div class="box-title">Why the Negative Gradient?</div>
+    <ul>
+      <li>The gradient ∇L points in the direction of steepest <em>increase</em> of L.</li>
+      <li>We want to <em>decrease</em> L, so we move in the opposite direction: <code>−∇L</code>.</li>
+      <li>The learning rate α scales how large each step is.</li>
+    </ul>
+  </div>
+
+  <h2>Three Variants — Critical Distinction</h2>
+  <table>
+    <tr><th>Variant</th><th>Computes gradient over</th><th>Pros</th><th>Cons</th></tr>
+    <tr><td><strong>Batch GD</strong></td><td>Entire dataset</td><td>Stable, guaranteed convergence (convex)</td><td>Slow for large data; can't fit in memory</td></tr>
+    <tr><td><strong>Stochastic GD (SGD)</strong></td><td>1 sample at a time</td><td>Fast updates, escapes local minima</td><td>Noisy, oscillates around minimum</td></tr>
+    <tr><td><strong>Mini-batch GD</strong></td><td>Batch of N samples (e.g. 32–256)</td><td>Best of both — parallelizable on GPU</td><td>Batch size is a new hyperparameter</td></tr>
+  </table>
+  <p>In practice, <strong>mini-batch GD is the default</strong> for almost everything. When people say "SGD" in deep learning, they usually mean mini-batch.</p>
+
+  <h2>Learning Rate — The Most Important Hyperparameter</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>Too Large (α ↑↑)</h4>
+      <p>Overshoots the minimum, loss oscillates or diverges. Model fails to converge.</p>
+    </div>
+    <div class="card">
+      <h4>Too Small (α ↓↓)</h4>
+      <p>Extremely slow convergence. May get stuck in shallow local minima or saddle points.</p>
+    </div>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li>Start with a <strong>learning rate finder</strong>: sweep LR from very small to large, plot loss vs LR, pick the LR just before loss starts rising.</li>
+      <li>Use <strong>learning rate schedules</strong>: step decay, cosine annealing, or warmup + decay (standard in deep learning).</li>
+      <li>Feature scale your inputs first — unscaled features create an elongated loss landscape where GD zigzags inefficiently.</li>
+    </ul>
+  </div>
+
+  <h2>Modern Optimizers (beyond vanilla GD)</h2>
+  <div class="box math">
+    <div class="box-title">Key Optimizers</div>
+    <ul>
+      <li><strong>Momentum:</strong> Accumulates velocity in the gradient direction. Dampens oscillations. <code>v ← βv + (1-β)∇L; θ ← θ − αv</code></li>
+      <li><strong>RMSProp:</strong> Adapts learning rate per-parameter by dividing by a running average of squared gradients. Good for RNNs.</li>
+      <li><strong>Adam (Adaptive Moment Estimation):</strong> Combines momentum + RMSProp. The practical default for most deep learning. Maintains first moment (mean) and second moment (variance) of gradients.</li>
+    </ul>
+  </div>
+
+  <div class="eq">
+    Adam:<br>
+    m ← β₁m + (1−β₁)∇L  &nbsp;&nbsp;<span class="comment">// 1st moment (momentum)</span><br>
+    v ← β₂v + (1−β₂)(∇L)²  &nbsp;<span class="comment">// 2nd moment (adaptive scale)</span><br>
+    θ ← θ − α · m̂ / (√v̂ + ε)   <span class="comment">// bias-corrected update</span>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Gotchas</div>
+    <ul>
+      <li><strong>Local minima:</strong> In high-dimensional spaces (deep nets), local minima are rare. Saddle points are the bigger problem — GD can stall there. Momentum helps escape.</li>
+      <li><strong>Vanishing/exploding gradients:</strong> In deep networks, gradients can shrink to zero (vanish) or blow up (explode) during backpropagation through many layers. Use gradient clipping, batch norm, residual connections.</li>
+      <li><strong>Adam can generalize worse than SGD</strong> sometimes in vision tasks. SGD + momentum with careful tuning often beats Adam on CNNs.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(0)">← The ML Landscape</button>
+    <span class="ch-counter">2 / 11</span>
+    <button class="nav-btn primary" onclick="go(2)">Next: Bias–Variance →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 2 =========== -->
+<div class="chapter" id="ch2">
+  <div class="ch-eyebrow">Module 03 / Foundations</div>
+  <h1 class="ch-title">Bias–Variance Tradeoff</h1>
+  <p class="ch-subtitle">The central tension in all of machine learning — and why you can't just make your model "more powerful".</p>
+
+  <h2>Decomposing Generalization Error</h2>
+  <p>For any model, the expected test error decomposes into three terms:</p>
+
+  <div class="eq">
+    Error = Bias² + Variance + Irreducible Noise<br>
+    <span class="comment">// Irreducible noise = inherent randomness in data, can't be reduced</span>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>Bias</h4>
+      <p>Error from <strong>wrong assumptions</strong> in the model. A linear model fitting a quadratic relationship has high bias — it systematically gets things wrong. Also called <em>underfitting</em>.</p>
+    </div>
+    <div class="card">
+      <h4>Variance</h4>
+      <p>Error from <strong>sensitivity to fluctuations</strong> in training data. A 20-degree polynomial memorizes training noise — its predictions change wildly on new data. Also called <em>overfitting</em>.</p>
+    </div>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Intuition via a Target Analogy</div>
+    <ul>
+      <li><strong>Low bias, low variance:</strong> All shots clustered at the bullseye. Ideal. Hard to achieve.</li>
+      <li><strong>High bias, low variance:</strong> Shots clustered consistently, but far from center. Confidently wrong.</li>
+      <li><strong>Low bias, high variance:</strong> Shots scatter around the bullseye but no single shot is close. Unreliable.</li>
+      <li><strong>High bias, high variance:</strong> Scattered AND far from center. The worst case. Usually means a broken training loop.</li>
+    </ul>
+  </div>
+
+  <h2>Diagnosing Underfitting vs Overfitting</h2>
+  <table>
+    <tr><th>Symptom</th><th>Train Error</th><th>Val Error</th><th>Diagnosis</th></tr>
+    <tr><td>Both high</td><td>High</td><td>High</td><td><span class="tag tag-amber">Underfitting</span> — model too simple or too little training</td></tr>
+    <tr><td>Gap between them</td><td>Low</td><td>High</td><td><span class="tag tag-red">Overfitting</span> — model memorized training data</td></tr>
+    <tr><td>Both low</td><td>Low</td><td>Low</td><td><span class="tag tag-green">Well-fit</span> — generalization is working</td></tr>
+  </table>
+
+  <h2>Regularization — Fighting Overfitting</h2>
+  <p>Regularization adds a penalty to the loss function that discourages large parameter values, effectively constraining model complexity.</p>
+
+  <div class="eq">
+    L2 (Ridge): &nbsp; L_total = L_data + λ · Σwᵢ²  <br>
+    L1 (Lasso): &nbsp; L_total = L_data + λ · Σ|wᵢ|  <br>
+    <span class="comment">// λ = regularization strength. Larger λ = more regularization</span>
+  </div>
+
+  <div class="box math">
+    <div class="box-title">L1 vs L2 — Critical Difference</div>
+    <ul>
+      <li><strong>L2 (Ridge):</strong> Shrinks all weights smoothly toward zero. Never exactly zero. Handles correlated features well. Closed-form solution exists.</li>
+      <li><strong>L1 (Lasso):</strong> Produces <strong>sparse weights</strong> — many become exactly zero. Acts as automatic feature selection. Useful when you believe most features are irrelevant.</li>
+      <li><strong>Elastic Net:</strong> Combines both: <code>λ₁|w| + λ₂w²</code>. Good default when you don't know which to pick.</li>
+    </ul>
+  </div>
+
+  <h2>Other Regularization Techniques</h2>
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li><strong>Dropout (neural nets):</strong> During training, randomly zero out neurons with probability p. Forces the network to learn redundant representations. Disable at inference time.</li>
+      <li><strong>Early stopping:</strong> Track validation loss during training. Stop when validation loss starts increasing (before you overfit). Save the checkpoint at validation minimum.</li>
+      <li><strong>Data augmentation:</strong> Artificially expand training set (flips, crops, color jitter for images). Effectively increases dataset size without collecting new data.</li>
+      <li><strong>Batch normalization:</strong> Normalizes activations within each mini-batch. Stabilizes training, allows higher learning rates, mild regularization effect.</li>
+      <li><strong>Cross-validation (k-fold):</strong> Rotate through k splits for training/validation. More reliable estimate of generalization than a single split, especially for small datasets.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Common Mistakes</div>
+    <ul>
+      <li>Adding more parameters when val loss is already higher than train loss. That's overfitting — you need regularization or more data, not complexity.</li>
+      <li>Tuning on the test set. If you check test performance 20 times, your final number is statistically meaningless.</li>
+      <li>Regularization hyperparameter λ should be swept on a <strong>log scale</strong> (0.0001, 0.001, 0.01, 0.1, 1) not linear scale.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(1)">← Gradient Descent</button>
+    <span class="ch-counter">3 / 11</span>
+    <button class="nav-btn primary" onclick="go(3)">Next: Linear Regression →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 3 =========== -->
+<div class="chapter" id="ch3">
+  <div class="ch-eyebrow">Module 04 / Supervised Learning</div>
+  <h1 class="ch-title">Linear Regression</h1>
+  <p class="ch-subtitle">The simplest model that can teach you everything: parameterization, loss, optimization, and evaluation.</p>
+
+  <h2>The Model</h2>
+  <p>Assumes a linear relationship between inputs X and a continuous output y.</p>
+  <div class="eq">
+    ŷ = Xw + b &nbsp;&nbsp;<span class="comment">// or equivalently: ŷ = wᵀx + b for a single sample</span><br>
+    <span class="comment">// w = weight vector (one per feature), b = bias/intercept</span>
+  </div>
+  <p>The model has <strong>n+1 parameters</strong> for n features (n weights + 1 bias). Learning = finding w and b that minimize prediction error.</p>
+
+  <h2>Loss Function: Mean Squared Error</h2>
+  <div class="eq">
+    MSE = (1/m) · Σᵢ (yᵢ − ŷᵢ)²<br>
+    <span class="comment">// m = number of training samples. Squaring penalizes large errors more.</span>
+  </div>
+  <p>Why squared and not absolute? MSE is differentiable everywhere — critical for gradient-based optimization. The gradient of MSE w.r.t. w is clean: <code>∇w = (2/m) · Xᵀ(Xw − y)</code></p>
+
+  <h2>Two Ways to Optimize</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>Normal Equation (closed-form)</h4>
+      <p>Solve analytically: <code>w* = (XᵀX)⁻¹ Xᵀy</code></p>
+      <p>Exact solution. <strong>O(n³) matrix inversion</strong> — infeasible for n &gt; ~10,000 features. Good for small/medium datasets.</p>
+    </div>
+    <div class="card">
+      <h4>Gradient Descent</h4>
+      <p>Iteratively update w in the direction of −∇MSE. Scales to millions of features. Requires feature scaling and tuning α.</p>
+    </div>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Geometric Interpretation</div>
+    <ul>
+      <li>Each weight wᵢ is the <strong>marginal effect</strong> of feature xᵢ on ŷ, holding all else constant.</li>
+      <li>The model fits a <strong>hyperplane</strong> through the feature space to minimize vertical distance to data points.</li>
+      <li>MSE minimization = projecting y onto the column space of X.</li>
+    </ul>
+  </div>
+
+  <h2>Evaluation Metrics</h2>
+  <table>
+    <tr><th>Metric</th><th>Formula</th><th>When to use</th></tr>
+    <tr><td><strong>MSE</strong></td><td>mean((y−ŷ)²)</td><td>Optimization target; penalizes large errors heavily</td></tr>
+    <tr><td><strong>RMSE</strong></td><td>√MSE</td><td>Same units as y; easier to interpret</td></tr>
+    <tr><td><strong>MAE</strong></td><td>mean(|y−ŷ|)</td><td>More robust to outliers than MSE</td></tr>
+    <tr><td><strong>R²</strong></td><td>1 − SS_res/SS_tot</td><td>Proportion of variance explained. 1 = perfect.</td></tr>
+  </table>
+
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li><strong>Always standardize features</strong> before gradient descent (subtract mean, divide by std). Otherwise, features on different scales create an elongated loss landscape and GD converges slowly.</li>
+      <li>Check for <strong>multicollinearity</strong> (features correlated with each other). It inflates variance of weight estimates, makes coefficients unstable. Use Ridge regression or PCA to handle it.</li>
+      <li>Plot <strong>residuals vs fitted values</strong>. Patterns in residuals reveal violations of linearity assumption or heteroscedasticity.</li>
+      <li>Polynomial features (<code>x, x², x³</code>) extend linear regression to capture non-linear relationships while keeping the same linear framework.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Assumptions of OLS (Ordinary Least Squares)</div>
+    <ul>
+      <li><strong>Linearity:</strong> y is a linear function of X.</li>
+      <li><strong>Independence:</strong> Observations are independent (no autocorrelation).</li>
+      <li><strong>Homoscedasticity:</strong> Residuals have constant variance across all values of X.</li>
+      <li><strong>Normality of residuals:</strong> For inference (p-values, confidence intervals) to be valid.</li>
+      <li>Violating these doesn't break prediction, but it breaks <strong>statistical inference</strong> (coefficient interpretation, p-values).</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(2)">← Bias–Variance</button>
+    <span class="ch-counter">4 / 11</span>
+    <button class="nav-btn primary" onclick="go(4)">Next: Logistic Regression →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 4 =========== -->
+<div class="chapter" id="ch4">
+  <div class="ch-eyebrow">Module 05 / Supervised Learning</div>
+  <h1 class="ch-title">Logistic Regression</h1>
+  <p class="ch-subtitle">Despite the name, it's a classification algorithm. Arguably the most important model to truly understand.</p>
+
+  <h2>The Problem with Linear Regression for Classification</h2>
+  <p>For binary classification (y ∈ {0, 1}), applying linear regression gives predictions outside [0, 1]. These are meaningless as probabilities. We need a model that outputs a value bounded in (0, 1) — interpreted as P(y=1 | x).</p>
+
+  <h2>The Sigmoid Function</h2>
+  <div class="eq">
+    σ(z) = 1 / (1 + e⁻ᶻ)  &nbsp;&nbsp;<span class="comment">// "squashes" any real number into (0, 1)</span><br>
+    z = wᵀx + b              &nbsp;&nbsp;<span class="comment">// the "logit" — a linear function of inputs</span><br>
+    ŷ = σ(wᵀx + b) = P(y=1 | x)
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Key Properties of Sigmoid</div>
+    <ul>
+      <li>σ(0) = 0.5 — at the decision boundary, the model is exactly uncertain.</li>
+      <li>σ(z) → 1 as z → +∞; σ(z) → 0 as z → −∞</li>
+      <li>Derivative: σ'(z) = σ(z)(1 − σ(z)) — elegant, used in backprop.</li>
+      <li>The decision boundary (where ŷ = 0.5) is where wᵀx + b = 0 — a <strong>linear boundary in feature space</strong>. Logistic regression is a linear classifier.</li>
+    </ul>
+  </div>
+
+  <h2>Loss: Binary Cross-Entropy</h2>
+  <p>MSE is the wrong loss for classification (non-convex with sigmoid, saturates gradients). Binary cross-entropy (log loss) is derived from maximum likelihood estimation:</p>
+  <div class="eq">
+    L = −(1/m) · Σ [ yᵢ log(ŷᵢ) + (1−yᵢ) log(1−ŷᵢ) ]<br>
+    <span class="comment">// When y=1: only the first term matters. When y=0: only the second term.</span><br>
+    <span class="comment">// Penalizes confident wrong predictions very heavily (log(0) → ∞)</span>
+  </div>
+
+  <div class="box math">
+    <div class="box-title">Intuition for Cross-Entropy</div>
+    <ul>
+      <li>If y=1 and ŷ=0.99: loss ≈ −log(0.99) ≈ 0.01. Nearly correct → small penalty.</li>
+      <li>If y=1 and ŷ=0.01: loss ≈ −log(0.01) ≈ 4.6. Confidently wrong → huge penalty.</li>
+      <li>This asymmetric penalization (compared to MSE) is what makes it the right loss for probability outputs.</li>
+    </ul>
+  </div>
+
+  <h2>Multiclass Extension</h2>
+  <p>For K classes, use the <strong>softmax function</strong> instead of sigmoid:</p>
+  <div class="eq">
+    P(y=k | x) = exp(zₖ) / Σⱼ exp(zⱼ)  &nbsp;<span class="comment">// outputs sum to 1 across all classes</span><br>
+    Loss: Categorical Cross-Entropy = −Σₖ yₖ log(ŷₖ)
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li>Logistic regression has <strong>no hyperparameters</strong> by default (besides regularization strength C = 1/λ). Great baseline for any classification problem.</li>
+      <li>Use <strong>class_weight='balanced'</strong> in sklearn when dealing with class imbalance — it re-weights the loss contribution of each class inversely proportional to its frequency.</li>
+      <li>Coefficients are log-odds: <code>exp(wᵢ)</code> gives the odds ratio for feature i — interpretable and useful for communicating results.</li>
+      <li>Logistic regression with L1 regularization does automatic feature selection (some weights go to exactly 0).</li>
+      <li>Always check the calibration of probability outputs. A model that outputs 0.7 should be right 70% of the time on those samples.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(3)">← Linear Regression</button>
+    <span class="ch-counter">5 / 11</span>
+    <button class="nav-btn primary" onclick="go(5)">Next: Trees & Ensembles →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 5 =========== -->
+<div class="chapter" id="ch5">
+  <div class="ch-eyebrow">Module 06 / Supervised Learning</div>
+  <h1 class="ch-title">Decision Trees & Ensembles</h1>
+  <p class="ch-subtitle">From simple if-else trees to the most powerful tabular ML algorithms: Random Forests and Gradient Boosting.</p>
+
+  <h2>Decision Trees</h2>
+  <p>A tree recursively partitions the feature space by asking binary questions (e.g., "Is x₂ > 3.5?") and assigns a prediction to each leaf. Training = finding the optimal sequence of splits.</p>
+
+  <h3>How to choose splits?</h3>
+  <div class="box math">
+    <div class="box-title">Splitting Criteria</div>
+    <ul>
+      <li><strong>Gini Impurity (classification):</strong> G = 1 − Σₖ pₖ². Measures how often a random element would be misclassified. 0 = pure node (all one class). Pick the split that maximally reduces Gini.</li>
+      <li><strong>Information Gain / Entropy (classification):</strong> H = −Σₖ pₖ log(pₖ). Split that maximizes the decrease in entropy. Slightly prefers splits that produce balanced partitions.</li>
+      <li><strong>MSE reduction (regression):</strong> Split that maximizes reduction in mean squared error within each resulting node.</li>
+    </ul>
+  </div>
+
+  <p>Trees are <strong>greedy</strong> — they pick the best split at each step locally, not globally optimal. This is fast but not perfect.</p>
+
+  <div class="box gotcha">
+    <div class="box-title">Core Problem: Trees Overfit Aggressively</div>
+    <ul>
+      <li>A fully grown tree memorizes training data — each leaf can contain just 1 sample. Perfect train accuracy, terrible generalization.</li>
+      <li>Fix: limit <code>max_depth</code>, require <code>min_samples_split</code>, or prune after building.</li>
+      <li>Trees are <strong>high variance</strong> — slightly different training data → completely different tree structure.</li>
+    </ul>
+  </div>
+
+  <h2>Random Forests — Bagging + Feature Subsampling</h2>
+  <p>Train N trees, each on a <strong>bootstrap sample</strong> (random sample with replacement) of the training data, and at each split, only consider a random subset of features. Aggregate predictions by majority vote (classification) or averaging (regression).</p>
+
+  <div class="box concept">
+    <div class="box-title">Why This Works</div>
+    <ul>
+      <li><strong>Bagging reduces variance:</strong> Individual trees are high-variance. Averaging many uncorrelated trees cancels out their errors.</li>
+      <li><strong>Feature subsampling decorrelates trees:</strong> Without it, all trees would pick the same dominant features → correlated → averaging doesn't help much.</li>
+      <li>Out-of-bag (OOB) error: each tree is trained on ~63% of data. The remaining 37% can be used as a free validation set — no separate val split needed.</li>
+    </ul>
+  </div>
+
+  <h2>Gradient Boosting — The Tabular ML Champion</h2>
+  <p>Instead of training trees in parallel (like RF), <strong>boost sequentially</strong>. Each new tree is trained to predict the <em>residual errors</em> of all previous trees. The final model is an additive sum of trees:</p>
+  <div class="eq">
+    F(x) = f₁(x) + f₂(x) + ... + fₙ(x)<br>
+    <span class="comment">// fₜ is trained on residuals of F_{t-1}</span><br>
+    <span class="comment">// Equivalently: each tree fits the negative gradient of the loss</span>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Gradient Boosting Implementation Pointers (XGBoost/LightGBM)</div>
+    <ul>
+      <li><strong>Key hyperparameters:</strong> n_estimators (more = lower bias but risk overfit), learning_rate (shrinks each tree's contribution), max_depth (3–6 is typical), subsample, colsample_bytree.</li>
+      <li>XGBoost and LightGBM are the state-of-the-art for structured/tabular data. For most Kaggle competitions on tabular data, one of these wins.</li>
+      <li>Use <strong>early stopping</strong> with a validation set — stop adding trees when val loss stops improving. Makes n_estimators less critical to tune.</li>
+      <li><strong>Feature importance</strong> is built-in — useful for interpretability and feature selection.</li>
+      <li>Unlike neural nets, tree-based models are largely robust to feature scaling. You don't need to normalize inputs.</li>
+    </ul>
+  </div>
+
+  <table>
+    <tr><th>Aspect</th><th>Decision Tree</th><th>Random Forest</th><th>Gradient Boosting</th></tr>
+    <tr><td><strong>Training</strong></td><td>Single, fast</td><td>Parallel trees</td><td>Sequential trees</td></tr>
+    <tr><td><strong>Variance</strong></td><td>Very high</td><td>Low</td><td>Low</td></tr>
+    <tr><td><strong>Bias</strong></td><td>Low</td><td>Slightly higher</td><td>Low</td></tr>
+    <tr><td><strong>Interpretability</strong></td><td>High</td><td>Medium</td><td>Low</td></tr>
+    <tr><td><strong>Best use</strong></td><td>Explainability</td><td>Robust baseline</td><td>Max performance on tabular</td></tr>
+  </table>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(4)">← Logistic Regression</button>
+    <span class="ch-counter">6 / 11</span>
+    <button class="nav-btn primary" onclick="go(6)">Next: SVMs →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 6 =========== -->
+<div class="chapter" id="ch6">
+  <div class="ch-eyebrow">Module 07 / Supervised Learning</div>
+  <h1 class="ch-title">Support Vector Machines</h1>
+  <p class="ch-subtitle">Elegant geometric intuition — find the decision boundary that has maximum margin from both classes.</p>
+
+  <h2>The Core Idea</h2>
+  <p>For a linearly separable binary classification problem, infinitely many hyperplanes can separate the classes. SVM finds the one that <strong>maximizes the margin</strong> — the gap between the nearest points of each class (called <em>support vectors</em>) and the boundary.</p>
+
+  <div class="box concept">
+    <div class="box-title">Key Geometric Concepts</div>
+    <ul>
+      <li><strong>Decision boundary:</strong> The hyperplane wᵀx + b = 0</li>
+      <li><strong>Margin:</strong> Distance between the two margin hyperplanes (wᵀx + b = ±1). Width = 2/‖w‖.</li>
+      <li><strong>Maximizing margin</strong> = minimizing ‖w‖ = a constrained quadratic optimization problem.</li>
+      <li><strong>Support vectors:</strong> The training points that lie on the margin boundaries. Only these determine the decision boundary — the rest are irrelevant. This is what makes SVMs memory-efficient and robust.</li>
+    </ul>
+  </div>
+
+  <h2>Soft Margin (Handling Non-Separable Data)</h2>
+  <p>Real data is rarely perfectly separable. The <strong>soft margin SVM</strong> introduces slack variables ξᵢ that allow some points to violate the margin, controlled by hyperparameter C:</p>
+  <div class="eq">
+    min  ½‖w‖² + C·Σξᵢ<br>
+    <span class="comment">// C controls the tradeoff: large C = smaller margin, fewer violations (risk overfitting)</span><br>
+    <span class="comment">//                         small C = larger margin, more violations allowed (risk underfitting)</span>
+  </div>
+
+  <h2>The Kernel Trick — Non-Linear Decision Boundaries</h2>
+  <p>SVM is fundamentally linear. But you can implicitly map data into a <strong>higher-dimensional feature space</strong> where it becomes linearly separable — without ever explicitly computing the transformation. This is done via <strong>kernel functions</strong>:</p>
+  <div class="eq">
+    K(x, x') = φ(x)ᵀφ(x')  &nbsp;<span class="comment">// dot product in high-dim space, computed cheaply in original space</span>
+  </div>
+
+  <table>
+    <tr><th>Kernel</th><th>Formula</th><th>When to use</th></tr>
+    <tr><td><strong>Linear</strong></td><td>xᵀx'</td><td>Linearly separable; high-dimensional data (text)</td></tr>
+    <tr><td><strong>RBF / Gaussian</strong></td><td>exp(−γ‖x−x'‖²)</td><td>Default choice; captures complex boundaries</td></tr>
+    <tr><td><strong>Polynomial</strong></td><td>(xᵀx' + r)^d</td><td>When interactions between features matter</td></tr>
+  </table>
+
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li>SVMs are <strong>sensitive to feature scaling</strong> — always standardize inputs before using SVM.</li>
+      <li>Two key hyperparameters: <strong>C</strong> (regularization) and <strong>γ</strong> (RBF kernel width). Tune together via grid search on log scale.</li>
+      <li>SVMs don't scale well: training is O(n² to n³) in number of samples. Avoid for n &gt; ~100,000. Use LinearSVC or SGDClassifier instead for large datasets.</li>
+      <li>SVMs don't natively output probabilities. sklearn's <code>probability=True</code> uses Platt scaling (fits a logistic regression on top) — expensive and slightly inaccurate.</li>
+      <li>SVMs work well in high-dimensional spaces with few samples (e.g., text classification, genomics).</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(5)">← Trees & Ensembles</button>
+    <span class="ch-counter">7 / 11</span>
+    <button class="nav-btn primary" onclick="go(7)">Next: Neural Networks →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 7 =========== -->
+<div class="chapter" id="ch7">
+  <div class="ch-eyebrow">Module 08 / Supervised Learning</div>
+  <h1 class="ch-title">Neural Networks</h1>
+  <p class="ch-subtitle">Universal function approximators that learn hierarchical representations. The foundation of modern AI.</p>
+
+  <h2>The Basic Unit: A Neuron</h2>
+  <p>A single neuron computes a <strong>weighted sum of its inputs, then applies a non-linear activation function</strong>:</p>
+  <div class="eq">
+    output = activation(w₁x₁ + w₂x₂ + ... + wₙxₙ + b)<br>
+    <span class="comment">// Without activation, stacking layers = still just one linear transformation</span><br>
+    <span class="comment">// Non-linearity is what gives neural nets their power</span>
+  </div>
+
+  <h2>Architecture</h2>
+  <div class="box concept">
+    <div class="box-title">Layers</div>
+    <ul>
+      <li><strong>Input layer:</strong> Raw features. No computation — just the data dimensionality.</li>
+      <li><strong>Hidden layers:</strong> Intermediate representations. "Deep" = multiple hidden layers. Each layer learns increasingly abstract features.</li>
+      <li><strong>Output layer:</strong> Final prediction. Linear for regression; sigmoid for binary classification; softmax for multiclass.</li>
+    </ul>
+  </div>
+
+  <h2>Activation Functions — Why They Matter</h2>
+  <table>
+    <tr><th>Activation</th><th>Formula</th><th>Key Property</th><th>When to use</th></tr>
+    <tr><td><strong>ReLU</strong></td><td>max(0, z)</td><td>Non-saturating; sparse activation</td><td>Default for hidden layers in nearly all modern nets</td></tr>
+    <tr><td><strong>Sigmoid</strong></td><td>1/(1+e⁻ᶻ)</td><td>Saturates at 0 and 1 → vanishing gradients</td><td>Output layer for binary classification only</td></tr>
+    <tr><td><strong>Softmax</strong></td><td>exp(zₖ)/Σexp(zⱼ)</td><td>Outputs sum to 1 across classes</td><td>Output layer for multiclass</td></tr>
+    <tr><td><strong>LeakyReLU</strong></td><td>max(0.01z, z)</td><td>Prevents dying ReLU</td><td>When ReLU causes dead neurons</td></tr>
+    <tr><td><strong>tanh</strong></td><td>(eᶻ−e⁻ᶻ)/(eᶻ+e⁻ᶻ)</td><td>Zero-centered; still saturates</td><td>RNNs; largely replaced by ReLU in FF nets</td></tr>
+  </table>
+
+  <div class="box gotcha">
+    <div class="box-title">The Dying ReLU Problem</div>
+    <ul>
+      <li>ReLU outputs 0 for any negative input. If a neuron's weights get updated such that it always receives negative input, it <strong>permanently outputs 0</strong> and its gradient is always 0 — it "dies".</li>
+      <li>Fix: Leaky ReLU (small slope for negatives), or GELU (used in transformers).</li>
+    </ul>
+  </div>
+
+  <h2>Forward Pass & Backpropagation</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">→</div><div class="step-body"><strong>Forward pass:</strong> Compute activations layer by layer from input to output. Compute the loss at the end.</div></div>
+    <div class="step"><div class="step-num">←</div><div class="step-body"><strong>Backward pass (backprop):</strong> Apply the chain rule of calculus to compute <code>∂L/∂w</code> for every weight in the network, propagating gradients from output layer back to input layer.</div></div>
+    <div class="step"><div class="step-num">↑</div><div class="step-body"><strong>Parameter update:</strong> Use computed gradients + optimizer (Adam, SGD) to update all weights simultaneously.</div></div>
+  </div>
+
+  <div class="eq">
+    Chain rule: ∂L/∂w₁ = (∂L/∂a₂) · (∂a₂/∂z₂) · (∂z₂/∂a₁) · (∂a₁/∂z₁) · (∂z₁/∂w₁)<br>
+    <span class="comment">// Gradients multiply through each layer. Many layers = many multiplications → vanishing/exploding</span>
+  </div>
+
+  <h2>Universal Approximation Theorem</h2>
+  <p>A feedforward network with a single hidden layer of <em>sufficient width</em> can approximate any continuous function on a compact subset of Rⁿ to arbitrary precision. This is an existence result — it doesn't tell you how to find the weights or how many neurons you need. In practice, <strong>depth</strong> (more layers) is far more efficient than width for learning complex functions.</p>
+
+  <div class="box impl">
+    <div class="box-title">Neural Net Implementation Pointers</div>
+    <ul>
+      <li><strong>Weight initialization matters:</strong> Don't initialize all weights to 0 (symmetry — all neurons learn the same thing). Use He initialization (for ReLU) or Xavier/Glorot (for tanh/sigmoid).</li>
+      <li><strong>Batch normalization:</strong> Normalize activations between layers. Dramatically stabilizes training, allows larger learning rates, reduces dependence on initialization.</li>
+      <li><strong>Start small:</strong> Begin with 1–2 hidden layers. Add depth/width only if train loss is still high. More parameters = more regularization needed.</li>
+      <li><strong>Dropout:</strong> Randomly zero p% of neurons per batch during training. Strong regularizer for fully-connected layers. Don't use on batch-normalized layers — it interferes.</li>
+      <li><strong>Frameworks:</strong> PyTorch (research standard, dynamic graph) or Keras/TensorFlow (production, more static). Both auto-differentiate — you only write the forward pass.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(6)">← SVMs</button>
+    <span class="ch-counter">8 / 11</span>
+    <button class="nav-btn primary" onclick="go(8)">Next: Clustering →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 8 =========== -->
+<div class="chapter" id="ch8">
+  <div class="ch-eyebrow">Module 09 / Unsupervised Learning</div>
+  <h1 class="ch-title">Clustering — K-Means</h1>
+  <p class="ch-subtitle">Finding structure in unlabeled data by grouping similar points together.</p>
+
+  <h2>What is Clustering?</h2>
+  <p>Given unlabeled data points, assign each to a <strong>cluster</strong> such that points within the same cluster are more similar to each other than to points in other clusters. No ground truth — the algorithm discovers structure.</p>
+
+  <h2>K-Means Algorithm</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Initialize:</strong> Randomly place K centroids in the feature space (or use K-Means++ for smarter initialization).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Assign:</strong> For each data point, find the nearest centroid. Assign the point to that cluster.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Update:</strong> Recompute each centroid as the mean of all points assigned to it.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Repeat:</strong> Steps 2–3 until assignments stop changing (convergence). Guaranteed to converge, but to a local minimum.</div></div>
+  </div>
+
+  <div class="eq">
+    Objective: minimize J = Σᵢ Σₓ∈Cᵢ ‖x − μᵢ‖²<br>
+    <span class="comment">// Sum of squared distances from each point to its cluster centroid</span><br>
+    <span class="comment">// Also called "inertia". Lower = tighter clusters.</span>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Choosing K — The Elbow Method</div>
+    <ul>
+      <li>Run K-Means for K = 1, 2, 3, ..., N. Plot inertia vs K.</li>
+      <li>As K increases, inertia always decreases. Look for the "elbow" — the K where inertia stops decreasing sharply. That's the natural number of clusters.</li>
+      <li>Silhouette score is a more rigorous measure: how similar a point is to its own cluster vs neighboring clusters. Range [−1, 1]. Pick K that maximizes average silhouette score.</li>
+    </ul>
+  </div>
+
+  <h2>K-Means Limitations</h2>
+  <div class="box gotcha">
+    <div class="box-title">When K-Means Fails</div>
+    <ul>
+      <li><strong>Assumes spherical clusters</strong> of similar size. Will split elongated or irregularly shaped clusters incorrectly.</li>
+      <li><strong>Sensitive to initialization:</strong> Can converge to bad local minima. Fix: run multiple times with different random seeds, keep best result (n_init=10 in sklearn).</li>
+      <li><strong>Sensitive to outliers:</strong> Outliers skew centroid positions because the mean is non-robust. Consider removing outliers first, or using K-Medoids instead.</li>
+      <li><strong>You must specify K upfront</strong> — not always obvious. Domain knowledge or elbow/silhouette methods help.</li>
+    </ul>
+  </div>
+
+  <h2>Other Clustering Algorithms (Quick Reference)</h2>
+  <table>
+    <tr><th>Algorithm</th><th>Mechanism</th><th>When to use</th></tr>
+    <tr><td><strong>DBSCAN</strong></td><td>Density-based. Points in dense regions form clusters; sparse points = noise/outliers.</td><td>Irregularly shaped clusters; needs to detect outliers; don't know K.</td></tr>
+    <tr><td><strong>Hierarchical</strong></td><td>Builds a dendrogram by iteratively merging/splitting clusters.</td><td>When you want to visualize cluster hierarchy. Can choose cut at any level.</td></tr>
+    <tr><td><strong>Gaussian Mixture</strong></td><td>Probabilistic: assigns soft cluster membership via EM algorithm.</td><td>Overlapping clusters; need probability of cluster membership; elliptical clusters.</td></tr>
+  </table>
+
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li>Always <strong>standardize features</strong> before clustering — K-Means uses Euclidean distance, so features on different scales dominate unfairly.</li>
+      <li>K-Means doesn't work well with <strong>high-dimensional data</strong> (curse of dimensionality — distances become meaningless). Apply PCA first to reduce dimensions.</li>
+      <li>DBSCAN's two hyperparameters: ε (neighborhood radius) and min_samples (minimum points to form a core point). Use a k-distance plot to choose ε.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(7)">← Neural Networks</button>
+    <span class="ch-counter">9 / 11</span>
+    <button class="nav-btn primary" onclick="go(9)">Next: Dimensionality Reduction →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 9 =========== -->
+<div class="chapter" id="ch9">
+  <div class="ch-eyebrow">Module 10 / Unsupervised Learning</div>
+  <h1 class="ch-title">Dimensionality Reduction</h1>
+  <p class="ch-subtitle">High-dimensional data is sparse, hard to visualize, and kills distance-based algorithms. Learn to compress it intelligently.</p>
+
+  <h2>The Curse of Dimensionality</h2>
+  <p>As dimensions increase, the volume of space grows exponentially. Data becomes increasingly sparse — any fixed dataset has fewer and fewer points per unit volume. Distances between points converge (everything is "far" from everything else), making nearest-neighbor search and clustering meaningless. Models need exponentially more data to generalize in high dimensions.</p>
+
+  <h2>Principal Component Analysis (PCA)</h2>
+  <p>PCA finds the directions of <strong>maximum variance</strong> in the data and projects onto those directions. The k principal components (PCs) are orthogonal vectors — the first PC explains the most variance, the second the next most, etc.</p>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Standardize</strong> the data (zero mean, unit variance per feature). Critical — PCA is sensitive to scale.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Compute covariance matrix</strong> C = XᵀX / (m−1). This captures how features vary together.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Eigen-decomposition:</strong> Find eigenvalues (λ) and eigenvectors (v) of C. Each eigenvector is a principal component direction.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Sort by eigenvalue</strong> (descending). Eigenvalue = variance explained by that PC. Keep top k PCs.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Project:</strong> Z = XV_k where V_k = matrix of top k eigenvectors. Data is now in a k-dimensional space.</div></div>
+  </div>
+
+  <div class="box math">
+    <div class="box-title">Choosing k — Explained Variance Ratio</div>
+    <ul>
+      <li>Explained variance ratio of PC i = λᵢ / Σλⱼ</li>
+      <li>Cumulative explained variance: plot cumulative sum. Pick k where it exceeds your threshold (e.g., 95%).</li>
+      <li>Alternatively: keep all PCs with eigenvalue &gt; 1 (Kaiser criterion).</li>
+    </ul>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">What PCA Actually Does</div>
+    <ul>
+      <li>PCA is a <strong>linear</strong> transformation. It rotates the coordinate system to align axes with directions of maximum variance.</li>
+      <li>It preserves global structure (large-scale variance) but may lose local structure (subtle clusters).</li>
+      <li>PCA components are linear combinations of original features — still interpretable (unlike UMAP/t-SNE).</li>
+      <li>Reconstruction is possible (inverse transform) — useful for compression or de-noising.</li>
+    </ul>
+  </div>
+
+  <h2>t-SNE and UMAP — For Visualization</h2>
+  <p>PCA is great for preprocessing and compression. For 2D/3D <strong>visualization</strong> of high-dimensional data, non-linear methods are better at preserving local structure:</p>
+  <table>
+    <tr><th>Method</th><th>Speed</th><th>Preserves</th><th>Use for</th></tr>
+    <tr><td><strong>t-SNE</strong></td><td>Slow O(n²)</td><td>Local structure (clusters)</td><td>Visualizing clusters; exploratory analysis</td></tr>
+    <tr><td><strong>UMAP</strong></td><td>Fast</td><td>Local + some global</td><td>Large datasets; better general alternative to t-SNE</td></tr>
+  </table>
+
+  <div class="box gotcha">
+    <div class="box-title">Critical: Don't Trust t-SNE/UMAP for Quantitative Analysis</div>
+    <ul>
+      <li>Distances in t-SNE space are <strong>meaningless</strong>. Two clusters appearing close does not mean they are similar.</li>
+      <li>Cluster sizes in t-SNE are meaningless — all clusters are rendered at similar scale regardless of actual density.</li>
+      <li>t-SNE/UMAP are stochastic — different runs give different layouts. Use multiple runs and perplexity/n_neighbors settings.</li>
+      <li><strong>Never use t-SNE/UMAP outputs as features</strong> for downstream ML — use PCA instead.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Implementation Pointers</div>
+    <ul>
+      <li>Always standardize before PCA. PCA maximizes variance — unscaled features with large ranges dominate.</li>
+      <li>For sparse data (e.g., text TF-IDF matrices), use <strong>Truncated SVD</strong> (also called LSA) — equivalent to PCA but works on sparse matrices without centering.</li>
+      <li>PCA before K-Means or SVM is a common and effective preprocessing step for high-dimensional data.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(8)">← Clustering</button>
+    <span class="ch-counter">10 / 11</span>
+    <button class="nav-btn primary" onclick="go(10)">Next: Evaluation Metrics →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 10 =========== -->
+<div class="chapter" id="ch10">
+  <div class="ch-eyebrow">Module 11 / Evaluation</div>
+  <h1 class="ch-title">Model Evaluation Metrics</h1>
+  <p class="ch-subtitle">Choosing the wrong metric is choosing the wrong objective. This is the step most beginners rush and most experts obsess over.</p>
+
+  <h2>Regression Metrics</h2>
+  <table>
+    <tr><th>Metric</th><th>Formula</th><th>Notes</th></tr>
+    <tr><td><strong>MAE</strong></td><td>mean(|y−ŷ|)</td><td>Same units as y. Robust to outliers. Easy to explain.</td></tr>
+    <tr><td><strong>MSE</strong></td><td>mean((y−ŷ)²)</td><td>Penalizes large errors more. Not same units as y. Useful as optimization objective.</td></tr>
+    <tr><td><strong>RMSE</strong></td><td>√MSE</td><td>Same units as y. Commonly reported. Sensitive to outliers.</td></tr>
+    <tr><td><strong>R²</strong></td><td>1 − SS_res/SS_tot</td><td>Proportion of variance explained. 1 = perfect, 0 = same as predicting mean, can be negative (worse than mean).</td></tr>
+    <tr><td><strong>MAPE</strong></td><td>mean(|y−ŷ|/|y|)</td><td>Percentage error. Fails when y=0. Biased toward low actual values.</td></tr>
+  </table>
+
+  <h2>Classification — The Confusion Matrix</h2>
+  <div class="box math">
+    <div class="box-title">Confusion Matrix (Binary Classification)</div>
+    <ul>
+      <li><strong>TP (True Positive):</strong> Predicted positive, actually positive. Correct.</li>
+      <li><strong>TN (True Negative):</strong> Predicted negative, actually negative. Correct.</li>
+      <li><strong>FP (False Positive / Type I Error):</strong> Predicted positive, actually negative. "False alarm."</li>
+      <li><strong>FN (False Negative / Type II Error):</strong> Predicted negative, actually positive. "Miss."</li>
+    </ul>
+  </div>
+
+  <table>
+    <tr><th>Metric</th><th>Formula</th><th>When to use</th></tr>
+    <tr><td><strong>Accuracy</strong></td><td>(TP+TN)/(TP+TN+FP+FN)</td><td>Only when classes are balanced. Misleading on imbalanced data.</td></tr>
+    <tr><td><strong>Precision</strong></td><td>TP/(TP+FP)</td><td>When FPs are costly (spam filter: don't mark real email as spam).</td></tr>
+    <tr><td><strong>Recall (Sensitivity)</strong></td><td>TP/(TP+FN)</td><td>When FNs are costly (cancer screening: don't miss a tumor).</td></tr>
+    <tr><td><strong>F1 Score</strong></td><td>2·(P·R)/(P+R)</td><td>Harmonic mean of precision and recall. Use when you need balance.</td></tr>
+    <tr><td><strong>AUC-ROC</strong></td><td>Area under ROC curve</td><td>Threshold-independent. Measures separability. 0.5 = random, 1.0 = perfect.</td></tr>
+    <tr><td><strong>PR-AUC</strong></td><td>Area under Precision-Recall curve</td><td>Better than AUC-ROC for highly imbalanced datasets.</td></tr>
+  </table>
+
+  <div class="box concept">
+    <div class="box-title">Precision vs Recall — The Fundamental Tradeoff</div>
+    <ul>
+      <li>Lowering the classification threshold → more positives predicted → higher recall, lower precision.</li>
+      <li>Raising the threshold → fewer positives predicted → lower recall, higher precision.</li>
+      <li>The ROC curve plots TPR vs FPR at every threshold. AUC summarizes this into one number.</li>
+      <li><strong>Ask:</strong> Is a false positive or a false negative more expensive in your domain? That determines which metric to optimize.</li>
+    </ul>
+  </div>
+
+  <h2>Cross-Validation</h2>
+  <p>Single train/val splits are noisy — you might get lucky or unlucky with your split. <strong>k-fold CV</strong> averages performance across k different splits for a more reliable estimate:</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body">Split data into k equal folds (typically k=5 or k=10).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">For each fold: train on the other k−1 folds, evaluate on this fold.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Average the k evaluation scores. This is your CV score ± standard deviation.</div></div>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Evaluation Best Practices</div>
+    <ul>
+      <li>Report metric ± standard deviation over CV folds, not just the mean. High variance → your estimate is unreliable.</li>
+      <li>Always define your metric <strong>before</strong> training, based on business requirements. Don't retrofit the metric to what your model does well.</li>
+      <li>For time-series: use <strong>time-based splits</strong>, not random k-fold. Future data must never be in the training fold.</li>
+      <li>Stratified k-fold preserves class proportions in each fold — essential for imbalanced classification.</li>
+      <li>Statistical significance: if model A has CV score 0.82 ± 0.03 and model B has 0.84 ± 0.04, the difference may not be statistically significant. Use paired t-tests or McNemar's test for rigorous comparison.</li>
+    </ul>
+  </div>
+
+  <div class="box teal">
+    <div class="box-title">You've Completed ML 101</div>
+    <ul>
+      <li>You now have the conceptual vocabulary, mathematical intuition, and implementation pointers for all core ML techniques.</li>
+      <li><strong>Next steps:</strong> Implement each algorithm from scratch in NumPy. Then use sklearn. Then move to deep learning with PyTorch.</li>
+      <li>Read: <em>Hands-On Machine Learning</em> (Géron), <em>Pattern Recognition and Machine Learning</em> (Bishop for depth), <em>Deep Learning</em> (Goodfellow et al.).</li>
+      <li>Practice: Kaggle competitions, UCI ML repository datasets, or build something with real data you care about.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(9)">← Dimensionality Reduction</button>
+    <span class="ch-counter">11 / 11</span>
+    <button class="nav-btn" disabled>Course Complete ✓</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+const chapters = document.querySelectorAll('.chapter');
+const btns = document.querySelectorAll('.chapter-btn');
+const progress = document.getElementById('progress');
+let current = 0;
+
+function _go(n) {
+  chapters[current].classList.remove('active');
+  btns[current].classList.remove('active');
+  current = n;
+  chapters[current].classList.add('active');
+  btns[current].classList.add('active');
+  document.getElementById('main').scrollTo({top:0, behavior:'smooth'});
+  progress.style.width = `${Math.round(((n+1)/11)*100)}%`;
+}
+</script>
+</body>
+</html>

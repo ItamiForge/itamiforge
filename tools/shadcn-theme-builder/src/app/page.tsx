@@ -7,7 +7,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 // Content Components
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTable, type schema } from "@/components/data-table";
-import { ThemeDrawer } from "@/components/theme-builder/ThemeDrawer";
+import { ThemeDrawer } from "@/components/theme-builder/theme-drawer";
 import {
   Breadcrumb,
   BreadcrumbItem,

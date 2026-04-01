@@ -1,10 +1,7 @@
 export default function AiErpPage() {
   return (
-    <div className="space-y-8 py-10">
+    <div className="main-page-content space-y-8 pb-10">
       <section className="card">
-        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
-          Product Preview
-        </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight">
           AIML ERP for modern brewing operations
         </h1>

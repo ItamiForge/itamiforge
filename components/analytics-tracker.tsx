@@ -4,10 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const ANALYTICS_SITE_ID = "itamiforge";
-const ANALYTICS_ENDPOINT =
-  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT ??
-  "https://sitestats.varunrajan.workers.dev/collect";
-const COLLECT_KEY = process.env.NEXT_PUBLIC_SITESTATS_KEY ?? "";
+const ANALYTICS_ENDPOINT = "/api/analytics";
 
 // ── Visitor name wordlist (adjective + noun, deterministic for the session) ──
 const ADJECTIVES = [
@@ -130,14 +127,11 @@ function getOrCreateSessionId(): string {
 }
 
 function sendBeacon(payload: Record<string, unknown>) {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (COLLECT_KEY) headers["X-Sitestats-Key"] = COLLECT_KEY;
-
   fetch(ANALYTICS_ENDPOINT, {
     method: "POST",
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(payload),
     keepalive: true,
   }).catch(() => {});

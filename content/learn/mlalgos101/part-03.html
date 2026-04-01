@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Algorithms 101 — Part 3: Deep Learning & AutoML</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0f14;--bg2:#13161d;--bg3:#1a1e28;--bg4:#222736;
+  --border:#2a2f3e;--border2:#353c52;
+  --text:#e8eaf0;--text2:#9aa0b8;--text3:#5c6480;
+  --accent:#5b8dee;--accent2:#3a6bd4;
+  --green:#4ade80;--green-bg:#0f2518;
+  --amber:#fbbf24;--amber-bg:#201a08;
+  --red:#f87171;--red-bg:#200f0f;
+  --purple:#a78bfa;--purple-bg:#16102a;
+  --teal:#2dd4bf;--teal-bg:#0a1e1c;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --serif:'IBM Plex Serif',serif;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:15px;line-height:1.7}
+
+/* SIDEBAR */
+#sidebar{width:260px;min-width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;position:sticky;top:0;overflow-y:auto}
+#sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+#sidebar-header .badge{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+#sidebar-header h1{font-size:18px;font-weight:600;color:var(--text);line-height:1.3}
+#sidebar-header p{font-size:12px;color:var(--text3);margin-top:4px}
+.module-group{padding:8px 0}
+.module-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:8px 20px 4px}
+.chapter-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 20px;background:none;border:none;cursor:pointer;text-align:left;color:var(--text2);font-family:var(--sans);font-size:13px;line-height:1.4;transition:all .15s}
+.chapter-btn:hover{background:var(--bg3);color:var(--text)}
+.chapter-btn.active{background:var(--bg4);color:var(--accent);border-left:2px solid var(--accent)}
+.chapter-btn .num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:22px}
+.chapter-btn.active .num{color:var(--accent)}
+.progress-bar{height:2px;background:var(--border);position:relative}
+.progress-fill{height:2px;background:var(--accent);transition:width .3s}
+
+/* MAIN */
+#main{flex:1;overflow-y:auto;height:100vh}
+.chapter{display:none;padding:48px 56px;max-width:820px}
+.chapter.active{display:block}
+
+/* CHAPTER HEADER */
+.ch-eyebrow{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ch-title{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:8px}
+.ch-subtitle{font-size:16px;color:var(--text2);font-weight:300;margin-bottom:36px;font-family:var(--serif);font-style:italic}
+.ch-divider{height:1px;background:var(--border);margin:32px 0}
+
+/* CONTENT BLOCKS */
+h2{font-size:18px;font-weight:600;margin:32px 0 12px;color:var(--text)}
+h3{font-size:15px;font-weight:500;margin:24px 0 8px;color:var(--text2);font-family:var(--mono);letter-spacing:.03em}
+p{color:var(--text2);margin-bottom:14px;line-height:1.75}
+p strong{color:var(--text);font-weight:500}
+
+/* CALLOUT BOXES */
+.box{border-radius:8px;padding:16px 20px;margin:20px 0}
+.box-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.box ul,.box ol{padding-left:20px;color:inherit}
+.box li{margin-bottom:6px;font-size:14px;line-height:1.6}
+
+.concept{background:var(--purple-bg);border:1px solid #2e2050;color:#c4b5fd}
+.concept .box-title{color:var(--purple)}
+.math{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.math .box-title{color:var(--accent)}
+.impl{background:var(--green-bg);border:1px solid #1a3d2a;color:#86efac}
+.impl .box-title{color:var(--green)}
+.gotcha{background:var(--amber-bg);border:1px solid #3a2d10;color:#fde68a}
+.gotcha .box-title{color:var(--amber)}
+.danger{background:var(--red-bg);border:1px solid #3a1515;color:#fca5a5}
+.danger .box-title{color:var(--red)}
+.teal{background:var(--teal-bg);border:1px solid #0f2e2c;color:#5eead4}
+.teal .box-title{color:var(--teal)}
+
+/* EQUATION */
+.eq{font-family:var(--mono);font-size:14px;background:var(--bg3);border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;border-radius:0 6px 6px 0;color:var(--text);overflow-x:auto}
+.eq .comment{color:var(--text3);font-size:12px}
+
+/* INLINE CODE */
+code{font-family:var(--mono);font-size:13px;background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--teal);border:1px solid var(--border)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+th{text-align:left;padding:10px 14px;background:var(--bg3);color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-bottom:1px solid var(--border2)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td strong{color:var(--text)}
+
+/* NAV ARROWS */
+.ch-nav{display:flex;justify-content:space-between;align-items:center;margin-top:56px;padding-top:24px;border-top:1px solid var(--border)}
+.nav-btn{background:var(--bg3);border:1px solid var(--border2);padding:10px 18px;border-radius:6px;cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--text2);transition:all .15s}
+.nav-btn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+.nav-btn.primary{background:var(--accent2);border-color:var(--accent);color:#fff}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.ch-counter{font-family:var(--mono);font-size:12px;color:var(--text3)}
+
+/* STEPS */
+.steps{counter-reset:step;margin:16px 0}
+.step{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.step-num{min-width:28px;height:28px;border-radius:50%;background:var(--accent2);color:#fff;font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{color:var(--text2);font-size:14px;line-height:1.6}
+.step-body strong{color:var(--text)}
+
+/* TAG */
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;margin:2px}
+.tag-pytorch{background:#0f2040;color:var(--accent);border:1px solid #1a3060}
+.tag-tf{background:#0f2040;color:var(--accent);border:1px solid #1a3060}
+.tag-green{background:var(--green-bg);color:var(--green);border:1px solid #1a3d2a}
+.tag-amber{background:var(--amber-bg);color:var(--amber);border:1px solid #3a2d10}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px}
+.card-icon{font-size:20px;margin-bottom:8px}
+.card h4{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
+.card p{font-size:13px;color:var(--text2);margin:0}
+
+@media(max-width:900px){
+  #sidebar{width:220px;min-width:220px}
+  .chapter{padding:32px 24px}
+  .ch-title{font-size:26px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  body{flex-direction:column}
+  #sidebar{width:100%;height:auto;position:static}
+  #main{height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="badge">ML Algos 101</div>
+    <h1>Algorithms<br>Reference</h1>
+    <p>Part 3 · 6 chapters · deep learning</p>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:16.7%"></div></div>
+
+  <div class="module-group">
+    <div class="module-label">Deep Learning Frameworks</div>
+    <button class="chapter-btn active" onclick="go(0)"><span class="num">16</span>PyTorch Basics</button>
+    <button class="chapter-btn" onclick="go(1)"><span class="num">17</span>Keras/TensorFlow</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Architectures</div>
+    <button class="chapter-btn" onclick="go(2)"><span class="num">18</span>CNNs</button>
+    <button class="chapter-btn" onclick="go(3)"><span class="num">19</span>RNNs & Transformers</button>
+  </div>
+  <div class="module-group">
+    <div class="module-label">Advanced</div>
+    <button class="chapter-btn" onclick="go(4)"><span class="num">20</span>Reinforcement Learning</button>
+    <button class="chapter-btn" onclick="go(5)"><span class="num">21</span>AutoML & HPO</button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- =========== CHAPTER 0 =========== -->
+<div class="chapter active" id="ch0">
+  <div class="ch-eyebrow">Part 3, Chapter 16 / Deep Learning Frameworks</div>
+  <h1 class="ch-title">PyTorch Basics</h1>
+  <p class="ch-subtitle">Dynamic computational graphs, eager execution, and a Pythonic API. The research standard for deep learning.</p>
+
+  <h2>Why PyTorch?</h2>
+  <p>PyTorch is preferred by researchers and increasingly by practitioners because of its:</p>
+  <div class="box concept">
+    <div class="box-title">Key Advantages</div>
+    <ul>
+      <li><strong>Dynamic graphs:</strong> Build computation graphs on-the-fly during forward pass. Easy to debug, supports conditional logic.</li>
+      <li><strong>Eager execution:</strong> Code runs immediately (like NumPy), not deferred. Intuitive for researchers.</li>
+      <li><strong>Pythonic:</strong> Feels like normal Python. Uses standard Python control flow.</li>
+      <li><strong>Strong ecosystem:</strong> Hugging Face (NLP), PyTorch Lightning (training framework), TorchVision (computer vision).</li>
+      <li><strong>Community:</strong> Most cutting-edge research uses PyTorch.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Installation & Core Concepts</div>
+    <ul>
+      <li>Install: <code>pip install torch torchvision</code></li>
+      <li><strong>Tensors:</strong> PyTorch's main data structure (like NumPy arrays, but GPU-enabled).</li>
+      <li><code>x = torch.randn(3, 4)</code> — create tensor. <code>x = x.to('cuda')</code> — move to GPU.</li>
+      <li><strong>Autograd:</strong> Automatic differentiation. <code>x.requires_grad = True</code> — track gradients.</li>
+      <li><code>y = x.sum()</code> — forward pass. <code>y.backward()</code> — compute gradients. Access via <code>x.grad</code>.</li>
+      <li><strong>nn.Module:</strong> Base class for all models. <code>class Model(nn.Module):</code> <code>def forward(self, x):</code> — define architecture.</li>
+    </ul>
+  </div>
+
+  <h2>Training Loop Pattern</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Create model, optimizer, loss:</strong> <code>model = MyModel()</code> | <code>optimizer = torch.optim.Adam(model.parameters(), lr=0.001)</code> | <code>loss_fn = nn.CrossEntropyLoss()</code></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Forward pass:</strong> <code>output = model(x)</code></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Compute loss:</strong> <code>loss = loss_fn(output, y)</code></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Backward:</strong> <code>optimizer.zero_grad()</code> (clear old gradients) → <code>loss.backward()</code> (compute new gradients)</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Update:</strong> <code>optimizer.step()</code> — update parameters</div></div>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">Common PyTorch Gotchas</div>
+    <ul>
+      <li><strong>Forget .backward():</strong> If loss doesn't decrease, you probably didn't call backward(). No gradients → params don't update.</li>
+      <li><strong>Forget optimizer.zero_grad():</strong> Gradients accumulate by default. zerograd() at each step.</li>
+      <li><strong>Model in eval mode:</strong> <code>model.eval()</code> before inference. Disables dropout, batch norm. Otherwise predictions are stochastic.</li>
+      <li><strong>Dimensions matter:</strong> Matrix shapes must align. Common error: batch size mismatches.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" disabled>← Previous</button>
+    <span class="ch-counter">1 / 6</span>
+    <button class="nav-btn primary" onclick="go(1)">Next: Keras/TensorFlow →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 1 =========== -->
+<div class="chapter" id="ch1">
+  <div class="ch-eyebrow">Part 3, Chapter 17 / Deep Learning Frameworks</div>
+  <h1 class="ch-title">Keras & TensorFlow</h1>
+  <p class="ch-subtitle">High-level API for deep learning. Keras (now part of TensorFlow) prioritizes easy APIs and production deployment.</p>
+
+  <h2>PyTorch vs Keras/TensorFlow</h2>
+  <table>
+    <tr><th>Aspect</th><th>PyTorch</th><th>Keras/TensorFlow</th></tr>
+    <tr><td>Learning curve</td><td>Steeper (more control)</td><td>Gentle (abstraction)</td></tr>
+    <tr><td>Graphs</td><td>Dynamic (eager)</td><td>Static (XLA, TPU optimized)</td></tr>
+    <tr><td>Research</td><td>Dominant</td><td>Growing</td></tr>
+    <tr><td>Production</td><td>Good (TorchScript)</td><td>Excellent (TF Serving)</td></tr>
+    <tr><td>Mobile/Edge</td><td>TF Lite better</td><td>TF Lite native</td></tr>
+  </table>
+
+  <div class="box impl">
+    <div class="box-title">Installation & Quick Model</div>
+    <ul>
+      <li>Install: <code>pip install tensorflow</code> (includes Keras)</li>
+      <li><code>from tensorflow import keras</code> | <code>from tensorflow.keras import layers</code></li>
+      <li><strong>Sequential model:</strong> <code>model = keras.Sequential([</code> <code>layers.Dense(64, activation='relu', input_shape=(784,)),</code> <code>layers.Dropout(0.2),</code> <code>layers.Dense(10, activation='softmax')</code> <code>])</code></li>
+      <li><code>model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])</code></li>
+      <li><code>model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))</code></li>
+    </ul>
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">Why Keras?</div>
+    <ul>
+      <li><strong>Simple API:</strong> ML engineers (less deep learning experience) prefer Keras's simplicity.</li>
+      <li><strong>Built-in utilities:</strong> Data pipeline, callbacks, early stopping, checkpointing — all in one place.</li>
+      <li><strong>Production ready:</strong> TensorFlow's deployment pipeline (TF Serving, TF Lite) is mature.</li>
+      <li><strong>But:</strong> Less flexible than PyTorch for custom dynamics. Harder to debug.</li>
+    </ul>
+  </div>
+
+  <h2>Functional API for Complex Models</h2>
+  <p>Sequential API only handles linear stacks. For branching, merging, skip connections, use Functional API:</p>
+
+  <div class="box math">
+    <div class="box-title">Example: Multi-Input Model</div>
+    <ul>
+      <li><code>input1 = keras.Input(shape=(32,))</code></li>
+      <li><code>x1 = layers.Dense(64, activation='relu')(input1)</code></li>
+      <li><code>input2 = keras.Input(shape=(64,))</code></li>
+      <li><code>x2 = layers.Dense(64, activation='relu')(input2)</code></li>
+      <li><code>concatenated = layers.concatenate([x1, x2])</code></li>
+      <li><code>output = layers.Dense(1)(concatenated)</code></li>
+      <li><code>model = keras.Model([input1, input2], output)</code></li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(0)">← PyTorch Basics</button>
+    <span class="ch-counter">2 / 6</span>
+    <button class="nav-btn primary" onclick="go(2)">Next: CNNs →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 2 =========== -->
+<div class="chapter" id="ch2">
+  <div class="ch-eyebrow">Part 3, Chapter 18 / Architectures</div>
+  <h1 class="ch-title">Convolutional Neural Networks (CNNs)</h1>
+  <p class="ch-subtitle">The standard for image data. Learns hierarchical spatial features via convolution.</p>
+
+  <h2>Convolution Operation</h2>
+  <p>Convolve a small kernel (filter) across the image. Each position computes a dot product: C[i,j] = sum(Input[i:i+k, j:j+k] * Kernel). Output is a feature map.</p>
+
+  <div class="box concept">
+    <div class="box-title">Why Convolution?</div>
+    <ul>
+      <li><strong>Parameter sharing:</strong> Same weights applied at every spatial location. Massive reduction in parameters.</li>
+      <li><strong>Local connectivity:</strong> Each neuron connects only to nearby pixels, not globally. Respects spatial structure.</li>
+      <li><strong>Translation invariance:</strong> Features learned in one location transfer to others.</li>
+      <li><strong>Hierarchy:</strong> Early layers learn edges, middle layers learn shapes, deep layers learn objects.</li>
+    </ul>
+  </div>
+
+  <h2>Typical CNN Architecture</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Convolutional blocks:</strong> Conv2d → ReLU → MaxPooling (repeat 3–5 times)</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Flatten:</strong> Reshape spatial maps to 1D vector</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Fully connected:</strong> Dense layer(s) for classification</div></div>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">PyTorch CNN Example</div>
+    <ul>
+      <li><code>class CNN(nn.Module):</code></li>
+      <li><code>&nbsp;&nbsp;def __init__(self):</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;self.pool = nn.MaxPool2d(2)</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;self.fc = nn.Linear(32*14*14, 10)</code></li>
+      <li><code>&nbsp;&nbsp;def forward(self, x):</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;x = F.relu(self.conv1(x))</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;x = self.pool(x)</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;x = x.flatten(1)</code></li>
+      <li><code>&nbsp;&nbsp;&nbsp;&nbsp;x = self.fc(x); return x</code></li>
+    </ul>
+  </div>
+
+  <h2>Pre-trained Models (Transfer Learning)</h2>
+  <p>For most image tasks, start with a pre-trained model (ImageNet) rather than training from scratch:</p>
+
+  <div class="box math">
+    <div class="box-title">Transfer Learning Pattern</div>
+    <ul>
+      <li><code>from torchvision import models</code></li>
+      <li><code>model = models.resnet50(pretrained=True)</code> — download pre-trained weights</li>
+      <li><code>model.fc = nn.Linear(2048, num_classes)</code> — replace final layer for your task</li>
+      <li><code>Freeze early layers:</code> <code>for param in model.conv1.parameters(): param.requires_grad = False</code></li>
+      <li>Train only the final layer (or last few) on your data.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(1)">← Keras/TensorFlow</button>
+    <span class="ch-counter">3 / 6</span>
+    <button class="nav-btn primary" onclick="go(3)">Next: RNNs & Transformers →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 3 =========== -->
+<div class="chapter" id="ch3">
+  <div class="ch-eyebrow">Part 3, Chapter 19 / Architectures</div>
+  <h1 class="ch-title">RNNs & Transformers</h1>
+  <p class="ch-subtitle">Processing sequences. RNNs are classical; Transformers (attention-based) are the modern standard.</p>
+
+  <h2>Recurrent Neural Networks (RNNs)</h2>
+  <p>Process sequences one token at a time, maintaining a hidden state that accumulates information:</p>
+
+  <div class="eq">
+    h_t = tanh(W_h · h_{t-1} + W_x · x_t + b)<br>
+    y_t = W_o · h_t + b_o
+  </div>
+
+  <div class="box concept">
+    <div class="box-title">RNN Variants</div>
+    <ul>
+      <li><strong>Vanilla RNN:</strong> Simple but suffers from vanishing/exploding gradients over long sequences.</li>
+      <li><strong>LSTM (Long Short-Term Memory):</strong> Gates (input, forget, output) control information flow. Much better on long sequences.</li>
+      <li><strong>GRU (Gated Recurrent Unit):</strong> Simpler LSTM (2 gates instead of 3). Often comparable performance, faster.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">PyTorch LSTM Example</div>
+    <ul>
+      <li><code>self.lstm = nn.LSTM(input_size=100, hidden_size=128, num_layers=2, batch_first=True)</code></li>
+      <li><code>output, (h_n, c_n) = self.lstm(x)</code> — (seq_len, batch, hidden_size)</li>
+      <li><code>h_n</code> is the final hidden state (use for classification)</li>
+      <li><code>output</code> is all hidden states (use for sequence-to-sequence tasks)</li>
+    </ul>
+  </div>
+
+  <h2>Transformers & Attention</h2>
+  <p>Transformers replace RNNs with self-attention: each token directly attends to all other tokens in parallel. No recurrence → much faster training.</p>
+
+  <div class="box concept">
+    <div class="box-title">Key Idea</div>
+    <ul>
+      <li><strong>Self-Attention:</strong> For each query token, compute a weighted sum of values from all keys. Weights (attention scores) are learned.</li>
+      <li><strong>Parallel processing:</strong> All tokens processed simultaneously, not sequentially like RNNs.</li>
+      <li><strong>Positional encoding:</strong> Add position information (sin/cos encodings) because attention is invariant to position.</li>
+      <li><strong>Multi-head attention:</strong> Multiple attention heads in parallel, each attending to different features.</li>
+    </ul>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Pre-trained Transformers: Use Hugging Face</div>
+    <ul>
+      <li>Install: <code>pip install transformers torch</code></li>
+      <li><code>from transformers import AutoTokenizer, AutoModel</code></li>
+      <li><code>tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")</code></li>
+      <li><code>model = AutoModel.from_pretrained("bert-base-uncased")</code></li>
+      <li><code>inputs = tokenizer("Hello world", return_tensors="pt")</code></li>
+      <li><code>outputs = model(**inputs)</code></li>
+    </ul>
+  </div>
+
+  <h2>RNN vs Transformer</h2>
+  <table>
+    <tr><th>Aspect</th><th>RNN/LSTM</th><th>Transformer</th></tr>
+    <tr><td>Training speed</td><td>Slow (sequential)</td><td>Fast (parallel)</td></tr>
+    <tr><td>Long sequences</td><td>Still struggles</td><td>Better</td></tr>
+    <tr><td>Interpretability</td><td>Harder</td><td>Attention maps are interpretable</td></tr>
+    <tr><td>Current use</td><td>Declining</td><td>Standard for NLP, vision, multimodal</td></tr>
+  </table>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(2)">← CNNs</button>
+    <span class="ch-counter">4 / 6</span>
+    <button class="nav-btn primary" onclick="go(4)">Next: Reinforcement Learning →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 4 =========== -->
+<div class="chapter" id="ch4">
+  <div class="ch-eyebrow">Part 3, Chapter 20 / Advanced</div>
+  <h1 class="ch-title">Reinforcement Learning</h1>
+  <p class="ch-subtitle">An agent takes actions to maximize cumulative reward. Trial-and-error learning in interactive environments.</p>
+
+  <h2>Core Concepts</h2>
+  <div class="box concept">
+    <div class="box-title">Markov Decision Process (MDP)</div>
+    <ul>
+      <li><strong>State (s):</strong> Environment configuration.</li>
+      <li><strong>Action (a):</strong> Agent's choice.</li>
+      <li><strong>Reward (r):</strong> Immediate feedback from environment.</li>
+      <li><strong>Transition:</strong> P(s'|s,a) — probability of next state.</li>
+      <li><strong>Policy (π):</strong> Agent's decision rule: π(a|s) = probability of action a in state s.</li>
+      <li><strong>Value function V(s):</strong> Expected cumulative future reward from state s.</li>
+    </ul>
+  </div>
+
+  <h2>Two Main Approaches</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>Value-Based (Q-Learning)</h4>
+      <p>Learn Q(s,a) = expected reward of taking action a in state s. Greedy policy: select argmax_a Q(s,a).</p>
+    </div>
+    <div class="card">
+      <h4>Policy-Based (Policy Gradient)</h4>
+      <p>Learn π(a|s) directly. Use gradient of expected reward w.r.t. policy parameters.</p>
+    </div>
+  </div>
+
+  <h2>Q-Learning (Tabular)</h2>
+  <p>For small, discrete state/action spaces. Update Q-values iteratively:</p>
+
+  <div class="eq">
+    Q(s, a) ← Q(s, a) + α[r + γ·max_a' Q(s', a') − Q(s, a)]<br>
+    <span class="comment">// α = learning rate, γ = discount factor (0 &lt; γ &lt; 1)</span>
+  </div>
+
+  <div class="box impl">
+    <div class="box-title">Policy Gradient (Deep RL)</div>
+    <ul>
+      <li><code>from stable_baselines3 import DQN, PPO</code> — high-level library</li>
+      <li><code>env = gym.make('CartPole-v1')</code> — OpenAI Gym environment</li>
+      <li><code>model = PPO('MlpPolicy', env).learn(total_timesteps=10000)</code></li>
+      <li>PPO (Proximal Policy Optimization) is state-of-the-art for continuous control.</li>
+    </ul>
+  </div>
+
+  <div class="box gotcha">
+    <div class="box-title">RL Challenges</div>
+    <ul>
+      <li><strong>Sample inefficiency:</strong> Requires millions of interactions with the environment. Hard with real-world systems.</li>
+      <li><strong>Exploration vs exploitation:</strong> Balance between trying new actions (explore) and repeating good ones (exploit).</li>
+      <li><strong>Non-stationarity:</strong> As agent learns, environment appears non-stationary (policy keeps changing).</li>
+      <li><strong>Use pre-built libraries (Stable Baselines, RLlib):</strong> Don't implement from scratch.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(3)">← RNNs & Transformers</button>
+    <span class="ch-counter">5 / 6</span>
+    <button class="nav-btn primary" onclick="go(5)">Next: AutoML & HPO →</button>
+  </div>
+</div>
+
+<!-- =========== CHAPTER 5 =========== -->
+<div class="chapter" id="ch5">
+  <div class="ch-eyebrow">Part 3, Chapter 21 / Advanced</div>
+  <h1 class="ch-title">AutoML & Hyperparameter Optimization</h1>
+  <p class="ch-subtitle">Automating model selection and tuning. Grid search, random search, Bayesian optimization, and meta-learning.</p>
+
+  <h2>Hyperparameter Tuning: Beyond Grid Search</h2>
+  <div class="box concept">
+    <div class="box-title">Problem</div>
+    <ul>
+      <li>Grid search exhaustively tries all combinations. Exponential in number of hyperparameters → infeasible.</li>
+      <li>Random search samples randomly. Often outperforms grid search (some hyperparams matter more than others).</li>
+      <li><strong>Better approach:</strong> Use the structure of the problem. Model performance to guide search.</li>
+    </ul>
+  </div>
+
+  <h2>Bayesian Optimization</h2>
+  <p>Model the relationship between hyperparameters and model performance as a Gaussian Process. Use the model to suggest promising hyperparameter combinations to evaluate next. Balances exploration vs exploitation.</p>
+
+  <div class="box impl">
+    <div class="box-title">Optuna (Popular BO Library)</div>
+    <ul>
+      <li>Install: <code>pip install optuna</code></li>
+      <li><code>import optuna</code></li>
+      <li><code>def objective(trial):</code></li>
+      <li><code>&nbsp;&nbsp;C = trial.suggest_float('C', 0.001, 10, log=True)</code></li>
+      <li><code>&nbsp;&nbsp;model = LogisticRegression(C=C)</code></li>
+      <li><code>&nbsp;&nbsp;score = cross_val_score(model, X, y).mean()</code></li>
+      <li><code>&nbsp;&nbsp;return score</code></li>
+      <li><code>study = optuna.create_study(direction='maximize')</code></li>
+      <li><code>study.optimize(objective, n_trials=50)</code></li>
+    </ul>
+  </div>
+
+  <h2>AutoML: Automating Everything</h2>
+  <p>Beyond HPO — automatically select algorithms, features, preprocessing, stacking, etc.</p>
+
+  <div class="box math">
+    <div class="box-title">Popular AutoML Tools</div>
+    <ul>
+      <li><strong>H2O AutoML:</strong> Trains multiple algorithms, ensemble. Simple API.</li>
+      <li><strong>Auto-sklearn:</strong> Meta-learning for algorithm selection. Learns from prior tuning.</li>
+      <li><strong>TPOT:</strong> Genetic programming to optimize pipelines.</li>
+      <li><strong>AutoGluon (AWS):</strong> Multilayer ensemble. Often top Kaggle solutions.</li>
+      <li><strong>Ray Tune:</strong> Distributed HPO. Scales to many GPUs/nodes.</li>
+    </ul>
+  </div>
+
+  <h2>Learning Curves & Diagnostics</h2>
+  <div class="box impl">
+    <div class="box-title">When to Stop Tuning</div>
+    <ul>
+      <li><strong>Log learning curves:</strong> Plot train vs val metric over tuning iterations. If flat, the search space or algorithm isn't finding improvements.</li>
+      <li><strong>Diminishing returns:</strong> If best model hasn't improved in 20 trials, stop.</li>
+      <li><strong>Overfitting to val set:</strong> If val metric improves but test metric plateaus, you've tuned too hard.</li>
+    </ul>
+  </div>
+
+  <div class="box teal">
+    <div class="box-title">ML Algorithms 101 Complete</div>
+    <ul>
+      <li>You've covered 21 essential algorithms: from linear models through deep learning and AutoML.</li>
+      <li><strong>Key Takeaway:</strong> The algorithm matters, but data quality and feature engineering often matter more.</li>
+      <li><strong>Practice:</strong> Compete on Kaggle. For each competition, try: logistic regression → random forest/XGBoost → neural net → ensemble.</li>
+      <li><strong>Next:</strong> Pick a domain (NLP, vision, recommenders, time series) and go deep.</li>
+    </ul>
+  </div>
+
+  <div class="ch-nav">
+    <button class="nav-btn" onclick="go(4)">← Reinforcement Learning</button>
+    <span class="ch-counter">6 / 6</span>
+    <button class="nav-btn primary" onclick="window.location.href='part-01.html'">Back to Part 1</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+const chapters = document.querySelectorAll('.chapter');
+const btns = document.querySelectorAll('.chapter-btn');
+const progress = document.getElementById('progress');
+let current = 0;
+
+function _go(n) {
+  chapters[current].classList.remove('active');
+  btns[current].classList.remove('active');
+  current = n;
+  chapters[current].classList.add('active');
+  btns[current].classList.add('active');
+  document.getElementById('main').scrollTo({top:0, behavior:'smooth'});
+  progress.style.width = `${Math.round(((n+1)/6)*100)}%`;
+}
+</script>
+</body>
+</html>
