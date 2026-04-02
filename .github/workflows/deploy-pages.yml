@@ -77,7 +77,7 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           echo "::group::Next.js Build"
-          bun run build:pages
+          bun run build
           echo "::endgroup::"
 
       - name: Post-build cleanup

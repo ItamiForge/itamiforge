@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useAnimationFrame, useMotionValue, useTransform } from "motion/react";
+import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
 import { type ReactNode, useCallback, useRef, useState } from "react";
 import "./gradient-text.css";
 
