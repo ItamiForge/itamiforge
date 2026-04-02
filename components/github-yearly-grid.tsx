@@ -58,8 +58,7 @@ function MiniYearChart({
           {yearData.year}
         </span>
         <span className="font-mono text-xs text-muted-foreground">
-          {yearData.total.toLocaleString()}{" "}
-          <span className="opacity-60">contributions</span>
+          {yearData.total.toLocaleString()} <span className="opacity-60">contributions</span>
         </span>
       </div>
 
@@ -92,9 +91,7 @@ function MiniYearChart({
             >
               <span className="opacity-60">{String(point.data.x)}</span>
               {" · "}
-              <span className="font-semibold">
-                {Number(point.data.y).toLocaleString()}
-              </span>
+              <span className="font-semibold">{Number(point.data.y).toLocaleString()}</span>
             </div>
           )}
           theme={{
@@ -126,10 +123,7 @@ export function GitHubYearlyGrid({ data, onYearClick }: Props) {
   if (data.length === 0) return null;
 
   // Shared Y-axis max across all years so relative heights are comparable
-  const globalMax = Math.max(
-    ...data.flatMap((d) => d.monthly.map((m) => m.y)),
-    1,
-  );
+  const globalMax = Math.max(...data.flatMap((d) => d.monthly.map((m) => m.y)), 1);
 
   return (
     <div className="space-y-3">

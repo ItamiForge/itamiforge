@@ -77,13 +77,7 @@ function formatDate(dateStr: string) {
 
 type TooltipState = { x: number; y: number; activity: Activity } | null;
 
-function CalendarView({
-  contributions,
-  total,
-}: {
-  contributions: Activity[];
-  total: number;
-}) {
+function CalendarView({ contributions, total }: { contributions: Activity[]; total: number }) {
   const [tooltip, setTooltip] = useState<TooltipState>(null);
 
   if (contributions.length === 0) {
@@ -105,9 +99,7 @@ function CalendarView({
             transform: "translateX(-50%)",
           }}
         >
-          <span className="text-foreground/60">
-            {formatDate(tooltip.activity.date)}
-          </span>
+          <span className="text-foreground/60">{formatDate(tooltip.activity.date)}</span>
           {" · "}
           <span className="font-semibold text-foreground">
             {tooltip.activity.count.toLocaleString()} contribution
@@ -140,13 +132,9 @@ function CalendarView({
                   .filter(Boolean)
                   .join(" ")}
                 onMouseEnter={(e) => {
-                  const wrapEl = (e.target as SVGRectElement).closest(
-                    ".relative",
-                  );
+                  const wrapEl = (e.target as SVGRectElement).closest(".relative");
                   if (!wrapEl) return;
-                  const rect = (
-                    e.target as SVGRectElement
-                  ).getBoundingClientRect();
+                  const rect = (e.target as SVGRectElement).getBoundingClientRect();
                   const parentRect = wrapEl.getBoundingClientRect();
                   setTooltip({
                     x: rect.left - parentRect.left + rect.width / 2,
@@ -166,9 +154,7 @@ function CalendarView({
               <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
                 <GitBranch className="w-3 h-3 shrink-0" />
                 <span>
-                  <span className="text-foreground/80 font-semibold">
-                    {count.toLocaleString()}
-                  </span>{" "}
+                  <span className="text-foreground/80 font-semibold">{count.toLocaleString()}</span>{" "}
                   contributions in {year}
                 </span>
               </div>
@@ -216,17 +202,11 @@ function StatsBar({
         <div className="flex items-center gap-4 text-xs font-mono">
           <span className="flex items-center gap-1.5 text-foreground/70">
             <Unlock className="w-3 h-3 text-[#709050] dark:text-[#879a39]" />
-            <span className="font-semibold text-foreground/90">
-              {publicCount}
-            </span>{" "}
-            public
+            <span className="font-semibold text-foreground/90">{publicCount}</span> public
           </span>
           <span className="flex items-center gap-1.5 text-foreground/70">
             <Lock className="w-3 h-3 text-muted-foreground/50" />
-            <span className="font-semibold text-foreground/90">
-              {privateCount}
-            </span>{" "}
-            private
+            <span className="font-semibold text-foreground/90">{privateCount}</span> private
           </span>
         </div>
         {total > 0 && (
@@ -255,9 +235,7 @@ function StatsBar({
               />
               {lang}
               <span className="text-muted-foreground/50">
-                {langTotal > 0
-                  ? `${Math.round((count / langTotal) * 100)}%`
-                  : ""}
+                {langTotal > 0 ? `${Math.round((count / langTotal) * 100)}%` : ""}
               </span>
             </span>
           ))}
@@ -285,9 +263,7 @@ function RepoCards({ repos }: { repos: GitHubRepo[] }) {
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-mono font-medium text-foreground/80 group-hover:text-foreground truncate">
-                <span className="text-muted-foreground/50">
-                  {repo.owner.login}/
-                </span>
+                <span className="text-muted-foreground/50">{repo.owner.login}/</span>
                 {repo.name}
               </span>
               {repo.stargazers_count > 0 && (
@@ -334,18 +310,14 @@ export function GitHubActivity({
   recentRepos,
 }: Props) {
   const currentYear = new Date().getFullYear();
-  const defaultYear = years.includes(currentYear)
-    ? currentYear
-    : (years[0] ?? currentYear);
+  const defaultYear = years.includes(currentYear) ? currentYear : (years[0] ?? currentYear);
   const [selectedYear, setSelectedYear] = useState<number | "all">(defaultYear);
 
   return (
     <div className="space-y-6">
       {/* Header + year selector pills */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-        <p className="eyebrow text-muted-foreground">
-          GitHub Activity · JordanRex + ItamiForge
-        </p>
+        <p className="eyebrow text-muted-foreground">GitHub Activity · JordanRex + ItamiForge</p>
         <div className="flex flex-wrap items-center gap-1.5">
           {years.map((year) => (
             <button
@@ -379,10 +351,7 @@ export function GitHubActivity({
 
       {/* Calendar or small-multiples */}
       {selectedYear === "all" ? (
-        <GitHubYearlyGrid
-          data={yearlyMonthlyData}
-          onYearClick={(year) => setSelectedYear(year)}
-        />
+        <GitHubYearlyGrid data={yearlyMonthlyData} onYearClick={(year) => setSelectedYear(year)} />
       ) : (
         <CalendarView
           contributions={contributionsByYear[selectedYear] ?? []}
@@ -391,11 +360,7 @@ export function GitHubActivity({
       )}
 
       {/* Stats bar */}
-      <StatsBar
-        publicCount={publicCount}
-        privateCount={privateCount}
-        languageMap={languageMap}
-      />
+      <StatsBar publicCount={publicCount} privateCount={privateCount} languageMap={languageMap} />
 
       {/* Repo cards */}
       <RepoCards repos={recentRepos} />

@@ -55,10 +55,7 @@ function ghHeaders(token: string | undefined): HeadersInit {
   return headers;
 }
 
-async function paginatedFetch<T>(
-  baseUrl: string,
-  token: string | undefined,
-): Promise<T[]> {
+async function paginatedFetch<T>(baseUrl: string, token: string | undefined): Promise<T[]> {
   const results: T[] = [];
   let page = 1;
   const isDev = process.env.NODE_ENV === "development";
@@ -98,9 +95,7 @@ const MONTH_LABELS = [
 /**
  * Fetch ALL contribution history for a GitHub user (every year).
  */
-export async function fetchAllContributions(
-  username: string,
-): Promise<ContributionData> {
+export async function fetchAllContributions(username: string): Promise<ContributionData> {
   try {
     const url = `https://github-contributions-api.jogruber.de/v4/${username}?y=all`;
     const isDev = process.env.NODE_ENV === "development";
@@ -128,13 +123,11 @@ export async function fetchAllContributions(
  * Fetch all repos the authenticated user has access to (public + private).
  * Reads GH_PAT from env.
  */
-export async function fetchAllUserRepos(
-  token: string | undefined,
-): Promise<RepoStats> {
+export async function fetchAllUserRepos(token: string | undefined): Promise<RepoStats> {
   try {
     const repos = await paginatedFetch<GitHubRepo>(
       "https://api.github.com/user/repos?sort=updated&affiliation=owner,organization_member",
-      token,
+      token
     );
 
     let publicCount = 0;
@@ -158,14 +151,11 @@ export async function fetchAllUserRepos(
 /**
  * Fetch all public repos for the ItamiForge org.
  */
-export async function fetchOrgRepos(
-  org: string,
-  token: string | undefined,
-): Promise<GitHubRepo[]> {
+export async function fetchOrgRepos(org: string, token: string | undefined): Promise<GitHubRepo[]> {
   try {
     return await paginatedFetch<GitHubRepo>(
       `https://api.github.com/orgs/${org}/repos?sort=updated&type=public`,
-      token,
+      token
     );
   } catch {
     return [];
@@ -178,7 +168,7 @@ export async function fetchOrgRepos(
 export function buildYearlyMonthlyData(
   contributions: Activity[],
   yearTotals: Record<string, number>,
-  years: number[],
+  years: number[]
 ): YearlyMonthlyData[] {
   // Build a lookup map: date -> count
   const byDate = new Map<string, number>();
@@ -206,9 +196,7 @@ export function buildYearlyMonthlyData(
 }
 
 /** Split contributions array into per-year slices (for client-side year switching). */
-export function splitByYear(
-  contributions: Activity[],
-): Record<number, Activity[]> {
+export function splitByYear(contributions: Activity[]): Record<number, Activity[]> {
   const result: Record<number, Activity[]> = {};
   for (const c of contributions) {
     const year = Number(c.date.slice(0, 4));
@@ -223,15 +211,13 @@ export function splitByYear(
  * renders a full 52-week grid instead of truncating at today's date.
  */
 export function padCurrentYearToDecember(
-  contributionsByYear: Record<number, Activity[]>,
+  contributionsByYear: Record<number, Activity[]>
 ): Record<number, Activity[]> {
   const currentYear = new Date().getFullYear();
   const activities = contributionsByYear[currentYear];
   if (!activities || activities.length === 0) return contributionsByYear;
 
-  const lastDateStr = [...activities]
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .at(-1)?.date;
+  const lastDateStr = [...activities].sort((a, b) => a.date.localeCompare(b.date)).at(-1)?.date;
   if (!lastDateStr) return contributionsByYear;
 
   const last = new Date(lastDateStr);

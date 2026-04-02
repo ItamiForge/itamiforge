@@ -10,7 +10,7 @@ export default function LearnIndexPage() {
         tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
         return tagMap;
       }, new Map<string, number>())
-      .entries(),
+      .entries()
   )
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, 10);

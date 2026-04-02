@@ -24,10 +24,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     : project.sourcePath?.includes("github.com")
       ? project.sourcePath
       : undefined;
-  const variant =
-    project.slug
-      .split("")
-      .reduce((total, char) => total + char.charCodeAt(0), 0) % 3;
+  const variant = project.slug.split("").reduce((total, char) => total + char.charCodeAt(0), 0) % 3;
 
   return (
     <article className={`card project-mini project-mini--v${variant} h-full`}>
@@ -39,9 +36,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
       <div className="project-mini__layout">
         <div className="project-mini__zone project-mini__zone--head">
-          <h3 className="text-2xl font-semibold tracking-tight">
-            {project.title}
-          </h3>
+          <h3 className="text-2xl font-semibold tracking-tight">{project.title}</h3>
         </div>
 
         <div className="project-mini__zone project-mini__zone--summary">

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useAnimationFrame,
-  useMotionValue,
-  useTransform,
-} from "motion/react";
+import { motion, useAnimationFrame, useMotionValue, useTransform } from "motion/react";
 import { type ReactNode, useCallback, useRef, useState } from "react";
 import "./gradient-text.css";
 
@@ -59,9 +54,7 @@ export default function GradientText({
       if (cycleTime < animationDuration) {
         progress.set((cycleTime / animationDuration) * 100);
       } else {
-        progress.set(
-          100 - ((cycleTime - animationDuration) / animationDuration) * 100,
-        );
+        progress.set(100 - ((cycleTime - animationDuration) / animationDuration) * 100);
       }
     } else {
       // Continuously increase position for seamless looping
@@ -115,15 +108,9 @@ export default function GradientText({
       onMouseLeave={handleMouseLeave}
     >
       {showBorder && (
-        <motion.div
-          className="gradient-overlay"
-          style={{ ...gradientStyle, backgroundPosition }}
-        />
+        <motion.div className="gradient-overlay" style={{ ...gradientStyle, backgroundPosition }} />
       )}
-      <motion.div
-        className="text-content"
-        style={{ ...gradientStyle, backgroundPosition }}
-      >
+      <motion.div className="text-content" style={{ ...gradientStyle, backgroundPosition }}>
         {children}
       </motion.div>
     </motion.div>

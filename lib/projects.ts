@@ -1,11 +1,5 @@
 export type ProjectStatus = "active" | "experimental" | "concept";
-export type ProjectCategory =
-  | "cli"
-  | "desktop"
-  | "shell"
-  | "app"
-  | "concept"
-  | "library";
+export type ProjectCategory = "cli" | "desktop" | "shell" | "app" | "concept" | "library";
 
 export interface ProjectMeta {
   slug: string;
@@ -46,8 +40,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "astro-sumi",
     title: "Astro Sumi",
-    summary:
-      "Astro-based writing and blog template built for GitHub Pages deployment.",
+    summary: "Astro-based writing and blog template built for GitHub Pages deployment.",
     status: "active",
     category: "app",
     tags: ["astro", "template", "blog", "github-pages"],
@@ -79,8 +72,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "port-finder",
     title: "Port Finder",
-    summary:
-      "Cross-platform CLI + TUI for finding and reclaiming busy ports quickly.",
+    summary: "Cross-platform CLI + TUI for finding and reclaiming busy ports quickly.",
     status: "active",
     category: "cli",
     tags: ["rust", "networking", "terminal"],
@@ -96,8 +88,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "goto",
     title: "goto",
-    summary:
-      "Navigate to projects using namespace-based paths with tab completion.",
+    summary: "Navigate to projects using namespace-based paths with tab completion.",
     status: "active",
     category: "shell",
     tags: ["rust", "productivity", "shell"],
@@ -113,8 +104,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "mcp-react-native-toolkit",
     title: "MCP React Native Toolkit",
-    summary:
-      "Local MCP server for React Native + Expo docs, tooling, and device automation.",
+    summary: "Local MCP server for React Native + Expo docs, tooling, and device automation.",
     status: "active",
     category: "app",
     tags: ["typescript", "mcp", "react-native", "expo"],
@@ -147,8 +137,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "itamiforge-site",
     title: "ItamiForge Site",
-    summary:
-      "Portfolio and documentation hub built with Next.js App Router and Fumadocs.",
+    summary: "Portfolio and documentation hub built with Next.js App Router and Fumadocs.",
     status: "experimental",
     category: "app",
     tags: ["nextjs", "fumadocs", "typescript", "portfolio"],
@@ -165,8 +154,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "ai-erp-core",
     title: "AI ERP Core",
-    summary:
-      "Private operations platform for SOP execution, production visibility, and analytics.",
+    summary: "Private operations platform for SOP execution, production visibility, and analytics.",
     status: "active",
     category: "app",
     tags: ["private", "erp", "ai", "operations"],
@@ -178,8 +166,7 @@ export const PROJECTS: ProjectMeta[] = [
   {
     slug: "developer-blog-theme",
     title: "Developer Blog Theme",
-    summary:
-      "Private in-progress template and content workflow for internal publishing.",
+    summary: "Private in-progress template and content workflow for internal publishing.",
     status: "experimental",
     category: "app",
     tags: ["private", "astro", "theme", "internal"],
@@ -191,6 +178,4 @@ export const PROJECTS: ProjectMeta[] = [
 ];
 
 export const publicProjects = PROJECTS.filter((project) => project.public);
-export const featuredProjects = publicProjects.filter(
-  (project) => project.featured,
-);
+export const featuredProjects = publicProjects.filter((project) => project.featured);

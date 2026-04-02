@@ -8,13 +8,7 @@ type BlogCardProps = {
   tags?: string[];
 };
 
-export function BlogCard({
-  title,
-  description,
-  slug,
-  date,
-  tags = [],
-}: BlogCardProps) {
+export function BlogCard({ title, description, slug, date, tags = [] }: BlogCardProps) {
   return (
     <Link href={`/blog/${slug}`} className="card block h-full">
       <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">

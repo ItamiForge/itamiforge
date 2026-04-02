@@ -19,7 +19,7 @@ interface ProjectInfo {
 }
 
 async function extractFrontmatter(
-  content: string,
+  content: string
 ): Promise<{ title: string; description: string }> {
   const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
 
@@ -79,11 +79,11 @@ function generateIndexPage(projects: ProjectInfo[]): string {
   const cards = projects
     .map(
       (
-        project,
+        project
       ) => `  <Link href="/docs/projects/${project.slug}" className="card block h-full no-underline">
     <h3 className="text-xl font-semibold tracking-tight">${project.title}</h3>
     <p className="mt-3 text-sm text-muted-foreground leading-6">${project.description}</p>
-  </Link>`,
+  </Link>`
     )
     .join("\n");
 

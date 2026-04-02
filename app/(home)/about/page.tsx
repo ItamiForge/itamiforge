@@ -34,19 +34,14 @@ async function fetchGitHubData() {
   // Sort by updated_at (matches GitHub UI "updated" time — covers pushes, issues, PRs, etc.)
   const recentRepos = allRepos
     .filter((r) => !r.private)
-    .sort(
-      (a, b) =>
-        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
-    )
+    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
     .slice(0, 6);
 
-  const contributionsByYear = padCurrentYearToDecember(
-    splitByYear(contribData.contributions),
-  );
+  const contributionsByYear = padCurrentYearToDecember(splitByYear(contribData.contributions));
   const yearlyMonthlyData = buildYearlyMonthlyData(
     contribData.contributions,
     contribData.total,
-    contribData.years,
+    contribData.years
   );
 
   return {
@@ -142,13 +137,7 @@ export default async function AboutPage() {
         {
           text: "Designed and engineered an end-to-end, in-house experimentation platform for measuring A/B tests and test-control initiatives—covering everything from physical store layout adjustments to digital product launches. Built the system entirely from the ground up using the Hadoop ecosystem and Dash web framework, orchestrating the deployment across custom VMs and load balancers on their internal cloud infrastructure.",
           duration: "24 months",
-          tech: [
-            "A/B Testing",
-            "Experimentation",
-            "Hadoop",
-            "Dash",
-            "Cloud Infrastructure",
-          ],
+          tech: ["A/B Testing", "Experimentation", "Hadoop", "Dash", "Cloud Infrastructure"],
         },
       ],
     },
@@ -245,14 +234,7 @@ export default async function AboutPage() {
   const skillCategories = [
     {
       name: "Languages",
-      skills: [
-        "Python",
-        "R",
-        "SQL",
-        "TypeScript / JS",
-        "Bash / Shell",
-        "HTML & CSS",
-      ],
+      skills: ["Python", "R", "SQL", "TypeScript / JS", "Bash / Shell", "HTML & CSS"],
     },
     {
       name: "Data Science & AI",
@@ -267,15 +249,7 @@ export default async function AboutPage() {
     },
     {
       name: "Databases & Big Data",
-      skills: [
-        "PostgreSQL",
-        "SQLite",
-        "Snowflake",
-        "Redis",
-        "Neo4j",
-        "Hadoop / Hive",
-        "MySQL",
-      ],
+      skills: ["PostgreSQL", "SQLite", "Snowflake", "Redis", "Neo4j", "Hadoop / Hive", "MySQL"],
     },
     {
       name: "Cloud & Infrastructure",
@@ -312,9 +286,7 @@ export default async function AboutPage() {
             {/* Location */}
             <div className="flex items-center gap-2.5">
               <MapPin className="w-4 h-4 text-foreground/50" />
-              <span className="uppercase text-foreground/80 font-medium">
-                Bengaluru, India
-              </span>
+              <span className="uppercase text-foreground/80 font-medium">Bengaluru, India</span>
             </div>
 
             {/* Email */}
@@ -331,9 +303,7 @@ export default async function AboutPage() {
             {/* Phone */}
             <div className="flex items-center gap-2.5">
               <Phone className="w-4 h-4 text-foreground/50" />
-              <span className="font-medium text-foreground/80">
-                +91 9916014327
-              </span>
+              <span className="font-medium text-foreground/80">+91 9916014327</span>
             </div>
 
             {/* Resume Download */}
@@ -360,16 +330,14 @@ export default async function AboutPage() {
           <p className="eyebrow text-muted-foreground">Professional Summary</p>
           <div className="space-y-4 text-lg md:text-xl font-display text-foreground/90 leading-relaxed max-w-3xl">
             <p>
-              I am an engineer and consultant with a decade of rich experience
-              in Data, Analytics, and Software. I've delivered solutions across
-              Retail, Banking, Insurance, FMCG, and Manufacturing industries,
-              with deep expertise in building analytics strategy, product
+              I am an engineer and consultant with a decade of rich experience in Data, Analytics,
+              and Software. I've delivered solutions across Retail, Banking, Insurance, FMCG, and
+              Manufacturing industries, with deep expertise in building analytics strategy, product
               development, and scalable AI/ML solutions.
             </p>
             <p>
-              Recently, I've pivoted my creative focus towards game development
-              and mobile apps, operating as an independent solo developer
-              building immersive interactive experiences.
+              Recently, I've pivoted my creative focus towards game development and mobile apps,
+              operating as an independent solo developer building immersive interactive experiences.
             </p>
           </div>
         </div>
@@ -428,9 +396,7 @@ export default async function AboutPage() {
               target="_blank"
               className="btn bg-background hover:bg-secondary w-full justify-between group"
             >
-              <span className="uppercase tracking-wide text-xs font-semibold">
-                LinkedIn
-              </span>
+              <span className="uppercase tracking-wide text-xs font-semibold">LinkedIn</span>
               <MoveRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
@@ -438,9 +404,7 @@ export default async function AboutPage() {
               target="_blank"
               className="btn bg-background hover:bg-secondary w-full justify-between group"
             >
-              <span className="uppercase tracking-wide text-xs font-semibold">
-                Github
-              </span>
+              <span className="uppercase tracking-wide text-xs font-semibold">Github</span>
               <MoveRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -482,13 +446,8 @@ export default async function AboutPage() {
 
               <div className="flex flex-col mt-6">
                 {exp.projects.map((project, pIdx) => (
-                  <div
-                    key={`${exp.company}-${exp.role}-${project.text}`}
-                    className="group/project"
-                  >
-                    {pIdx !== 0 && (
-                      <hr className="w-full border-t border-border/50 my-6" />
-                    )}
+                  <div key={`${exp.company}-${exp.role}-${project.text}`} className="group/project">
+                    {pIdx !== 0 && <hr className="w-full border-t border-border/50 my-6" />}
 
                     <div className="space-y-4">
                       <p className="text-foreground/80 font-normal leading-relaxed text-sm md:text-base">
@@ -496,34 +455,30 @@ export default async function AboutPage() {
                       </p>
 
                       {/* Sub-projects list if any exist */}
-                      {project.subProjects &&
-                        project.subProjects.length > 0 && (
-                          <div className="pl-5 space-y-4 border-l border-border/50 ml-2 mt-4 pt-1 pb-1">
-                            {project.subProjects.map((sub) => (
-                              <div
-                                key={sub.text}
-                                className="space-y-2 relative"
-                              >
-                                <span className="absolute -left-[25px] top-2 w-1.5 h-1.5 rounded-full bg-border" />
-                                <p className="text-muted-foreground/90 text-sm leading-relaxed">
-                                  {sub.text}
-                                </p>
-                                {sub.tech && sub.tech.length > 0 && (
-                                  <div className="flex flex-wrap items-center gap-2 pt-1">
-                                    {sub.tech.map((t) => (
-                                      <span
-                                        key={t}
-                                        className="text-[10px] text-muted-foreground font-medium px-2 py-0.5 rounded border border-border/30 bg-secondary/10 uppercase tracking-wider"
-                                      >
-                                        {t}
-                                      </span>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                      {project.subProjects && project.subProjects.length > 0 && (
+                        <div className="pl-5 space-y-4 border-l border-border/50 ml-2 mt-4 pt-1 pb-1">
+                          {project.subProjects.map((sub) => (
+                            <div key={sub.text} className="space-y-2 relative">
+                              <span className="absolute -left-[25px] top-2 w-1.5 h-1.5 rounded-full bg-border" />
+                              <p className="text-muted-foreground/90 text-sm leading-relaxed">
+                                {sub.text}
+                              </p>
+                              {sub.tech && sub.tech.length > 0 && (
+                                <div className="flex flex-wrap items-center gap-2 pt-1">
+                                  {sub.tech.map((t) => (
+                                    <span
+                                      key={t}
+                                      className="text-[10px] text-muted-foreground font-medium px-2 py-0.5 rounded border border-border/30 bg-secondary/10 uppercase tracking-wider"
+                                    >
+                                      {t}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Project Metadata (Duration & Tech Stack) */}
                       {(project.client ||

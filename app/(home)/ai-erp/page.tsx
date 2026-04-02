@@ -6,9 +6,9 @@ export default function AiErpPage() {
           AIML ERP for modern brewing operations
         </h1>
         <p className="mt-4 max-w-3xl text-base text-muted-foreground leading-7">
-          This is the initial landing skeleton for the full ERP product. The
-          core app is being built in a separate repository. This page will
-          evolve into the full marketing and product documentation surface.
+          This is the initial landing skeleton for the full ERP product. The core app is being built
+          in a separate repository. This page will evolve into the full marketing and product
+          documentation surface.
         </p>
       </section>
 

@@ -63,7 +63,7 @@ export function InkSplashReveal<T extends ElementType = "span">({
           setActive(false);
         }
       },
-      { threshold },
+      { threshold }
     );
 
     observer.observe(ref.current);

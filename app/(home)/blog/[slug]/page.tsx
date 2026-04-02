@@ -23,12 +23,8 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
         {" · "}
         {page.data.author}
       </p>
-      <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-        {page.data.title}
-      </h1>
-      <p className="mt-3 text-base text-muted-foreground">
-        {page.data.description}
-      </p>
+      <h1 className="mt-3 text-4xl font-semibold tracking-tight">{page.data.title}</h1>
+      <p className="mt-3 text-base text-muted-foreground">{page.data.description}</p>
 
       <DocsBody className="mt-10">
         <MDX
@@ -48,9 +44,7 @@ export async function generateStaticParams() {
   });
 }
 
-export async function generateMetadata(
-  props: PageProps<"/blog/[slug]">,
-): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/blog/[slug]">): Promise<Metadata> {
   const params = await props.params;
   const page = blogSource.getPage([params.slug]);
   if (!page) notFound();

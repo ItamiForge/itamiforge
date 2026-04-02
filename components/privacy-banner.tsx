@@ -47,16 +47,10 @@ export function PrivacyBanner() {
         animation: "slideInUp 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
     >
-      <p
-        className="text-sm text-fd-muted-foreground max-w-2xl"
-        style={{ lineHeight: "1.5" }}
-      >
-        This site uses anonymous traffic analytics to understand visitor
-        patterns. IP addresses are masked and no personal data is stored or
-        shared.{" "}
-        <span className="opacity-60">
-          Data is used solely for site improvement.
-        </span>
+      <p className="text-sm text-fd-muted-foreground max-w-2xl" style={{ lineHeight: "1.5" }}>
+        This site uses anonymous traffic analytics to understand visitor patterns. IP addresses are
+        masked and no personal data is stored or shared.{" "}
+        <span className="opacity-60">Data is used solely for site improvement.</span>
       </p>
 
       <button
@@ -72,12 +66,10 @@ export function PrivacyBanner() {
           cursor: "pointer",
         }}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.background =
-            "hsl(var(--secondary))";
+          (e.currentTarget as HTMLButtonElement).style.background = "hsl(var(--secondary))";
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.background =
-            "transparent";
+          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
         }}
       >
         <X size={12} />

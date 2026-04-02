@@ -4,12 +4,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const ANALYTICS_SITE_ID = "itamiforge";
-const PUBLIC_ANALYTICS_ENDPOINT =
-  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT?.trim() ?? "";
 const ANALYTICS_ENDPOINT =
-  PUBLIC_ANALYTICS_ENDPOINT ||
-  (process.env.NODE_ENV === "development" ? "/api/analytics" : "");
-const ANALYTICS_ENABLED = ANALYTICS_ENDPOINT.length > 0;
+  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT ?? "https://sitestats.varunrajan.workers.dev/collect";
+const COLLECT_KEY = process.env.NEXT_PUBLIC_SITESTATS_KEY ?? "";
 
 // ── Visitor name wordlist (adjective + noun, deterministic for the session) ──
 const ADJECTIVES = [
@@ -132,19 +129,20 @@ function getOrCreateSessionId(): string {
 }
 
 function sendBeacon(payload: Record<string, unknown>) {
-  if (!ANALYTICS_ENABLED) return;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (COLLECT_KEY) headers["X-Sitestats-Key"] = COLLECT_KEY;
+
   fetch(ANALYTICS_ENDPOINT, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(payload),
     keepalive: true,
   }).catch(() => {});
 }
 
 export function AnalyticsTracker() {
-  if (!ANALYTICS_ENABLED) return null;
   const pathname = usePathname();
   const sessionStartRef = useRef<number>(Date.now());
 

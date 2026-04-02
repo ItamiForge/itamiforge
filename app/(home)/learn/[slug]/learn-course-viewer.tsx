@@ -10,39 +10,29 @@ type LearnCourseViewerProps = {
   learnCourse: LearnCourseDocument;
 };
 
-export default function LearnCourseViewer({
-  learnCourse,
-}: LearnCourseViewerProps) {
+export default function LearnCourseViewer({ learnCourse }: LearnCourseViewerProps) {
   const [activePartIndex, setActivePartIndex] = useState(0);
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
 
   const activePart = learnCourse.parts[activePartIndex] ?? learnCourse.parts[0];
-  const activeChapter =
-    activePart.chapters[activeChapterIndex] ?? activePart.chapters[0];
+  const activeChapter = activePart.chapters[activeChapterIndex] ?? activePart.chapters[0];
 
   const progress = useMemo(() => {
     const totalChapters = learnCourse.parts.reduce(
-      (chapterCount, learnCoursePart) =>
-        chapterCount + learnCoursePart.chapters.length,
-      0,
+      (chapterCount, learnCoursePart) => chapterCount + learnCoursePart.chapters.length,
+      0
     );
     const completedChaptersBeforeActivePart = learnCourse.parts
       .slice(0, activePartIndex)
-      .reduce(
-        (chapterCount, learnCoursePart) =>
-          chapterCount + learnCoursePart.chapters.length,
-        0,
-      );
+      .reduce((chapterCount, learnCoursePart) => chapterCount + learnCoursePart.chapters.length, 0);
 
     return {
       totalChapters,
-      activeChapterNumber:
-        completedChaptersBeforeActivePart + activeChapterIndex + 1,
+      activeChapterNumber: completedChaptersBeforeActivePart + activeChapterIndex + 1,
     };
   }, [activeChapterIndex, activePartIndex, learnCourse.parts]);
 
-  const progressPercent =
-    (progress.activeChapterNumber / progress.totalChapters) * 100;
+  const progressPercent = (progress.activeChapterNumber / progress.totalChapters) * 100;
 
   const goToNextChapter = () => {
     if (activeChapterIndex < activePart.chapters.length - 1) {
@@ -65,9 +55,7 @@ export default function LearnCourseViewer({
     if (activePartIndex > 0) {
       const previousPartIndex = activePartIndex - 1;
       setActivePartIndex(previousPartIndex);
-      setActiveChapterIndex(
-        learnCourse.parts[previousPartIndex].chapters.length - 1,
-      );
+      setActiveChapterIndex(learnCourse.parts[previousPartIndex].chapters.length - 1);
     }
   };
 
@@ -90,9 +78,7 @@ export default function LearnCourseViewer({
               </Link>
               <div className="learn-book-header__copy">
                 <h1 className="learn-book-title">{learnCourse.meta.title}</h1>
-                <p className="learn-book-description">
-                  {learnCourse.meta.description}
-                </p>
+                <p className="learn-book-description">{learnCourse.meta.description}</p>
               </div>
             </div>
 
@@ -107,25 +93,18 @@ export default function LearnCourseViewer({
                     {progress.activeChapterNumber}
                     <span>/ {progress.totalChapters}</span>
                   </div>
-                  <div
-                    className="learn-book-status-card__bar"
-                    aria-hidden="true"
-                  >
+                  <div className="learn-book-status-card__bar" aria-hidden="true">
                     <span style={{ width: `${progressPercent}%` }} />
                   </div>
                 </div>
                 <div className="learn-book-status-bento__cell">
-                  <p className="learn-book-status-bento__cell-label">
-                    Reading time
-                  </p>
+                  <p className="learn-book-status-bento__cell-label">Reading time</p>
                   <p className="learn-book-status-bento__cell-value">
                     ~{learnCourse.meta.estimatedMinutes} min
                   </p>
                 </div>
                 <div className="learn-book-status-bento__cell">
-                  <p className="learn-book-status-bento__cell-label">
-                    Structure
-                  </p>
+                  <p className="learn-book-status-bento__cell-label">Structure</p>
                   <p className="learn-book-status-bento__cell-value">
                     {learnCourse.parts.length > 1
                       ? `${learnCourse.parts.length} parts`
@@ -155,98 +134,79 @@ export default function LearnCourseViewer({
 
               {learnCourse.parts.length > 1 && (
                 <div className="learn-sidebar__part-pills">
-                  {learnCourse.parts.map(
-                    (learnCoursePart, learnCoursePartIndex) => (
-                      <button
-                        key={learnCoursePart.filename}
-                        type="button"
-                        onClick={() => {
-                          setActivePartIndex(learnCoursePartIndex);
-                          setActiveChapterIndex(0);
-                        }}
-                        className={cn(
-                          "learn-part-pill",
-                          learnCoursePartIndex === activePartIndex &&
-                            "learn-part-pill--active",
-                        )}
-                      >
-                        <Layers3 size={13} />
-                        Part {learnCoursePart.number}
-                      </button>
-                    ),
-                  )}
+                  {learnCourse.parts.map((learnCoursePart, learnCoursePartIndex) => (
+                    <button
+                      key={learnCoursePart.filename}
+                      type="button"
+                      onClick={() => {
+                        setActivePartIndex(learnCoursePartIndex);
+                        setActiveChapterIndex(0);
+                      }}
+                      className={cn(
+                        "learn-part-pill",
+                        learnCoursePartIndex === activePartIndex && "learn-part-pill--active"
+                      )}
+                    >
+                      <Layers3 size={13} />
+                      Part {learnCoursePart.number}
+                    </button>
+                  ))}
                 </div>
               )}
 
               <div className="learn-sidebar__sections">
-                {learnCourse.parts.map(
-                  (learnCoursePart, learnCoursePartIndex) => (
-                    <section
-                      key={learnCoursePart.filename}
-                      className="learn-sidebar__section"
-                    >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setActivePartIndex(learnCoursePartIndex);
-                          setActiveChapterIndex(0);
-                        }}
-                        className={cn(
-                          "learn-part-card",
-                          learnCoursePartIndex === activePartIndex &&
-                            "learn-part-card--active",
-                        )}
-                      >
-                        <p className="eyebrow text-muted-foreground">
-                          Part {learnCoursePart.number}
-                        </p>
-                        <h2 className="learn-part-card__title">
-                          {learnCoursePart.title}
-                        </h2>
-                        <p className="learn-part-card__meta">
-                          {learnCoursePart.chapters.length} chapters
-                        </p>
-                      </button>
-
-                      {learnCoursePartIndex === activePartIndex && (
-                        <div className="learn-chapter-list">
-                          {learnCoursePart.chapters.map(
-                            (learnCourseChapter, learnCourseChapterIndex) => (
-                              <button
-                                key={learnCourseChapter.id}
-                                type="button"
-                                onClick={() =>
-                                  setActiveChapterIndex(learnCourseChapterIndex)
-                                }
-                                className={cn(
-                                  "learn-chapter-item",
-                                  learnCourseChapterIndex ===
-                                    activeChapterIndex &&
-                                    "learn-chapter-item--active",
-                                )}
-                              >
-                                <span className="learn-chapter-item__num">
-                                  {String(learnCourseChapterIndex + 1).padStart(
-                                    2,
-                                    "0",
-                                  )}
-                                </span>
-                                <span className="learn-chapter-item__content">
-                                  <span className="learn-chapter-item__title">
-                                    {learnCourseChapter.title}
-                                  </span>
-                                  <span className="learn-chapter-item__subtitle">
-                                    {learnCourseChapter.subtitle}
-                                  </span>
-                                </span>
-                              </button>
-                            ),
-                          )}
-                        </div>
+                {learnCourse.parts.map((learnCoursePart, learnCoursePartIndex) => (
+                  <section key={learnCoursePart.filename} className="learn-sidebar__section">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActivePartIndex(learnCoursePartIndex);
+                        setActiveChapterIndex(0);
+                      }}
+                      className={cn(
+                        "learn-part-card",
+                        learnCoursePartIndex === activePartIndex && "learn-part-card--active"
                       )}
-                    </section>
-                  ),
-                )}
+                    >
+                      <p className="eyebrow text-muted-foreground">Part {learnCoursePart.number}</p>
+                      <h2 className="learn-part-card__title">{learnCoursePart.title}</h2>
+                      <p className="learn-part-card__meta">
+                        {learnCoursePart.chapters.length} chapters
+                      </p>
+                    </button>
+
+                    {learnCoursePartIndex === activePartIndex && (
+                      <div className="learn-chapter-list">
+                        {learnCoursePart.chapters.map(
+                          (learnCourseChapter, learnCourseChapterIndex) => (
+                            <button
+                              key={learnCourseChapter.id}
+                              type="button"
+                              onClick={() => setActiveChapterIndex(learnCourseChapterIndex)}
+                              className={cn(
+                                "learn-chapter-item",
+                                learnCourseChapterIndex === activeChapterIndex &&
+                                  "learn-chapter-item--active"
+                              )}
+                            >
+                              <span className="learn-chapter-item__num">
+                                {String(learnCourseChapterIndex + 1).padStart(2, "0")}
+                              </span>
+                              <span className="learn-chapter-item__content">
+                                <span className="learn-chapter-item__title">
+                                  {learnCourseChapter.title}
+                                </span>
+                                <span className="learn-chapter-item__subtitle">
+                                  {learnCourseChapter.subtitle}
+                                </span>
+                              </span>
+                            </button>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </section>
+                ))}
               </div>
             </div>
           </aside>
@@ -255,20 +215,14 @@ export default function LearnCourseViewer({
             <article className="learn-reading-surface learn-paper">
               <div className="learn-reading-surface__header">
                 <div className="learn-reading-surface__eyebrow">
-                  <span className="eyebrow text-muted-foreground">
-                    {activeChapter.eyebrow}
-                  </span>
+                  <span className="eyebrow text-muted-foreground">{activeChapter.eyebrow}</span>
                   <span className="learn-reading-surface__counter">
                     {progress.activeChapterNumber} of {progress.totalChapters}
                   </span>
                 </div>
                 <div className="learn-reading-surface__heading">
-                  <h2 className="learn-reading-surface__title">
-                    {activeChapter.title}
-                  </h2>
-                  <p className="learn-reading-surface__subtitle">
-                    {activeChapter.subtitle}
-                  </p>
+                  <h2 className="learn-reading-surface__title">{activeChapter.title}</h2>
+                  <p className="learn-reading-surface__subtitle">{activeChapter.subtitle}</p>
                 </div>
               </div>
 

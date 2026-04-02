@@ -66,11 +66,7 @@ export function ThemeToggle() {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="flex items-center justify-center"
           >
-            {isDark ? (
-              <Moon className="w-5 h-5" />
-            ) : (
-              <Sun className="w-5 h-5" />
-            )}
+            {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
           </motion.div>
         </AnimatePresence>
       </button>

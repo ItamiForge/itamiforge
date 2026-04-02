@@ -4,8 +4,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { SITE } from "@/lib/site";
 
 const SITESTATS_URL =
-  process.env.NEXT_PUBLIC_SITESTATS_URL ??
-  "https://itamiforge.github.io/sitestats/";
+  process.env.NEXT_PUBLIC_SITESTATS_URL ?? "https://itamiforge.github.io/sitestats/";
 
 export function baseOptions(): BaseLayoutProps {
   return {

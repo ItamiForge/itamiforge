@@ -129,25 +129,18 @@ export const LEARN_COURSE_LIBRARY: LearnCourseMeta[] = [
   },
 ];
 
-export function getLearnCourseMetaBySlug(
-  slug: string,
-): LearnCourseMeta | undefined {
-  return LEARN_COURSE_LIBRARY.find(
-    (learnCourseMeta) => learnCourseMeta.slug === slug,
-  );
+export function getLearnCourseMetaBySlug(slug: string): LearnCourseMeta | undefined {
+  return LEARN_COURSE_LIBRARY.find((learnCourseMeta) => learnCourseMeta.slug === slug);
 }
 
 export function getFeaturedLearnCourses(): LearnCourseMeta[] {
   return LEARN_COURSE_LIBRARY.filter(
-    (learnCourseMeta) =>
-      learnCourseMeta.featured && learnCourseMeta.status === "complete",
+    (learnCourseMeta) => learnCourseMeta.featured && learnCourseMeta.status === "complete"
   );
 }
 
 export function getAllLearnCourses(): LearnCourseMeta[] {
-  return LEARN_COURSE_LIBRARY.filter(
-    (learnCourseMeta) => learnCourseMeta.status === "complete",
-  );
+  return LEARN_COURSE_LIBRARY.filter((learnCourseMeta) => learnCourseMeta.status === "complete");
 }
 
 export function getLearnCourseSlugs(): string[] {
@@ -169,7 +162,7 @@ function stripTags(value: string): string {
     value
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
-      .trim(),
+      .trim()
   );
 }
 
@@ -202,9 +195,7 @@ function extractLearnCourseChapters(html: string): LearnCourseChapter[] {
   return chapters;
 }
 
-export async function getLearnCourseBySlug(
-  slug: string,
-): Promise<LearnCourseDocument | undefined> {
+export async function getLearnCourseBySlug(slug: string): Promise<LearnCourseDocument | undefined> {
   const learnCourseMeta = getLearnCourseMetaBySlug(slug);
 
   if (!learnCourseMeta) return undefined;
@@ -215,10 +206,7 @@ export async function getLearnCourseBySlug(
 
   const parts = await Promise.all(
     learnCourseMeta.parts.map(async (part) => {
-      const html = await fs.readFile(
-        path.join(learnCourseDirectory, part.filename),
-        "utf-8",
-      );
+      const html = await fs.readFile(path.join(learnCourseDirectory, part.filename), "utf-8");
 
       return {
         number: part.number,
@@ -226,7 +214,7 @@ export async function getLearnCourseBySlug(
         filename: part.filename,
         chapters: extractLearnCourseChapters(html),
       };
-    }),
+    })
   );
 
   return {
