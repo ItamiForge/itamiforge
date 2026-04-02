@@ -49,6 +49,12 @@ Located in `tools/`:
 
 GitHub Pages to `itamiforge.github.io/itamiforge/` with base path `/itamiforge`.
 
+### Analytics
+
+- Production (GitHub Pages, static): set `NEXT_PUBLIC_ANALYTICS_ENDPOINT` to your Worker `/collect` URL in repo variables.
+- Local dev: defaults to `/api/analytics` (Next dev server proxy route). To test against a local Worker, set `NEXT_PUBLIC_ANALYTICS_ENDPOINT=http://localhost:8787/collect`.
+- If you ever run a serverful deployment, use `ANALYTICS_ENDPOINT` and `SITESTATS_KEY` on the server side; do not use `NEXT_PUBLIC_*` for secrets.
+
 ## Local development
 
 ```bash

@@ -4,7 +4,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const ANALYTICS_SITE_ID = "itamiforge";
-const ANALYTICS_ENDPOINT = "/api/analytics";
+const PUBLIC_ANALYTICS_ENDPOINT =
+  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT?.trim() ?? "";
+const ANALYTICS_ENDPOINT =
+  PUBLIC_ANALYTICS_ENDPOINT ||
+  (process.env.NODE_ENV === "development" ? "/api/analytics" : "");
+const ANALYTICS_ENABLED = ANALYTICS_ENDPOINT.length > 0;
 
 // ── Visitor name wordlist (adjective + noun, deterministic for the session) ──
 const ADJECTIVES = [
@@ -127,6 +132,7 @@ function getOrCreateSessionId(): string {
 }
 
 function sendBeacon(payload: Record<string, unknown>) {
+  if (!ANALYTICS_ENABLED) return;
   fetch(ANALYTICS_ENDPOINT, {
     method: "POST",
     headers: {
@@ -138,6 +144,7 @@ function sendBeacon(payload: Record<string, unknown>) {
 }
 
 export function AnalyticsTracker() {
+  if (!ANALYTICS_ENABLED) return null;
   const pathname = usePathname();
   const sessionStartRef = useRef<number>(Date.now());
 

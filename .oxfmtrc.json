@@ -1,0 +1,50 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/refs/heads/main/npm/oxfmt/configuration_schema.json",
+  "plugins": ["prettier", "sorting"],
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": false,
+  "quoteProps": "as-needed",
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "sorting": {
+    "enabled": true,
+    "ignoreCase": false,
+    "sortSideEffects": true,
+    "newlinesBetween": "always",
+    "groups": [
+      ["builtin", "external"],
+      "internal",
+      ["parent", "sibling", "index"]
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.json"],
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": ["*.md"],
+      "options": {
+        "parser": "markdown"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "out",
+    "dist",
+    "build",
+    ".source",
+    "tools",
+    "*.lock"
+  ]
+}

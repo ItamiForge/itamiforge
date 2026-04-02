@@ -1,8 +1,9 @@
 const UPSTREAM_ANALYTICS_ENDPOINT =
+  process.env.ANALYTICS_ENDPOINT ??
   process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT ??
   "https://sitestats.varunrajan.workers.dev/collect";
 
-const COLLECT_KEY = process.env.NEXT_PUBLIC_SITESTATS_KEY ?? "";
+const COLLECT_KEY = process.env.SITESTATS_KEY ?? "";
 
 export async function POST(request: Request) {
   let body = "";

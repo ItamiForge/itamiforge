@@ -3,6 +3,8 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,8 +17,63 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run linter
+        run: |
+          echo "::group::Oxlint"
+          bun run lint
+          echo "::endgroup::"
+
+      - name: Check formatting
+        run: |
+          echo "::group::Oxfmt Check"
+          bun run format:check
+          echo "::endgroup::"
+
+      - name: Type check
+        run: |
+          echo "::group::TypeScript"
+          bun run typecheck
+          echo "::endgroup::"
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run Socket Security Audit
+        run: |
+          echo "::group::Socket Security Scan"
+          bun run security:audit
+          echo "::endgroup::"
+
   build:
     name: Build & Prepare
+    needs: [lint, security]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,8 +92,8 @@ jobs:
 
       - name: Build static site
         env:
+          NEXT_PUBLIC_ANALYTICS_ENDPOINT: ${{ vars.NEXT_PUBLIC_ANALYTICS_ENDPOINT }}
           NEXT_PUBLIC_SITESTATS_URL: ${{ vars.NEXT_PUBLIC_SITESTATS_URL }}
-          NEXT_PUBLIC_SITESTATS_KEY: ${{ secrets.NEXT_PUBLIC_SITESTATS_KEY }}
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           echo "::group::Next.js Build"
