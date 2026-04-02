@@ -107,7 +107,9 @@ const SESSION_KEY = "__sitestats_session_id";
 function getOrCreateVisitorName(): string {
   try {
     const stored = localStorage.getItem(VISITOR_KEY);
-    if (stored) return stored;
+    if (stored) {
+      return stored;
+    }
     const name = generateVisitorName();
     localStorage.setItem(VISITOR_KEY, name);
     return name;
@@ -119,7 +121,9 @@ function getOrCreateVisitorName(): string {
 function getOrCreateSessionId(): string {
   try {
     const stored = sessionStorage.getItem(SESSION_KEY);
-    if (stored) return stored;
+    if (stored) {
+      return stored;
+    }
     const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
     sessionStorage.setItem(SESSION_KEY, id);
     return id;
@@ -132,7 +136,9 @@ function sendBeacon(payload: Record<string, unknown>) {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
-  if (COLLECT_KEY) headers["X-Sitestats-Key"] = COLLECT_KEY;
+  if (COLLECT_KEY) {
+    headers["X-Sitestats-Key"] = COLLECT_KEY;
+  }
 
   fetch(ANALYTICS_ENDPOINT, {
     method: "POST",
@@ -182,7 +188,9 @@ export function AnalyticsTracker() {
 
   // Track page views on route changes
   useEffect(() => {
-    if (!pathname) return;
+    if (!pathname) {
+      return;
+    }
 
     const visitorName = getOrCreateVisitorName();
     const sessionId = getOrCreateSessionId();

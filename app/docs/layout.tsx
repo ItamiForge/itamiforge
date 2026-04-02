@@ -8,14 +8,22 @@ function attachLandingPages(tree: Root): Root {
   const projectsPage = docsSource.getPage(["projects"]);
   const notesPage = docsSource.getPage(["notes"]);
 
-  if (projectsPage) folderToLandingUrl.set("Projects", projectsPage.url);
-  if (notesPage) folderToLandingUrl.set("Notes", notesPage.url);
+  if (projectsPage) {
+    folderToLandingUrl.set("Projects", projectsPage.url);
+  }
+  if (notesPage) {
+    folderToLandingUrl.set("Notes", notesPage.url);
+  }
 
   const children = tree.children.map((node) => {
-    if (node.type !== "folder") return node;
+    if ("folder" !== node.type) {
+      return node;
+    }
 
     const landingUrl = folderToLandingUrl.get(String(node.name));
-    if (!landingUrl) return node;
+    if (!landingUrl) {
+      return node;
+    }
 
     const folder: Folder = {
       ...node,

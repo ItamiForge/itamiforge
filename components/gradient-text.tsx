@@ -38,7 +38,7 @@ export default function GradientText({
       return;
     }
 
-    if (lastTimeRef.current === null) {
+    if (null === lastTimeRef.current) {
       lastTimeRef.current = time;
       return;
     }
@@ -63,9 +63,9 @@ export default function GradientText({
   });
 
   const backgroundPosition = useTransform(progress, (p) => {
-    if (direction === "horizontal") {
+    if ("horizontal" === direction) {
       return `${p}% 50%`;
-    } else if (direction === "vertical") {
+    } else if ("vertical" === direction) {
       return `50% ${p}%`;
     } else {
       // For diagonal, move only horizontally to avoid interference patterns
@@ -74,17 +74,21 @@ export default function GradientText({
   });
 
   const handleMouseEnter = useCallback(() => {
-    if (pauseOnHover) setIsPaused(true);
+    if (pauseOnHover) {
+      setIsPaused(true);
+    }
   }, [pauseOnHover]);
 
   const handleMouseLeave = useCallback(() => {
-    if (pauseOnHover) setIsPaused(false);
+    if (pauseOnHover) {
+      setIsPaused(false);
+    }
   }, [pauseOnHover]);
 
   const gradientAngle =
-    direction === "horizontal"
+    "horizontal" === direction
       ? "to right"
-      : direction === "vertical"
+      : "vertical" === direction
         ? "to bottom"
         : "to bottom right";
   // Duplicate first color at the end for seamless looping
@@ -93,9 +97,9 @@ export default function GradientText({
   const gradientStyle = {
     backgroundImage: `linear-gradient(${gradientAngle}, ${gradientColors})`,
     backgroundSize:
-      direction === "horizontal"
+      "horizontal" === direction
         ? "300% 100%"
-        : direction === "vertical"
+        : "vertical" === direction
           ? "100% 300%"
           : "300% 300%",
     backgroundRepeat: "repeat",

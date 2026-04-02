@@ -5,10 +5,18 @@ import { notFound } from "next/navigation";
 import { blogSource } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
-export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
+type BlogPostPageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function BlogPostPage(props: BlogPostPageProps) {
   const params = await props.params;
   const page = blogSource.getPage([params.slug]);
-  if (!page) notFound();
+  if (!page) {
+    notFound();
+  }
 
   const MDX = page.data.body;
 
@@ -44,10 +52,12 @@ export async function generateStaticParams() {
   });
 }
 
-export async function generateMetadata(props: PageProps<"/blog/[slug]">): Promise<Metadata> {
+export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {
   const params = await props.params;
   const page = blogSource.getPage([params.slug]);
-  if (!page) notFound();
+  if (!page) {
+    notFound();
+  }
 
   return {
     title: page.data.title,

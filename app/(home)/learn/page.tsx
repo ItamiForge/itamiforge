@@ -16,8 +16,12 @@ export default function LearnIndexPage() {
     .slice(0, 10);
 
   const getTagTier = (count: number) => {
-    if (count >= 4) return "high";
-    if (count >= 2) return "mid";
+    if (4 <= count) {
+      return "high";
+    }
+    if (2 <= count) {
+      return "mid";
+    }
     return "low";
   };
 

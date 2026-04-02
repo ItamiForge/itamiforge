@@ -40,7 +40,7 @@ export default function DefaultSearchDialog(props: SharedProps) {
           <SearchDialogInput />
           <SearchDialogClose />
         </SearchDialogHeader>
-        <SearchDialogList items={query.data !== "empty" ? query.data : null} />
+        <SearchDialogList items={"empty" !== query.data ? query.data : null} />
       </SearchDialogContent>
     </SearchDialog>
   );

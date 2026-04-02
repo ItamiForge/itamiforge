@@ -44,7 +44,7 @@ export function LearnCard({ learnCourse }: LearnCardProps) {
             <div className="learn-card__fact">
               <dt>Format</dt>
               <dd>
-                {learnCourse.parts.length > 1
+                {1 < learnCourse.parts.length
                   ? `${learnCourse.parts.length} parts`
                   : "Single track"}
               </dd>

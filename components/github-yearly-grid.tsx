@@ -118,9 +118,11 @@ function MiniYearChart({
 
 export function GitHubYearlyGrid({ data, onYearClick }: Props) {
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const isDark = "dark" === resolvedTheme;
 
-  if (data.length === 0) return null;
+  if (0 === data.length) {
+    return null;
+  }
 
   // Shared Y-axis max across all years so relative heights are comparable
   const globalMax = Math.max(...data.flatMap((d) => d.monthly.map((m) => m.y)), 1);

@@ -47,12 +47,12 @@ export default function LearnCourseViewer({ learnCourse }: LearnCourseViewerProp
   };
 
   const goToPreviousChapter = () => {
-    if (activeChapterIndex > 0) {
+    if (0 < activeChapterIndex) {
       setActiveChapterIndex(activeChapterIndex - 1);
       return;
     }
 
-    if (activePartIndex > 0) {
+    if (0 < activePartIndex) {
       const previousPartIndex = activePartIndex - 1;
       setActivePartIndex(previousPartIndex);
       setActiveChapterIndex(learnCourse.parts[previousPartIndex].chapters.length - 1);
@@ -106,7 +106,7 @@ export default function LearnCourseViewer({ learnCourse }: LearnCourseViewerProp
                 <div className="learn-book-status-bento__cell">
                   <p className="learn-book-status-bento__cell-label">Structure</p>
                   <p className="learn-book-status-bento__cell-value">
-                    {learnCourse.parts.length > 1
+                    {1 < learnCourse.parts.length
                       ? `${learnCourse.parts.length} parts`
                       : "Single track"}
                   </p>
@@ -132,7 +132,7 @@ export default function LearnCourseViewer({ learnCourse }: LearnCourseViewerProp
                 </div>
               </div>
 
-              {learnCourse.parts.length > 1 && (
+              {1 < learnCourse.parts.length && (
                 <div className="learn-sidebar__part-pills">
                   {learnCourse.parts.map((learnCoursePart, learnCoursePartIndex) => (
                     <button
@@ -236,7 +236,7 @@ export default function LearnCourseViewer({ learnCourse }: LearnCourseViewerProp
                 <button
                   type="button"
                   onClick={goToPreviousChapter}
-                  disabled={activePartIndex === 0 && activeChapterIndex === 0}
+                  disabled={0 === activePartIndex && 0 === activeChapterIndex}
                   className="learn-nav-button learn-nav-button--secondary disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ChevronLeft size={16} />

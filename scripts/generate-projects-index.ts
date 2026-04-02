@@ -5,7 +5,7 @@
  * and creates /content/docs/projects.mdx with project cards
  */
 
-import { readdir, readFile, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
 
 const PROJECTS_DIR = join(process.cwd(), "content", "docs", "projects");
@@ -45,7 +45,9 @@ async function scanProjects(): Promise<ProjectInfo[]> {
     const entries = await readdir(PROJECTS_DIR, { withFileTypes: true });
 
     for (const entry of entries) {
-      if (!entry.isDirectory()) continue;
+      if (!entry.isDirectory()) {
+        continue;
+      }
 
       const indexPath = join(PROJECTS_DIR, entry.name, "index.mdx");
 
