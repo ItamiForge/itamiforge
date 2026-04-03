@@ -14,10 +14,10 @@ import {
 } from "date-fns";
 import {
   type CSSProperties,
-  createContext,
   Fragment,
   type HTMLAttributes,
   type ReactNode,
+  createContext,
   useContext,
   useMemo,
 } from "react";
@@ -101,7 +101,7 @@ const useContributionGraph = () => {
 };
 
 const fillHoles = (activities: Activity[]): Activity[] => {
-  if (activities.length === 0) {
+  if (0 === activities.length) {
     return [];
   }
 
@@ -136,7 +136,7 @@ const fillHoles = (activities: Activity[]): Activity[] => {
 };
 
 const groupByWeeks = (activities: Activity[], weekStart: WeekDay = 0): Week[] => {
-  if (activities.length === 0) {
+  if (0 === activities.length) {
     return [];
   }
 
@@ -183,7 +183,7 @@ const getMonthLabels = (
 
       const prevLabel = labels.at(-1);
 
-      if (weekIndex === 0 || !prevLabel || prevLabel.label !== month) {
+      if (0 === weekIndex || !prevLabel || prevLabel.label !== month) {
         return labels.concat({ weekIndex, label: month });
       }
 
@@ -192,7 +192,7 @@ const getMonthLabels = (
     .filter(({ weekIndex }, index, labels) => {
       const minWeeks = 3;
 
-      if (index === 0) {
+      if (0 === index) {
         return labels[1] && labels[1].weekIndex - weekIndex >= minWeeks;
       }
 
@@ -240,17 +240,17 @@ export const ContributionGraph = ({
   const labels = { ...DEFAULT_LABELS, ...labelsProp };
   const labelHeight = fontSize + LABEL_MARGIN;
 
-  const year = data.length > 0 ? getYear(parseISO(data[0].date)) : new Date().getFullYear();
+  const year = 0 < data.length ? getYear(parseISO(data[0].date)) : new Date().getFullYear();
 
   const totalCount =
-    typeof totalCountProp === "number"
+    "number" === typeof totalCountProp
       ? totalCountProp
       : data.reduce((sum, activity) => sum + activity.count, 0);
 
   const width = weeks.length * (blockSize + blockMargin) - blockMargin;
   const height = labelHeight + (blockSize + blockMargin) * 7 - blockMargin;
 
-  if (data.length === 0) {
+  if (0 === data.length) {
     return null;
   }
 
@@ -297,7 +297,7 @@ export const ContributionGraphBlock = ({
 }: ContributionGraphBlockProps) => {
   const { blockSize, blockMargin, blockRadius, labelHeight, maxLevel } = useContributionGraph();
 
-  if (activity.level < 0 || activity.level > maxLevel) {
+  if (0 > activity.level || activity.level > maxLevel) {
     throw new RangeError(
       `Provided activity level ${activity.level} for ${activity.date} is out of range. It must be between 0 and ${maxLevel}.`
     );

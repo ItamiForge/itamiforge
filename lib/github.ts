@@ -51,25 +51,33 @@ function ghHeaders(token: string | undefined): HeadersInit {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
-  if (token) headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
   return headers;
 }
 
 async function paginatedFetch<T>(baseUrl: string, token: string | undefined): Promise<T[]> {
   const results: T[] = [];
   let page = 1;
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = "development" === process.env.NODE_ENV;
   while (true) {
     const url = `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}per_page=100&page=${page}`;
     const res = await fetch(url, {
       headers: ghHeaders(token),
       ...(isDev ? { next: { revalidate: 120 } } : { cache: "force-cache" }),
     });
-    if (!res.ok) break;
+    if (!res.ok) {
+      break;
+    }
     const data: T[] = await res.json();
-    if (data.length === 0) break;
+    if (0 === data.length) {
+      break;
+    }
     results.push(...data);
-    if (data.length < 100) break;
+    if (100 > data.length) {
+      break;
+    }
     page++;
   }
   return results;
@@ -98,11 +106,13 @@ const MONTH_LABELS = [
 export async function fetchAllContributions(username: string): Promise<ContributionData> {
   try {
     const url = `https://github-contributions-api.jogruber.de/v4/${username}?y=all`;
-    const isDev = process.env.NODE_ENV === "development";
+    const isDev = "development" === process.env.NODE_ENV;
     const res = await fetch(url, {
       ...(isDev ? { next: { revalidate: 120 } } : { cache: "force-cache" }),
     });
-    if (!res.ok) throw new Error(`contributions API ${res.status}`);
+    if (!res.ok) {
+      throw new Error(`contributions API ${res.status}`);
+    }
     const data = (await res.json()) as {
       total: Record<string, number>;
       contributions: Activity[];
@@ -110,7 +120,7 @@ export async function fetchAllContributions(username: string): Promise<Contribut
 
     const years = Object.keys(data.total)
       .map(Number)
-      .filter((y) => !Number.isNaN(y) && y > 2000)
+      .filter((y) => !Number.isNaN(y) && 2000 < y)
       .sort((a, b) => b - a); // newest first
 
     return { contributions: data.contributions, total: data.total, years };
@@ -135,8 +145,11 @@ export async function fetchAllUserRepos(token: string | undefined): Promise<Repo
     const languageMap: Record<string, number> = {};
 
     for (const repo of repos) {
-      if (repo.private) privateCount++;
-      else publicCount++;
+      if (repo.private) {
+        privateCount++;
+      } else {
+        publicCount++;
+      }
       if (repo.language) {
         languageMap[repo.language] = (languageMap[repo.language] ?? 0) + 1;
       }
@@ -200,7 +213,9 @@ export function splitByYear(contributions: Activity[]): Record<number, Activity[
   const result: Record<number, Activity[]> = {};
   for (const c of contributions) {
     const year = Number(c.date.slice(0, 4));
-    if (!result[year]) result[year] = [];
+    if (!result[year]) {
+      result[year] = [];
+    }
     result[year].push(c);
   }
   return result;
@@ -215,14 +230,20 @@ export function padCurrentYearToDecember(
 ): Record<number, Activity[]> {
   const currentYear = new Date().getFullYear();
   const activities = contributionsByYear[currentYear];
-  if (!activities || activities.length === 0) return contributionsByYear;
+  if (!activities || 0 === activities.length) {
+    return contributionsByYear;
+  }
 
   const lastDateStr = [...activities].sort((a, b) => a.date.localeCompare(b.date)).at(-1)?.date;
-  if (!lastDateStr) return contributionsByYear;
+  if (!lastDateStr) {
+    return contributionsByYear;
+  }
 
   const last = new Date(lastDateStr);
   const dec31 = new Date(currentYear, 11, 31);
-  if (last >= dec31) return contributionsByYear;
+  if (last >= dec31) {
+    return contributionsByYear;
+  }
 
   const padding: Activity[] = [];
   const cur = new Date(last);

@@ -1,0 +1,53 @@
+---
+title: Checks And Guards
+description: Current local and CI validation paths for the site.
+---
+
+## Local commands
+
+- `bun run typecheck`: TypeScript check only
+- `bun run lint`: Oxlint only
+- `bun run format:check`: Oxfmt check only
+- `bun run format`: Oxfmt write
+- `bun run build`: Full Next.js static build to `out/`
+- `bun run preview:prod`: Build and serve the GitHub Pages-shaped output locally
+- `bun run check`: Lint, format check, typecheck, then build
+- `bun run check:fix`: Lint auto-fix, format write, typecheck, then build
+
+## What each one catches
+
+- Lint:
+  finds code issues and style warnings through `oxlint`
+- Format check:
+  catches files that do not match `oxfmt`
+- Typecheck:
+  catches TypeScript and route typing issues without building
+- Build:
+  catches real production build failures, static export problems, and content generation issues
+- Preview:
+  lets you test the GitHub Pages base path locally at `/itamiforge/`
+
+## CI checks
+
+The GitHub Actions workflow currently does this:
+
+1. `bun install --frozen-lockfile`
+2. `bun run lint`
+3. `bun run format:check`
+4. `bun run typecheck`
+5. `bun run build`
+6. upload the `out/` artifact
+7. deploy to GitHub Pages
+
+## Security checks
+
+- Socket GitHub App is used outside the custom workflow
+- branch protection is expected to enforce the required GitHub check
+- local package audit can be checked with `bun audit`
+
+## Current reality
+
+- `bun run check` is the main all-in-one local gate
+- CI splits that same validation into separate steps before deploy
+- lint still allows many style warnings, but correctness errors fail
+- the lockfile matters because CI installs with `--frozen-lockfile`

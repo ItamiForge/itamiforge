@@ -135,12 +135,12 @@ export function getLearnCourseMetaBySlug(slug: string): LearnCourseMeta | undefi
 
 export function getFeaturedLearnCourses(): LearnCourseMeta[] {
   return LEARN_COURSE_LIBRARY.filter(
-    (learnCourseMeta) => learnCourseMeta.featured && learnCourseMeta.status === "complete"
+    (learnCourseMeta) => learnCourseMeta.featured && "complete" === learnCourseMeta.status
   );
 }
 
 export function getAllLearnCourses(): LearnCourseMeta[] {
-  return LEARN_COURSE_LIBRARY.filter((learnCourseMeta) => learnCourseMeta.status === "complete");
+  return LEARN_COURSE_LIBRARY.filter((learnCourseMeta) => "complete" === learnCourseMeta.status);
 }
 
 export function getLearnCourseSlugs(): string[] {
@@ -198,7 +198,9 @@ function extractLearnCourseChapters(html: string): LearnCourseChapter[] {
 export async function getLearnCourseBySlug(slug: string): Promise<LearnCourseDocument | undefined> {
   const learnCourseMeta = getLearnCourseMetaBySlug(slug);
 
-  if (!learnCourseMeta) return undefined;
+  if (!learnCourseMeta) {
+    return undefined;
+  }
 
   const fs = await import("node:fs/promises");
   const path = await import("node:path");

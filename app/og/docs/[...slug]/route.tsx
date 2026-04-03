@@ -5,10 +5,18 @@ import { docsSource, getDocPageImage } from "@/lib/source";
 
 export const revalidate = false;
 
-export async function GET(_req: Request, { params }: RouteContext<"/og/docs/[...slug]">) {
+type DocsOgRouteContext = {
+  params: Promise<{
+    slug: string[];
+  }>;
+};
+
+export async function GET(_req: Request, { params }: DocsOgRouteContext) {
   const { slug } = await params;
   const page = docsSource.getPage(slug.slice(0, -1));
-  if (!page) notFound();
+  if (!page) {
+    notFound();
+  }
 
   return new ImageResponse(
     <DefaultImage title={page.data.title} description={page.data.description} site="ItamiForge" />,

@@ -21,7 +21,7 @@ The site has two main content areas:
 | Linting/Formatting | Biome |
 | Runtime/Package Manager | Bun |
 | Search | Orama (static indexing) |
-| Animations | Framer Motion, Animate UI |
+| Animations | Framer Motion |
 | Icons | Lucide React |
 
 ## Key Commands
@@ -29,14 +29,13 @@ The site has two main content areas:
 ```bash
 bun run dev               # Start dev server on localhost:3000 (no basePath, hot reload)
 bun run build             # Build static site export (runs generate:projects first)
-bun run build:pages       # Alias for GitHub Pages build (same output as CI)
 bun run preview:prod      # Build + serve Pages-parity preview at localhost:3000/itamiforge/
-bun run serve:prod        # Alias for preview:prod
 bun run generate:projects # Auto-generate content/docs/projects.mdx from project dirs
-bun run compile           # TypeScript type check
-bun run lint              # Biome format check + auto-fix
-bun run check             # compile + lint
-bun run check:fix         # compile + lint with unsafe fixes
+bun run typecheck         # TypeScript type check
+bun run lint              # Oxlint
+bun run format            # Oxfmt write
+bun run check             # lint + format check + typecheck + build
+bun run check:fix         # lint fix + format + typecheck + build
 ```
 
 ### Local vs Prod Testing
@@ -133,7 +132,7 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 
 - Hosted on **GitHub Pages** via GitHub Actions.
 - Production URL: `https://itamiforge.github.io/itamiforge/`
-- Build command: `bun run build:pages`
+- Build command: `bun run build`
 - Output directory: `out/`
 
 ## Common Tasks

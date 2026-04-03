@@ -25,8 +25,12 @@ async function fetchGitHubData() {
   // Merge all repos, de-dupe by full_name, exclude profile/site repos
   const seenFullNames = new Set<string>();
   const allRepos = [...userRepoStats.repos, ...orgRepos].filter((r) => {
-    if (EXCLUDED_REPOS.has(r.name.toLowerCase())) return false;
-    if (seenFullNames.has(r.full_name)) return false;
+    if (EXCLUDED_REPOS.has(r.name.toLowerCase())) {
+      return false;
+    }
+    if (seenFullNames.has(r.full_name)) {
+      return false;
+    }
     seenFullNames.add(r.full_name);
     return true;
   });
@@ -447,7 +451,7 @@ export default async function AboutPage() {
               <div className="flex flex-col mt-6">
                 {exp.projects.map((project, pIdx) => (
                   <div key={`${exp.company}-${exp.role}-${project.text}`} className="group/project">
-                    {pIdx !== 0 && <hr className="w-full border-t border-border/50 my-6" />}
+                    {0 !== pIdx && <hr className="w-full border-t border-border/50 my-6" />}
 
                     <div className="space-y-4">
                       <p className="text-foreground/80 font-normal leading-relaxed text-sm md:text-base">
@@ -455,7 +459,7 @@ export default async function AboutPage() {
                       </p>
 
                       {/* Sub-projects list if any exist */}
-                      {project.subProjects && project.subProjects.length > 0 && (
+                      {project.subProjects && 0 < project.subProjects.length && (
                         <div className="pl-5 space-y-4 border-l border-border/50 ml-2 mt-4 pt-1 pb-1">
                           {project.subProjects.map((sub) => (
                             <div key={sub.text} className="space-y-2 relative">
@@ -463,7 +467,7 @@ export default async function AboutPage() {
                               <p className="text-muted-foreground/90 text-sm leading-relaxed">
                                 {sub.text}
                               </p>
-                              {sub.tech && sub.tech.length > 0 && (
+                              {sub.tech && 0 < sub.tech.length && (
                                 <div className="flex flex-wrap items-center gap-2 pt-1">
                                   {sub.tech.map((t) => (
                                     <span
@@ -483,7 +487,7 @@ export default async function AboutPage() {
                       {/* Project Metadata (Duration & Tech Stack) */}
                       {(project.client ||
                         project.duration ||
-                        (project.tech && project.tech.length > 0)) && (
+                        (project.tech && 0 < project.tech.length)) && (
                         <div className="flex flex-wrap items-center gap-4 mt-2">
                           {/* Client specific badge */}
                           {project.client && (
@@ -502,11 +506,11 @@ export default async function AboutPage() {
                           {/* Vertical Separator */}
                           {(project.duration || project.client) &&
                             project.tech &&
-                            project.tech.length > 0 && (
+                            0 < project.tech.length && (
                               <div className="w-px h-4 bg-border/40 hidden sm:block"></div>
                             )}
 
-                          {project.tech && project.tech.length > 0 && (
+                          {project.tech && 0 < project.tech.length && (
                             <div className="flex flex-wrap items-center gap-2">
                               {project.tech.map((t) => (
                                 <span
@@ -530,7 +534,7 @@ export default async function AboutPage() {
       </div>
 
       {/* GitHub Activity Section */}
-      {years.length > 0 && (
+      {0 < years.length && (
         <div className="space-y-6 pt-4">
           <div className="flex items-center gap-4">
             <h2 className="font-display text-4xl font-medium tracking-tight text-primary">

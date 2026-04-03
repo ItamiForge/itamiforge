@@ -9,7 +9,7 @@ Game and App studio blogging and docs site with integrated developer tools.
 - **Styling**: Tailwind CSS v4
 - **Package manager**: Bun
 - **Search**: Orama
-- **Animation**: Framer Motion, Animate UI
+- **Animation**: Framer Motion
 
 ## Commands
 
@@ -17,7 +17,6 @@ Game and App studio blogging and docs site with integrated developer tools.
 | --------- | ------------- |
 | `bun run dev` | Start development server at localhost:3000 |
 | `bun run build` | Build static site to `out/` |
-| `bun run build:pages` | Build the exact GitHub Pages output |
 | `bun run preview:prod` | Build and serve Pages output at `localhost:3000/itamiforge/` |
 | `bun run check` | Type check + lint |
 | `bun run lint` | Run Biome linter |

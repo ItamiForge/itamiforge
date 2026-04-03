@@ -1,7 +1,7 @@
 import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
-const isProductionBuild = process.env.NODE_ENV === "production";
+const isProductionBuild = "production" === process.env.NODE_ENV;
 const pagesBasePath = "/itamiforge";
 
 /** @type {import('next').NextConfig} */

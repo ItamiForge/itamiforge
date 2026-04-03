@@ -13,7 +13,9 @@ export default function BlogIndexPage() {
       <section className="bento-grid">
         {posts.map((post) => {
           const slug = post.slugs[0];
-          if (!slug) return null;
+          if (!slug) {
+            return null;
+          }
 
           return (
             <div key={post.url} className="bento-card">

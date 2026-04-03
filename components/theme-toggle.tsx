@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -14,7 +14,7 @@ export function ThemeToggle() {
   }, []);
 
   const toggleTheme = useCallback(async () => {
-    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    const newTheme = "dark" === resolvedTheme ? "light" : "dark";
 
     if (!document.startViewTransition) {
       setTheme(newTheme);
@@ -47,7 +47,7 @@ export function ThemeToggle() {
     );
   }
 
-  const isDark = resolvedTheme === "dark";
+  const isDark = "dark" === resolvedTheme;
 
   return (
     <>

@@ -59,11 +59,19 @@ const LANG_COLORS: Record<string, string> = {
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const days = Math.floor(diff / 86400000);
-  if (days === 0) return "today";
-  if (days === 1) return "yesterday";
-  if (days < 30) return `${days}d ago`;
+  if (0 === days) {
+    return "today";
+  }
+  if (1 === days) {
+    return "yesterday";
+  }
+  if (30 > days) {
+    return `${days}d ago`;
+  }
   const months = Math.floor(days / 30);
-  if (months < 12) return `${months}mo ago`;
+  if (12 > months) {
+    return `${months}mo ago`;
+  }
   return `${Math.floor(months / 12)}y ago`;
 }
 
@@ -80,7 +88,7 @@ type TooltipState = { x: number; y: number; activity: Activity } | null;
 function CalendarView({ contributions, total }: { contributions: Activity[]; total: number }) {
   const [tooltip, setTooltip] = useState<TooltipState>(null);
 
-  if (contributions.length === 0) {
+  if (0 === contributions.length) {
     return (
       <div className="flex items-center justify-center h-24 text-sm text-muted-foreground font-mono">
         No contributions recorded for this year.
@@ -103,7 +111,7 @@ function CalendarView({ contributions, total }: { contributions: Activity[]; tot
           {" · "}
           <span className="font-semibold text-foreground">
             {tooltip.activity.count.toLocaleString()} contribution
-            {tooltip.activity.count !== 1 ? "s" : ""}
+            {1 !== tooltip.activity.count ? "s" : ""}
           </span>
         </div>
       )}
@@ -118,7 +126,7 @@ function CalendarView({ contributions, total }: { contributions: Activity[]; tot
         <ContributionGraphCalendar className="text-[11px] text-muted-foreground/60 font-mono">
           {({ activity, dayIndex, weekIndex }) => {
             const lvl = Math.min(activity.level, 4) as 0 | 1 | 2 | 3 | 4;
-            const isPeak = lvl === 4;
+            const isPeak = 4 === lvl;
             return (
               <ContributionGraphBlock
                 activity={activity}
@@ -133,7 +141,9 @@ function CalendarView({ contributions, total }: { contributions: Activity[]; tot
                   .join(" ")}
                 onMouseEnter={(e) => {
                   const wrapEl = (e.target as SVGRectElement).closest(".relative");
-                  if (!wrapEl) return;
+                  if (!wrapEl) {
+                    return;
+                  }
                   const rect = (e.target as SVGRectElement).getBoundingClientRect();
                   const parentRect = wrapEl.getBoundingClientRect();
                   setTooltip({
@@ -187,7 +197,7 @@ function StatsBar({
   languageMap: Record<string, number>;
 }) {
   const total = publicCount + privateCount;
-  const publicPct = total > 0 ? Math.round((publicCount / total) * 100) : 0;
+  const publicPct = 0 < total ? Math.round((publicCount / total) * 100) : 0;
   const topLangs = Object.entries(languageMap)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5);
@@ -209,7 +219,7 @@ function StatsBar({
             <span className="font-semibold text-foreground/90">{privateCount}</span> private
           </span>
         </div>
-        {total > 0 && (
+        {0 < total && (
           <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-muted/60">
             <div
               className="h-full rounded-full bg-[#709050] dark:bg-[#879a39] transition-all duration-700"
@@ -235,7 +245,7 @@ function StatsBar({
               />
               {lang}
               <span className="text-muted-foreground/50">
-                {langTotal > 0 ? `${Math.round((count / langTotal) * 100)}%` : ""}
+                {0 < langTotal ? `${Math.round((count / langTotal) * 100)}%` : ""}
               </span>
             </span>
           ))}
@@ -246,7 +256,9 @@ function StatsBar({
 }
 
 function RepoCards({ repos }: { repos: GitHubRepo[] }) {
-  if (repos.length === 0) return null;
+  if (0 === repos.length) {
+    return null;
+  }
   return (
     <div className="space-y-3 pt-4 border-t border-border/30">
       <p className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground/60">
@@ -266,7 +278,7 @@ function RepoCards({ repos }: { repos: GitHubRepo[] }) {
                 <span className="text-muted-foreground/50">{repo.owner.login}/</span>
                 {repo.name}
               </span>
-              {repo.stargazers_count > 0 && (
+              {0 < repo.stargazers_count && (
                 <span className="flex items-center gap-1 text-[10px] text-muted-foreground/60 shrink-0">
                   <Star className="w-2.5 h-2.5" />
                   {repo.stargazers_count}
@@ -339,7 +351,7 @@ export function GitHubActivity({
             onClick={() => setSelectedYear("all")}
             className={[
               "px-2.5 py-1 rounded-md text-[11px] font-mono font-medium transition-all duration-150",
-              selectedYear === "all"
+              "all" === selectedYear
                 ? "bg-[#709050] dark:bg-[#879a39] text-white shadow-sm"
                 : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground border border-border/30",
             ].join(" ")}
@@ -350,7 +362,7 @@ export function GitHubActivity({
       </div>
 
       {/* Calendar or small-multiples */}
-      {selectedYear === "all" ? (
+      {"all" === selectedYear ? (
         <GitHubYearlyGrid data={yearlyMonthlyData} onYearClick={(year) => setSelectedYear(year)} />
       ) : (
         <CalendarView
