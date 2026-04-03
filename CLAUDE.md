@@ -18,7 +18,7 @@ The site has two main content areas:
 | Language | TypeScript (strict mode) |
 | Content | Fumadocs + MDX |
 | Styling | Tailwind CSS v4 |
-| Linting/Formatting | Biome |
+| Linting/Formatting | Oxlint + Oxfmt |
 | Runtime/Package Manager | Bun |
 | Search | Orama (static indexing) |
 | Animations | Framer Motion |
@@ -28,9 +28,10 @@ The site has two main content areas:
 
 ```bash
 bun run dev               # Start dev server on localhost:3000 (no basePath, hot reload)
-bun run build             # Build static site export (runs generate:projects first)
+bun run build             # Build static site export (runs generate:projects + generate:notes first)
 bun run preview:prod      # Build + serve Pages-parity preview at localhost:3000/itamiforge/
 bun run generate:projects # Auto-generate content/docs/projects.mdx from project dirs
+bun run generate:notes    # Auto-generate content/docs/notes.mdx + content/docs/notes/meta.json
 bun run typecheck         # TypeScript type check
 bun run lint              # Oxlint
 bun run format            # Oxfmt write
@@ -78,6 +79,7 @@ lib/
 
 scripts/
   generate-projects-index.ts # Bun script: scans content/docs/projects/ → projects.mdx
+  generate-notes-index.ts    # Bun script: scans content/docs/notes/ → notes.mdx + notes/meta.json
 
 tools/                      # Separate external tool directories (excluded from build)
 ```
@@ -123,10 +125,10 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 
 ## Code Style
 
-- **Formatter/Linter**: Biome (2-space indent). Run `bun run lint` before committing.
+- **Formatter/Linter**: OXC suite (`oxlint` + `oxfmt`, 2-space indent). Run `bun run lint` before committing.
 - **TypeScript**: Strict mode. Use `InferPageType` from Fumadocs for typed page data.
 - **No `any`**: Avoid untyped code.
-- **Biome exclusions**: `tools/`, `node_modules/`, `.next/`, `dist/`, `build/`, `out/`, `.source/`
+- **OXC exclusions**: `tools/`, `node_modules/`, `.next/`, `dist/`, `build/`, `out/`, `.source/`
 
 ## Deployment
 
@@ -145,5 +147,9 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 3. Run `bun run generate:projects` to update `content/docs/projects.mdx`
 
 **Add a new docs page**: Create `.mdx` file under `content/docs/` — Fumadocs picks it up automatically.
+
+**Add or edit a note**:
+1. Create or edit `content/docs/notes/<slug>.mdx`
+2. Run `bun run generate:notes` to refresh `content/docs/notes.mdx` and `content/docs/notes/meta.json`
 
 **Test deployed output locally**: `bun run preview:prod` (builds then serves at `/itamiforge/`).

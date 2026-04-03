@@ -1,4 +1,7 @@
 {
   "title": "Notes",
-  "pages": ["dev-workflow-baseline", "checks-and-guards"]
+  "pages": [
+    "checks-and-guards",
+    "dev-workflow-baseline"
+  ]
 }

@@ -228,7 +228,6 @@ export default function LearnCourseViewer({ learnCourse }: LearnCourseViewerProp
 
               <div
                 className="learn-rich-content"
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: Course content is sourced from trusted local files
                 dangerouslySetInnerHTML={{ __html: activeChapter.html }}
               />
 
