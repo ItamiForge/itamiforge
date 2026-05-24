@@ -78,7 +78,6 @@ jobs:
       - name: Build static site
         env:
           NEXT_PUBLIC_SITESTATS_WORKER_ORIGIN: https://sitestats.varunrajan.workers.dev
-          NEXT_PUBLIC_SITESTATS_URL: ${{ vars.NEXT_PUBLIC_SITESTATS_URL }}
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           echo "::group::Next.js Build"
