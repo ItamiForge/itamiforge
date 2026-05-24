@@ -1,10 +1,6 @@
 "use client";
 
-import { GitBranch, Lock, Star, Unlock } from "lucide-react";
-import { useState } from "react";
-import { GitHubYearlyGrid } from "@/components/github-yearly-grid";
 import {
-  type Activity,
   ContributionGraph,
   ContributionGraphBlock,
   ContributionGraphCalendar,
@@ -12,7 +8,11 @@ import {
   ContributionGraphLegend,
   ContributionGraphTotalCount,
 } from "@/components/kibo-ui/contribution-graph";
+import { GitBranch, Lock, Star, Unlock } from "lucide-react";
 import type { GitHubRepo, YearlyMonthlyData } from "@/lib/github";
+import type { Activity } from "@/components/kibo-ui/contribution-graph";
+import { GitHubYearlyGrid } from "@/components/github-yearly-grid";
+import { useState } from "react";
 
 type Props = {
   years: number[];

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import GradientText from "@/components/gradient-text";
-import { ProjectCard } from "@/components/project-card";
 import { featuredProjects, publicProjects } from "@/lib/projects";
+import GradientText from "@/components/gradient-text";
+import Link from "next/link";
+import { ProjectCard } from "@/components/project-card";
 
 export default function HomePage() {
   return (

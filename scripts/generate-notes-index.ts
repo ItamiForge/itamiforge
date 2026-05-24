@@ -5,8 +5,8 @@
  * and creates /content/docs/notes.mdx with recent-note cards.
  */
 
-import { execFile } from "node:child_process";
 import { readFile, readdir, stat } from "node:fs/promises";
+import { execFile } from "node:child_process";
 import { join } from "node:path";
 import { promisify } from "node:util";
 
@@ -115,7 +115,7 @@ async function scanNotes(): Promise<NoteInfo[]> {
 
   return notes.sort((a, b) => {
     const timeDiff = b.updatedAt.getTime() - a.updatedAt.getTime();
-    if (timeDiff !== 0) {
+    if (0 !== timeDiff) {
       return timeDiff;
     }
 

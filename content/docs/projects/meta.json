@@ -9,6 +9,10 @@
     "kageasset",
     "itamiforge-site",
     "ai-erp-core",
-    "developer-blog-theme"
+    "developer-blog-theme",
+    "device-finder",
+    "shadcn-theme-builder",
+    "vibe-check",
+    "yaaml"
   ]
 }

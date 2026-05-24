@@ -1,7 +1,7 @@
-import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import { BarChart2 } from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import { SITE } from "@/lib/site";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const SITESTATS_URL =
   process.env.NEXT_PUBLIC_SITESTATS_URL ?? "https://itamiforge.github.io/sitestats/";

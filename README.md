@@ -52,9 +52,18 @@ GitHub Pages to `itamiforge.github.io/itamiforge/` with base path `/itamiforge`.
 
 ### Analytics
 
-- Production (GitHub Pages, static): set `NEXT_PUBLIC_ANALYTICS_ENDPOINT` to your Worker `/collect` URL in repo variables.
-- Local dev: defaults to `/api/analytics` (Next dev server proxy route). To test against a local Worker, set `NEXT_PUBLIC_ANALYTICS_ENDPOINT=http://localhost:8787/collect`.
-- If you ever run a serverful deployment, use `ANALYTICS_ENDPOINT` and `SITESTATS_KEY` on the server side; do not use `NEXT_PUBLIC_*` for secrets.
+- This site uses the canonical SiteStats loader (`GET /tracker.js`) from `components/analytics-tracker.tsx`.
+- Configure only `NEXT_PUBLIC_SITESTATS_WORKER_ORIGIN` (for example `https://sitestats.varunrajan.workers.dev`).
+- The browser sends no shared secret header. Do not set analytics secrets in `NEXT_PUBLIC_*` variables.
+- `NEXT_PUBLIC_SITESTATS_KEY` is removed and must stay unset.
+- Keep `GH_PAT` only as a GitHub Actions secret when build-time GitHub API access is required.
+
+## Security Notes
+
+- Public env vars are non-secret configuration only.
+- Secrets belong in GitHub Actions secrets or Cloudflare Worker secrets, not in browser bundles.
+- Rotate any leaked or previously used PATs and remove stale analytics secrets from repo settings.
+- Run `bun audit --audit-level=high` before deployment and in CI.
 
 ## Local development
 

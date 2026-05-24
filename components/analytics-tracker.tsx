@@ -1,214 +1,36 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 const ANALYTICS_SITE_ID = "itamiforge";
-const ANALYTICS_ENDPOINT =
-  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT ?? "https://sitestats.varunrajan.workers.dev/collect";
-const COLLECT_KEY = process.env.NEXT_PUBLIC_SITESTATS_KEY ?? "";
+const DEFAULT_WORKER_ORIGIN = "https://sitestats.varunrajan.workers.dev";
 
-// ── Visitor name wordlist (adjective + noun, deterministic for the session) ──
-const ADJECTIVES = [
-  "Swift",
-  "Calm",
-  "Bold",
-  "Wise",
-  "Bright",
-  "Cool",
-  "Keen",
-  "Lone",
-  "Vast",
-  "Deep",
-  "Dark",
-  "Soft",
-  "Wild",
-  "Free",
-  "True",
-  "Pure",
-  "Fair",
-  "Rare",
-  "Deft",
-  "Sly",
-  "Jade",
-  "Onyx",
-  "Iris",
-  "Cyan",
-  "Teal",
-  "Sage",
-  "Fern",
-  "Mist",
-  "Dawn",
-  "Dusk",
-  "Ash",
-  "Coal",
-  "Void",
-  "Rust",
-  "Gold",
-  "Iron",
-  "Silk",
-  "Frost",
-  "Ember",
-  "Glow",
-];
-const NOUNS = [
-  "Nova",
-  "River",
-  "Echo",
-  "Storm",
-  "Comet",
-  "Raven",
-  "Phoenix",
-  "Cipher",
-  "Nebula",
-  "Pulse",
-  "Prism",
-  "Vertex",
-  "Quasar",
-  "Stratos",
-  "Vortex",
-  "Lumis",
-  "Nexus",
-  "Solace",
-  "Titan",
-  "Orbit",
-  "Beacon",
-  "Haven",
-  "Axiom",
-  "Zenith",
-  "Nadir",
-  "Crest",
-  "Forge",
-  "Sigil",
-  "Talon",
-  "Ridge",
-  "Glyph",
-  "Helix",
-  "Flare",
-  "Rift",
-  "Tide",
-  "Shard",
-  "Ember",
-  "Wisp",
-  "Spire",
-  "Cove",
-];
-
-function generateVisitorName(): string {
-  const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
-  const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)];
-  const suffix = Math.floor(Math.random() * 900 + 100); // 100-999
-  return `${adj}${noun}${suffix}`;
-}
-
-const VISITOR_KEY = "__sitestats_visitor";
-const SESSION_KEY = "__sitestats_session_id";
-
-function getOrCreateVisitorName(): string {
-  try {
-    const stored = localStorage.getItem(VISITOR_KEY);
-    if (stored) {
-      return stored;
-    }
-    const name = generateVisitorName();
-    localStorage.setItem(VISITOR_KEY, name);
-    return name;
-  } catch {
-    return generateVisitorName();
-  }
-}
-
-function getOrCreateSessionId(): string {
-  try {
-    const stored = sessionStorage.getItem(SESSION_KEY);
-    if (stored) {
-      return stored;
-    }
-    const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    sessionStorage.setItem(SESSION_KEY, id);
-    return id;
-  } catch {
-    return Math.random().toString(36).slice(2);
-  }
-}
-
-function sendBeacon(payload: Record<string, unknown>) {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (COLLECT_KEY) {
-    headers["X-Sitestats-Key"] = COLLECT_KEY;
-  }
-
-  fetch(ANALYTICS_ENDPOINT, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(payload),
-    keepalive: true,
-  }).catch(() => {});
+function normalizeOrigin(value: string): string {
+  return value.trim().replace(/\/+$/, "");
 }
 
 export function AnalyticsTracker() {
-  const pathname = usePathname();
-  const sessionStartRef = useRef<number>(Date.now());
-
-  // Send session_end beacon on page unload
   useEffect(() => {
-    const handleUnload = () => {
-      const duration = Date.now() - sessionStartRef.current;
-      const visitorName = getOrCreateVisitorName();
-      const sessionId = getOrCreateSessionId();
-      const endPayload = {
-        site: ANALYTICS_SITE_ID,
-        path: window.location.pathname,
-        referrer: document.referrer,
-        screen: `${window.screen.width}x${window.screen.height}`,
-        language: navigator.language,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        sessionId,
-        visitorName,
-        eventType: "session_end",
-        sessionDuration: duration,
-      };
-
-      // Prefer sendBeacon for reliability on unload
-      if (navigator.sendBeacon) {
-        const blob = new Blob([JSON.stringify(endPayload)], {
-          type: "application/json",
-        });
-        navigator.sendBeacon(ANALYTICS_ENDPOINT, blob);
-      } else {
-        sendBeacon(endPayload);
-      }
-    };
-
-    window.addEventListener("beforeunload", handleUnload);
-    return () => window.removeEventListener("beforeunload", handleUnload);
-  }, []);
-
-  // Track page views on route changes
-  useEffect(() => {
-    if (!pathname) {
+    if ("undefined" === typeof window) {
       return;
     }
 
-    const visitorName = getOrCreateVisitorName();
-    const sessionId = getOrCreateSessionId();
+    const workerOrigin = normalizeOrigin(
+      process.env.NEXT_PUBLIC_SITESTATS_WORKER_ORIGIN ?? DEFAULT_WORKER_ORIGIN
+    );
+    const trackerSrc = `${workerOrigin}/tracker.js`;
+    if (document.querySelector(`script[data-sitestats-tracker="${trackerSrc}"]`)) {
+      return;
+    }
 
-    const payload = {
-      site: ANALYTICS_SITE_ID,
-      path: pathname,
-      referrer: document.referrer,
-      screen: `${window.screen.width}x${window.screen.height}`,
-      language: navigator.language,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      sessionId,
-      visitorName,
-      eventType: "pageview",
-    };
-
-    sendBeacon(payload);
-  }, [pathname]);
+    (window as typeof window & { ANALYTICS_SITE_ID?: string }).ANALYTICS_SITE_ID =
+      ANALYTICS_SITE_ID;
+    const script = document.createElement("script");
+    script.defer = true;
+    script.src = trackerSrc;
+    script.dataset.sitestatsTracker = trackerSrc;
+    document.head.appendChild(script);
+  }, []);
 
   return null;
 }

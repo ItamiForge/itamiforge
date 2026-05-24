@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
-import { type ReactNode, useCallback, useRef, useState } from "react";
 import "./gradient-text.css";
+import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
+import type { ReactNode } from "react";
 
 interface GradientTextProps {
   children: ReactNode;
@@ -86,9 +87,9 @@ export default function GradientText({
   }, [pauseOnHover]);
 
   const gradientAngle =
-    "horizontal" === direction
+    direction === "horizontal"
       ? "to right"
-      : "vertical" === direction
+      : direction === "vertical"
         ? "to bottom"
         : "to bottom right";
   // Duplicate first color at the end for seamless looping
@@ -97,9 +98,9 @@ export default function GradientText({
   const gradientStyle = {
     backgroundImage: `linear-gradient(${gradientAngle}, ${gradientColors})`,
     backgroundSize:
-      "horizontal" === direction
+      direction === "horizontal"
         ? "300% 100%"
-        : "vertical" === direction
+        : direction === "vertical"
           ? "100% 300%"
           : "300% 300%",
     backgroundRepeat: "repeat",

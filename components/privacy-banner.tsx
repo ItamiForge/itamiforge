@@ -1,7 +1,7 @@
 "use client";
 
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 
 const BANNER_KEY = "__sitestats_banner_dismissed";
 const DISMISS_DAYS = 90;

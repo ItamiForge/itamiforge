@@ -1,5 +1,6 @@
 import { blog, docs } from "fumadocs-mdx:collections/server";
-import { type InferPageType, loader } from "fumadocs-core/source";
+import type { InferPageType } from "fumadocs-core/source";
+import { loader } from "fumadocs-core/source";
 import { toFumadocsSource } from "fumadocs-mdx/runtime/server";
 
 export const docsSource = loader({

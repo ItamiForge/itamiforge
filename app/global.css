@@ -206,14 +206,7 @@
     border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ensure children also transition backgrounds */
-*,
-*::before,
-*::after {
-  transition:
-    background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+
 
 /* View Transitions API - let ThemeToggler handle root transitions */
 ::view-transition-group(root) {
@@ -480,9 +473,7 @@ h6 {
   padding: 0 1rem 3.25rem;
 }
 
-.docs-page-top-gap {
-  padding-top: 2.5rem;
-}
+
 
 .main-page-content {
   padding-top: 1rem;

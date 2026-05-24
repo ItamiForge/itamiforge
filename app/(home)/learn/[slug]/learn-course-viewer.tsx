@@ -1,9 +1,9 @@
 "use client";
 
 import { BookOpen, ChevronLeft, ChevronRight, Layers3 } from "lucide-react";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { LearnCourseDocument } from "@/lib/learn";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 type LearnCourseViewerProps = {

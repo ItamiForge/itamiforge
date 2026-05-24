@@ -118,7 +118,7 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 
 - **Static export only**: `output: "export"` in next.config.mjs. No server-side APIs at runtime.
 - **basePath**: `/itamiforge` for production builds (including CI and local `next build`), empty in `next dev`.
-- **Analytics**: static builds must post directly to the Worker. Set `NEXT_PUBLIC_ANALYTICS_ENDPOINT` to the `/collect` URL for GitHub Pages builds. The `/api/analytics` route is only usable in `next dev` or serverful hosting.
+- **Analytics**: browser tracking uses the canonical Worker script (`GET /tracker.js`) via `components/analytics-tracker.tsx`. Set `NEXT_PUBLIC_SITESTATS_WORKER_ORIGIN` to the Worker origin. Do not use browser-exposed analytics secrets.
 - **Search**: Orama indexes are pre-built at build time. The search dialog is custom (`components/search.tsx`), registered as the Fumadocs search component via `provider.tsx`.
 - **Fonts**: Three local custom fonts — Satoshi (sans), Synonym (display), Quicksand (mono). Defined in `app/layout.tsx` using `next/font/local`.
 - **Layout pattern**: `HomeLayout` and `DocsLayout` (Fumadocs wrappers) share config via `baseOptions()` in `lib/layout.shared.tsx`.
@@ -129,6 +129,19 @@ The `ProjectMeta` array is the **source of truth** for project cards on the land
 - **TypeScript**: Strict mode. Use `InferPageType` from Fumadocs for typed page data.
 - **No `any`**: Avoid untyped code.
 - **OXC exclusions**: `tools/`, `node_modules/`, `.next/`, `dist/`, `build/`, `out/`, `.source/`
+
+### Import Conventions
+
+- Use `import type { Foo }` (top-level) instead of `import { type Foo }` (inline specifier).
+- Order imports by syntax: side-effect (`import './x'`), then multiple-member (`import { a, b }`), then single-member (`import X`).
+- Sort specifiers alphabetically within each import: `import { Alpha, Beta }` not `import { Beta, Alpha }`.
+- Separate `import type` and `import` for the same module — `no-duplicate-imports` is intentionally disabled to support this.
+
+### Style Rules
+
+The oxlint config (`.oxlintrc.json`) intentionally disables these style rules as noise:
+- `sort-keys`, `no-magic-numbers`, `func-style`, `no-ternary`, `no-nested-ternary`, `no-continue`, `yoda`
+- `group-exports`, `exports-last`, `no-unassigned-import` (incompatible with Next.js patterns)
 
 ## Deployment
 

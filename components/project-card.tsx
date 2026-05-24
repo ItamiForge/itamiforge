@@ -19,11 +19,9 @@ const statusLabel: Record<ProjectMeta["status"], string> = {
 };
 
 export function ProjectCard({ project }: ProjectCardProps) {
-  const githubUrl = project.links?.github
-    ? project.links.github
-    : project.sourcePath?.includes("github.com")
-      ? project.sourcePath
-      : undefined;
+  const githubUrl =
+    project.links?.github ??
+    (project.sourcePath?.includes("github.com") ? project.sourcePath : undefined);
   const variant = project.slug.split("").reduce((total, char) => total + char.charCodeAt(0), 0) % 3;
 
   return (

@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  type CSSProperties,
-  type ElementType,
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { CSSProperties, ElementType, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type InkSplashRevealProps<T extends ElementType = "span"> = {
   as?: T;

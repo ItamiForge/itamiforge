@@ -44,7 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const tree = attachLandingPages(docsSource.getPageTree());
 
   return (
-    <DocsLayout tree={tree} {...baseOptions()} links={[]}>
+    <DocsLayout tree={tree} {...baseOptions()}>
       {children}
     </DocsLayout>
   );

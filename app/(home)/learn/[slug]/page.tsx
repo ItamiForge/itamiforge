@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
 import { getLearnCourseBySlug, getLearnCourseMetaBySlug, getLearnCourseSlugs } from "@/lib/learn";
 import LearnCourseViewer from "./learn-course-viewer";
+import { notFound } from "next/navigation";
 
 type Params = Promise<{ slug: string }>;
 

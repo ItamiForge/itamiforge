@@ -15,7 +15,23 @@
     "eslint/no-debugger": "error",
     "import/no-self-import": "error",
     "import/no-cycle": "error",
-    "promise/no-new-statics": "error"
+    "promise/no-new-statics": "error",
+
+    "eslint/sort-keys": "off",
+    "eslint/no-magic-numbers": "off",
+    "eslint/func-style": "off",
+    "eslint/no-ternary": "off",
+    "eslint/no-continue": "off",
+    "eslint/no-duplicate-imports": "off",
+    "eslint/yoda": "off",
+    "eslint/sort-imports": "warn",
+    "eslint/no-nested-ternary": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+    "import/no-unassigned-import": "off",
+    "import/consistent-type-specifier-style": "warn",
+    "import/no-anonymous-default-export": "warn",
+    "promise/prefer-await-to-then": "warn"
   },
   "env": {
     "browser": true,

@@ -1,6 +1,4 @@
 import { Clock, Download, Mail, MapPin, MoveRight, Phone } from "lucide-react";
-import Link from "next/link";
-import { GitHubActivity } from "@/components/github-activity";
 import {
   buildYearlyMonthlyData,
   fetchAllContributions,
@@ -9,6 +7,8 @@ import {
   padCurrentYearToDecember,
   splitByYear,
 } from "@/lib/github";
+import { GitHubActivity } from "@/components/github-activity";
+import Link from "next/link";
 import { SITE } from "@/lib/site";
 
 const EXCLUDED_REPOS = new Set(["itamiforge.github.io", "jordanrex.github.io"]);

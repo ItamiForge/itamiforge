@@ -1,9 +1,9 @@
 import { DocsBody } from "fumadocs-ui/layouts/docs/page";
-import { createRelativeLink } from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { blogSource } from "@/lib/source";
+import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
+import { notFound } from "next/navigation";
 
 type BlogPostPageProps = {
   params: Promise<{

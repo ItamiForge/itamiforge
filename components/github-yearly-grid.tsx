@@ -1,8 +1,8 @@
 "use client";
 
 import { ResponsiveLine } from "@nivo/line";
-import { useTheme } from "next-themes";
 import type { YearlyMonthlyData } from "@/lib/github";
+import { useTheme } from "next-themes";
 
 // Earthy palette cycling per year
 const YEAR_COLORS = [

@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+import "./global.css";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import type { Metadata } from "next";
 import { PrivacyBanner } from "@/components/privacy-banner";
 import { Provider } from "@/components/provider";
 import { SITE } from "@/lib/site";
-import "./global.css";
+import localFont from "next/font/local";
 
 const satoshi = localFont({
   src: [

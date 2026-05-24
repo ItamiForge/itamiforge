@@ -11,6 +11,7 @@ Operational guidance for contributors and coding agents in `itamiforge`.
 - `bun run typecheck`: Run TypeScript checks (`tsc --noEmit`)
 - `bun run check`: `lint` + `format:check` + `typecheck` + `build`
 - `bun run check:fix`: `lint:fix` + `format` + `typecheck` + `build`
+- `bun audit --audit-level=high`: Security audit for high/critical dependency advisories
 
 Repo-specific content generation:
 
@@ -36,3 +37,9 @@ When changing commands, tooling, or quality gates, update these files in the sam
 - Keep CI/workflow updates minimal and correctness-focused.
 - Current repo workflow is `.github/workflows/deploy-pages.yml`.
 - Do not refactor workflow structure for style parity unless correctness requires it.
+
+## Code Conventions
+
+- Imports: `import type { X }` not `import { type X }`. Sort by syntax (side-effect → multiple → single), specifiers alphabetical.
+- Run `bun run lint` after writing code — target 0 warnings, 0 errors.
+- See `.oxlintrc.json` for the full rule config and intentional suppressions.

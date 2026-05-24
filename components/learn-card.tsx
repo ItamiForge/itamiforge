@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { LearnCourseMeta } from "@/lib/learn";
+import Link from "next/link";
 
 type LearnCardProps = {
   learnCourse: LearnCourseMeta;
