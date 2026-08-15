@@ -1,0 +1,90 @@
+---
+title: Technical overview
+description: Architecture, token schema, export formats, and GitHub Pages deployment for Theme Lab.
+---
+
+## Stack
+
+- **Next.js** (App Router) with `output: "export"` for static hosting
+- **React 19** · **Tailwind CSS v4** · **OKLCH** semantic CSS variables
+- **shadcn/ui** (New York) primitives exercised in-lab
+- **Vitest** unit tests · **Playwright** smoke + axe structural checks · GitHub Actions CI
+
+## Workspace routes
+
+| Route | Role |
+| --- | --- |
+| `/` | Theme workspace — active palette overview + quick contrast |
+| `/components` | Metadata-driven component state matrix |
+| `/blocks` | Diagnostic application compositions |
+| `/audit` | Heuristic findings with mode preview links |
+
+Shared shell: nav + theme drawer (import / export / presets / undo).
+
+## Token model
+
+Canonical schema lives in `src/lib/theme/schema.ts` (versioned).
+
+- Separate **`light`** and **`dark`** palettes (never a single shared palette that overrides `.dark`)
+- Color tokens include base, brand, UI, charts, and **sidebar**
+- Axes: `radius`, `font`, `borderWidth`, `letterSpacing`
+- Persistence key: `shadcn-theme-lab` (legacy `shadcn-theme` migrated once)
+
+### Codecs
+
+| Module | Responsibility |
+| --- | --- |
+| `css-codec.ts` | Parse/serialize `:root` + `.dark` Tailwind v4 CSS |
+| `registry-codec.ts` | `registry:theme` JSON (`cssVars.light` / `cssVars.dark`) |
+| `contrast.ts` | Relative luminance + WCAG ratio helpers |
+| `audit.ts` | Contrast pairs, focus ring, gamut heuristics |
+| `url-state.ts` | base64url share payload + localStorage |
+
+Import diagnostics report unknown/missing tokens; known keys are never silently invented.
+
+## Laboratory content
+
+- **Scenarios** (`src/lib/lab/scenarios.ts`) declare component ids, states, and design risks
+- **Blocks** are a fixed set — each exists to expose a composition risk (overlays, density, sidebar tokens, empty states), not to grow a template catalog
+
+## Export formats
+
+**CSS** — `:root` and `.dark` with OKLCH variables plus radius / border / letter-spacing.
+
+**Registry** — JSON with `type: "registry:theme"`. Compatible with the documented shadcn theme item shape; validate against the current [registry item schema](https://ui.shadcn.com/docs/registry/registry-item-json) before publishing a public registry.
+
+**Share URL** — `?theme=<payload>`. Size-capped; nothing is uploaded.
+
+## GitHub Pages
+
+Production builds set:
+
+```bash
+GITHUB_PAGES=true
+GITHUB_REPOSITORY=ItamiForge/shadcn-theme-builder
+```
+
+Next config applies `basePath` / `assetPrefix` for the project site:
+
+`https://itamiforge.github.io/shadcn-theme-builder/`
+
+Workflow: `.github/workflows/deploy-pages.yml` (build → upload artifact → deploy-pages). Enable **GitHub Pages** → Source: **GitHub Actions** in the repo settings if not already.
+
+Local static preview:
+
+```bash
+bun run build
+bun run preview   # serves ./out
+```
+
+## Quality gates
+
+```bash
+bun check      # typecheck + lint + format + unit tests + build
+bun check:fix  # auto-fix lint/format, then the same gate
+bun test:e2e   # Playwright against static `out/` in CI
+```
+
+## Support stance
+
+Finite OSS surface. Prefer schema compatibility and defects over catalog growth. Policy: see `SUPPORT.md` in the app repo.

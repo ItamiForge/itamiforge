@@ -18,8 +18,8 @@ Game and App studio blogging and docs site with integrated developer tools.
 | `bun run dev` | Start development server at localhost:3000 |
 | `bun run build` | Build static site to `out/` |
 | `bun run preview:prod` | Build and serve Pages output at `localhost:3000/itamiforge/` |
-| `bun run check` | Lint + format check + typecheck + build |
-| `bun run check:fix` | Lint auto-fix + format + typecheck + build |
+| `bun run check` | Single quality gate: lint + format + typecheck + build |
+| `bun run check:fix` | Auto-fix lint/format, then typecheck + build |
 | `bun run lint` | Run Oxlint |
 | `bun run generate:projects` | Regenerate projects index |
 | `bun run generate:notes` | Regenerate notes index + notes sidebar metadata |
@@ -45,6 +45,12 @@ Located in `tools/`:
 - `device-finder/` - Cross-platform device discovery
 - `kirei/` - macOS system cleaner
 - And more...
+
+## Theme Lab
+
+Product docs for the OSS shadcn Theme Lab live at `content/docs/projects/theme-lab/`. The app itself is a separate repo: [ItamiForge/shadcn-theme-builder](https://github.com/ItamiForge/shadcn-theme-builder).
+
+See [pending_steps.md](pending_steps.md) for leftover human and agent work.
 
 ## Deployment
 

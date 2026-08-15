@@ -1,0 +1,92 @@
+---
+title: Theme Lab
+description: Local-first OSS theme laboratory for shadcn/ui — edit OKLCH tokens, stress-test components, audit contrast, export CSS and registry themes.
+---
+
+```
+╔══════════════════════════════════════════════════════════╗
+║                                                          ║
+║   ████████╗██╗  ██╗███████╗███╗   ███╗███████╗           ║
+║   ╚══██╔══╝██║  ██║██╔════╝████╗ ████║██╔════╝           ║
+║      ██║   ███████║█████╗  ██╔████╔██║█████╗             ║
+║      ██║   ██╔══██║██╔══╝  ██║╚██╔╝██║██╔══╝             ║
+║      ██║   ██║  ██║███████╗██║ ╚═╝ ██║███████╗           ║
+║      ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝           ║
+║                                                          ║
+║   ██╗      █████╗ ██████╗                                ║
+║   ██║     ██╔══██╗██╔══██╗                               ║
+║   ██║     ███████║██████╔╝                               ║
+║   ██║     ██╔══██║██╔══██╗                               ║
+║   ███████╗██║  ██║██████╔╝                               ║
+║   ╚══════╝╚═╝  ╚═╝╚═════╝                                ║
+║                                                          ║
+║   shadcn/ui · OKLCH · Tailwind v4 · local-first          ║
+╚══════════════════════════════════════════════════════════╝
+```
+
+**Theme Lab** is an open-source, local-first laboratory for [shadcn/ui](https://ui.shadcn.com/) themes.
+
+Not another color picker. Not a paid block catalog. A tool for the question that actually burns:
+
+> *Will this theme stay coherent and readable across the component states I ship?*
+
+- **Live demo:** [itamiforge.github.io/shadcn-theme-builder](https://itamiforge.github.io/shadcn-theme-builder/)
+- **Source:** [github.com/ItamiForge/shadcn-theme-builder](https://github.com/ItamiForge/shadcn-theme-builder)
+- **License:** MIT
+
+## Why it exists
+
+The ecosystem is crowded with theme editors, component galleries, and lifetime-license kits. Official shadcn already ships styles, bases, presets, registries, and MCP.
+
+What’s still thin: **confidence**. Import a real theme, exercise real components and compositions, catch contrast/token problems, export installable CSS or `registry:theme` — without accounts, credits, or a paywall.
+
+## Features
+
+| Surface | What you get |
+| --- | --- |
+| **Edit** | Independent light & dark OKLCH palettes, radius, font, border, letter-spacing, undo, distinctive presets |
+| **Import** | Paste Tailwind v4 `:root` / `.dark` CSS or `registry:theme` JSON with diagnostics |
+| **Components** | Searchable state matrix on installed UI (buttons, forms, overlays, tables, …) |
+| **Blocks** | Fixed diagnostic compositions — auth, settings, pricing, nested overlays, filters, … |
+| **Audit** | WCAG contrast heuristics, focus-ring checks, sRGB gamut warnings |
+| **Export** | Deterministic CSS, registry JSON, shareable URL (theme stays in the query string) |
+
+```
+  ┌─────────┐    ┌──────────────┐    ┌─────────┐    ┌────────┐
+  │  Import │───▶│ Edit tokens  │───▶│ Stress  │───▶│ Export │
+  │ CSS/JSON│    │ light + dark │    │ & Audit │    │ CSS/r  │
+  └─────────┘    └──────────────┘    └─────────┘    └────────┘
+```
+
+## Distinctive presets
+
+Presets are designed to *look different* — color, type, radius, and border weight travel together:
+
+- **Phosphor CRT** · **Paper & Ink** · **Neon Noir** · **Desert Clay**
+- **Matcha Latte** · **Vaporwave** · **Hazard Stripe** · **Sakura Dusk**
+- **Abyssal Glow** · **Copper Patina** · **High Contrast Mono** · **Brutalist** · **Soft Bloom**
+
+## Quick start
+
+```bash
+git clone https://github.com/ItamiForge/shadcn-theme-builder.git
+cd shadcn-theme-builder
+bun install
+bun dev
+```
+
+Or use the [live GitHub Pages build](https://itamiforge.github.io/shadcn-theme-builder/).
+
+## What it is not
+
+- A replacement for tweakcn’s polished editor UX alone
+- A marketplace of marketing blocks or templates
+- An accessibility certification product (audits are heuristics — test keyboard & SR flows yourself)
+
+## Dig deeper
+
+<Cards>
+  <Card title="Technical overview" href="/docs/projects/theme-lab/technical" />
+  <Card title="GitHub repository" href="https://github.com/ItamiForge/shadcn-theme-builder" />
+  <Card title="Live demo" href="https://itamiforge.github.io/shadcn-theme-builder/" />
+</Cards>

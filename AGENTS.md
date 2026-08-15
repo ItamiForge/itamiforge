@@ -30,6 +30,7 @@ When changing commands, tooling, or quality gates, update these files in the sam
 - `README.md`
 - `CLAUDE.md`
 - `AGENTS.md`
+- `pending_steps.md` when leftover human/agent work changes
 - Relevant operational notes under `content/docs/notes/` (for example checks/process notes)
 
 ## Workflow Posture
