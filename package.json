@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "generate:projects": "bun run scripts/generate-projects-index.ts",
     "generate:notes": "bun run scripts/generate-notes-index.ts",
-    "prebuild": "bun run generate:projects && bun run generate:notes",
+    "sync:catalog": "bun run scripts/sync-catalog.ts",
+    "prebuild": "bun run generate:notes",
     "build": "next build",
     "dev": "next dev",
     "preview:prod": "bun run build && rm -rf .serve-prod && mkdir -p .serve-prod/itamiforge && cp -R out/. .serve-prod/itamiforge/ && touch .serve-prod/itamiforge/.nojekyll && printf '<!doctype html><meta http-equiv=\"refresh\" content=\"0; url=/itamiforge/\"><a href=\"/itamiforge/\">Open preview</a>' > .serve-prod/index.html && npx serve .serve-prod -l 3000",

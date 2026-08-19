@@ -1,62 +1,10 @@
 ---
-title: Projects
-description: A collection of tools and experiments.
+title: Catalog
+description: ItamiForge projects included by contract, allowlist, and GitHub metadata.
 ---
 
-import Link from "next/link";
+import { CatalogTable } from "@/components/catalog-table";
 
-<div className="bento-grid my-8">
-  <Link href="/docs/projects/ai-erp-core" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">AI ERP Core</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Private operations platform for SOP execution, production visibility, and analytics.</p>
-  </Link>
-  <Link href="/docs/projects/astro-sumi" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Astro Sumi</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Astro-based writing and blog template built for GitHub Pages deployment.</p>
-  </Link>
-  <Link href="/docs/projects/developer-blog-theme" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Developer Blog Theme</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Private in-progress template and content workflow for internal publishing.</p>
-  </Link>
-  <Link href="/docs/projects/device-finder" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Device Finder</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Cross-platform device discovery CLI/TUI for iOS, Android, and Web development.</p>
-  </Link>
-  <Link href="/docs/projects/goto" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">goto</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Tab-completed project navigation for daily shell workflows.</p>
-  </Link>
-  <Link href="/docs/projects/itamiforge-site" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">ItamiForge Site</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Portfolio and documentation hub built with Next.js App Router and Fumadocs.</p>
-  </Link>
-  <Link href="/docs/projects/kageasset" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">KageAsset</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Cross-platform CLI that scans image assets and generates structured metadata summaries.</p>
-  </Link>
-  <Link href="/docs/projects/kirei" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Kirei</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Safe macOS cleaner with CLI and TUI paths for developer machines.</p>
-  </Link>
-  <Link href="/docs/projects/mcp-react-native-toolkit" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">MCP React Native Toolkit</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Local MCP server for React Native + Expo docs, tooling, and device automation.</p>
-  </Link>
-  <Link href="/docs/projects/port-finder" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Port Finder</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Cross-platform CLI/TUI for inspecting and reclaiming ports.</p>
-  </Link>
-  <Link href="/docs/projects/theme-lab" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Theme Lab</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Local-first OSS theme laboratory for shadcn/ui — edit OKLCH tokens, stress-test components, audit contrast, export CSS and registry themes.</p>
-  </Link>
-  <Link href="/docs/projects/vibe-check" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">Vibe-Check</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">LLM-powered linting and codebase hygiene for the 2026 dev workflow.</p>
-  </Link>
-  <Link href="/docs/projects/yaaml" className="card block h-full no-underline">
-    <h3 className="text-xl font-semibold tracking-tight">YAAML</h3>
-    <p className="mt-3 text-sm text-muted-foreground leading-6">Lightweight, production-ready AutoML built entirely on scikit-learn with Python 3.12+ modernization</p>
-  </Link>
-</div>
+Facts come from each repo's `.itamiforge.yml` and GitHub. This page is the index.
 
+<CatalogTable />

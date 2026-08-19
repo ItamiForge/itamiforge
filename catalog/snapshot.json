@@ -1,0 +1,291 @@
+{
+  "generatedAt": "2026-08-19T03:42:25.352Z",
+  "source": "github+local",
+  "included": [
+    {
+      "repo": "ItamiForge/astro-sumi",
+      "slug": "astro-sumi",
+      "title": "Astro Sumi",
+      "summary": "Git-native template for serial novels with a reading chamber, Codex, and GitHub Pages hosting.",
+      "status": "active",
+      "category": "app",
+      "featured": true,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "astro",
+        "template",
+        "writing",
+        "github-pages"
+      ],
+      "language": "Astro",
+      "github": "https://github.com/ItamiForge/astro-sumi",
+      "live": "https://itamiforge.github.io/astro-sumi/",
+      "pushedAt": "2026-08-19T03:26:28Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/kirei",
+      "slug": "kirei",
+      "title": "Kirei",
+      "summary": "Fast, safe macOS cleaner with CLI and TUI workflows for developer machines.",
+      "status": "active",
+      "category": "desktop",
+      "featured": true,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "rust",
+        "macos",
+        "tui",
+        "cleaner"
+      ],
+      "language": "Rust",
+      "github": "https://github.com/ItamiForge/kirei",
+      "install": "cargo install --git https://github.com/ItamiForge/kirei.git",
+      "pushedAt": "2026-03-02T11:47:58Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/port-finder",
+      "slug": "port-finder",
+      "title": "Port Finder",
+      "summary": "Cross-platform CLI and TUI for finding and reclaiming busy ports.",
+      "status": "active",
+      "category": "cli",
+      "featured": true,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "rust",
+        "cli",
+        "tui",
+        "networking"
+      ],
+      "language": "Rust",
+      "github": "https://github.com/ItamiForge/port-finder",
+      "install": "cargo install --git https://github.com/ItamiForge/port-finder.git",
+      "pushedAt": "2026-03-02T13:14:42Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/sitestats-template",
+      "slug": "sitestats",
+      "title": "SiteStats",
+      "summary": "Self-hosted, privacy-first web analytics on Cloudflare Workers and Pages.",
+      "status": "active",
+      "category": "app",
+      "featured": true,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "analytics",
+        "cloudflare",
+        "workers",
+        "privacy"
+      ],
+      "language": null,
+      "github": "https://github.com/ItamiForge/sitestats-template",
+      "install": "bun install",
+      "pushedAt": "2026-04-01T05:20:11Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/shadcn-theme-builder",
+      "slug": "theme-lab",
+      "title": "Theme Lab",
+      "summary": "Local-first laboratory for shadcn/ui themes — OKLCH tokens, contrast audits, and exportable CSS.",
+      "status": "active",
+      "category": "app",
+      "featured": true,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "shadcn",
+        "theme",
+        "oklch",
+        "nextjs"
+      ],
+      "language": "TypeScript",
+      "github": "https://github.com/ItamiForge/shadcn-theme-builder",
+      "live": "https://itamiforge.github.io/shadcn-theme-builder/",
+      "install": "bun install && bun dev",
+      "pushedAt": "2026-08-15T06:41:49Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/brewkogu",
+      "slug": "brewkogu",
+      "title": "BrewKogu",
+      "summary": "Private brewery operations platform for SOP execution and production visibility.",
+      "status": "active",
+      "category": "app",
+      "featured": false,
+      "visibility": "stub",
+      "public": false,
+      "tags": [
+        "private",
+        "operations",
+        "erp"
+      ],
+      "language": "TypeScript",
+      "pushedAt": "2026-02-23T10:30:53Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/device-finder",
+      "slug": "device-finder",
+      "title": "Device Finder",
+      "summary": "Cross-platform CLI and TUI for finding iOS simulators, Android devices, and web containers.",
+      "status": "active",
+      "category": "cli",
+      "featured": false,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "rust",
+        "cli",
+        "tui",
+        "devices"
+      ],
+      "language": "Rust",
+      "github": "https://github.com/ItamiForge/device-finder",
+      "install": "cargo install --git https://github.com/ItamiForge/device-finder.git",
+      "pushedAt": "2026-03-04T05:44:38Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/goto",
+      "slug": "goto",
+      "title": "goto",
+      "summary": "Namespace-based project navigation with tab completion for the shell.",
+      "status": "active",
+      "category": "shell",
+      "featured": false,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "rust",
+        "shell",
+        "productivity"
+      ],
+      "language": "Rust",
+      "github": "https://github.com/ItamiForge/goto",
+      "install": "cargo install --path .",
+      "pushedAt": "2026-03-01T06:10:49Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/itamiforge",
+      "slug": "itamiforge",
+      "title": "ItamiForge",
+      "summary": "Studio documentation hub and project catalog.",
+      "status": "active",
+      "category": "app",
+      "featured": false,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "nextjs",
+        "fumadocs",
+        "catalog"
+      ],
+      "language": "HTML",
+      "github": "https://github.com/ItamiForge/itamiforge",
+      "live": "https://itamiforge.github.io/itamiforge/",
+      "pushedAt": "2026-08-15T06:41:49Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/kageasset",
+      "slug": "kat",
+      "title": "Kat",
+      "summary": "Fast asset inventory CLI for image metadata, duplicates, and SF Symbol conversion.",
+      "status": "experimental",
+      "category": "cli",
+      "featured": false,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "rust",
+        "cli",
+        "assets"
+      ],
+      "language": "Rust",
+      "github": "https://github.com/ItamiForge/kageasset",
+      "install": "cargo install --path crates/kat-cli",
+      "pushedAt": "2026-01-07T08:33:57Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "ItamiForge/mcp-react-native-toolkit",
+      "slug": "mcp-react-native-toolkit",
+      "title": "MCP React Native Toolkit",
+      "summary": "Local MCP server for React Native and Expo docs, tooling, and device automation.",
+      "status": "active",
+      "category": "library",
+      "featured": false,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "typescript",
+        "mcp",
+        "react-native",
+        "expo"
+      ],
+      "language": "TypeScript",
+      "github": "https://github.com/ItamiForge/mcp-react-native-toolkit",
+      "install": "npx mcp-react-native-toolkit",
+      "pushedAt": "2025-12-02T08:24:17Z",
+      "archived": false,
+      "reason": "yaml"
+    },
+    {
+      "repo": "JordanRex/yaaml",
+      "slug": "yaaml",
+      "title": "YAAML",
+      "summary": "Lightweight AutoML built on scikit-learn for Python 3.12+.",
+      "status": "experimental",
+      "category": "library",
+      "featured": false,
+      "visibility": "public",
+      "public": true,
+      "tags": [
+        "python",
+        "machine-learning",
+        "automl",
+        "scikit-learn"
+      ],
+      "language": "Python",
+      "github": "https://github.com/JordanRex/yaaml",
+      "install": "pip install git+https://github.com/JordanRex/yaaml.git",
+      "pushedAt": "2025-08-04T08:25:48Z",
+      "archived": false,
+      "reason": "yaml"
+    }
+  ],
+  "excluded": [
+    {
+      "repo": "ItamiForge/.github",
+      "reason": "denylist"
+    },
+    {
+      "repo": "ItamiForge/InkBornLegacy",
+      "reason": "opted_out"
+    },
+    {
+      "repo": "ItamiForge/WarOfAges",
+      "reason": "no_contract"
+    }
+  ]
+}

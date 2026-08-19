@@ -7,7 +7,7 @@ Project context and conventions for AI-assisted development.
 **ItamiForge** is a portfolio and documentation hub for a game and app studio. It's a statically exported Next.js site deployed to GitHub Pages at `https://itamiforge.github.io/itamiforge/`.
 
 The site has two main content areas:
-- **Docs** — technical documentation, project pages, and field notes
+- **Docs** — catalog, field notes, and operational guides
 - **Blog** — authored posts with frontmatter metadata
 
 ## Tech Stack
@@ -28,9 +28,9 @@ The site has two main content areas:
 
 ```bash
 bun run dev               # Start dev server on localhost:3000 (no basePath, hot reload)
-bun run build             # Build static site export (runs generate:projects + generate:notes first)
+bun run build             # Build static site export (runs generate:notes first)
 bun run preview:prod      # Build + serve Pages-parity preview at localhost:3000/itamiforge/
-bun run generate:projects # Auto-generate content/docs/projects.mdx from project dirs
+bun run sync:catalog      # Refresh catalog/snapshot.json from GitHub + .itamiforge.yml contracts
 bun run generate:notes    # Auto-generate content/docs/notes.mdx + content/docs/notes/meta.json
 bun run typecheck         # TypeScript type check
 bun run lint              # Oxlint
@@ -59,29 +59,34 @@ app/                        # Next.js App Router
   api/search/, api/og/      # Search and OG image routes
   layout.tsx                # Root layout (fonts, metadata, providers)
 
+catalog/
+  policy.yml                # Hub orgs, allowlist, denylist
+  snapshot.json             # Committed catalog facts (build input)
+  README.md                 # Membership precedence
+
 components/                 # Shared React components
-  project-card.tsx          # Project display card
+  catalog-table.tsx         # Catalog index table
+  project-card.tsx          # Featured project card
   blog-card.tsx             # Blog post card
   search.tsx                # Orama search dialog
   provider.tsx              # Fumadocs RootProvider
 
 content/
   docs/                     # MDX documentation
-    projects/               # One subdir per project (auto-indexed)
+    projects.mdx            # Catalog index
     notes/                  # Field notes
   blog/                     # Blog posts (.mdx with frontmatter)
 
 lib/
-  projects.ts               # Project metadata array (source of truth for project list)
+  catalog/                  # Contract schema, membership, GitHub fetch
+  projects.ts               # Snapshot → ProjectMeta
   site.ts                   # Site-wide config (name, description, links)
   source.ts                 # Fumadocs source loaders for docs + blog
   layout.shared.tsx         # Shared nav/theme options across layouts
 
 scripts/
-  generate-projects-index.ts # Bun script: scans content/docs/projects/ → projects.mdx
-  generate-notes-index.ts    # Bun script: scans content/docs/notes/ → notes.mdx + notes/meta.json
-
-tools/                      # Separate external tool directories (excluded from build)
+  sync-catalog.ts           # GitHub + YAML → catalog/snapshot.json
+  generate-notes-index.ts   # Scans content/docs/notes/ → notes.mdx + notes/meta.json
 ```
 
 ## Content Conventions
@@ -99,20 +104,24 @@ draft: false   # true to hide from production
 ---
 ```
 
-### Project Docs (`content/docs/projects/<slug>/index.mdx`)
+### Project catalog
 
-Each project gets its own directory. The `generate:projects` script auto-generates `content/docs/projects.mdx` from these directories. Run `bun run generate:projects` after adding or removing a project.
+Facts live in each source repo's `.itamiforge.yml` plus GitHub metadata. The hub policy is `catalog/policy.yml`. `bun run sync:catalog` writes `catalog/snapshot.json`. The public index is `content/docs/projects.mdx`.
+
+Membership precedence is documented in `catalog/README.md`. First match wins: hub denylist → unallowlisted fork → invalid contract → `catalog: false` → `catalog: true` → hub allowlist → skip.
+
+`lib/projects.ts` reads the committed snapshot. Do not hand-edit the project list.
 
 ### Project Metadata (`lib/projects.ts`)
 
-The `ProjectMeta` array is the **source of truth** for project cards on the landing page and projects listing. Each entry has:
-- `id`, `title`, `summary`, `description`
-- `status`: `"active"` | `"experimental"` | `"concept"`
-- `category`: `"tool"` | `"game"` | `"app"` | `"experiment"`
+`ProjectMeta` is derived from the snapshot. Each included entry has:
+- `slug`, `title`, `summary`
+- `status`: `"active"` | `"experimental"` | `"concept"` | `"archived"`
+- `category`: `"cli"` | `"desktop"` | `"shell"` | `"app"` | `"concept"` | `"library"` | `"game"`
 - `tags`: string array
-- `featured`: boolean (shown on home page if true)
-- `sourcePath`: path under `content/docs/` for the docs page
-- Optional: `links` (github, live, docs)
+- `featured`: boolean (shown on the home page if true and public)
+- `visibility`: `"public"` | `"stub"`
+- Optional: `github`, `live`, `install`
 
 ## Architecture Notes
 
@@ -155,9 +164,9 @@ The oxlint config (`.oxlintrc.json`) intentionally disables these style rules as
 **Add a new blog post**: Create `content/blog/<slug>.mdx` with required frontmatter.
 
 **Add a new project**:
-1. Add entry to `lib/projects.ts`
-2. Create `content/docs/projects/<slug>/index.mdx`
-3. Run `bun run generate:projects` to update `content/docs/projects.mdx`
+1. Add `.itamiforge.yml` with `catalog: true` in the source repo
+2. If the repo is outside scanned orgs, add it to `catalog/policy.yml` allowlist
+3. Run `bun run sync:catalog` (or wait for the scheduled workflow PR)
 
 **Add a new docs page**: Create `.mdx` file under `content/docs/` — Fumadocs picks it up automatically.
 

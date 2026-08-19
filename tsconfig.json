@@ -33,6 +33,7 @@
     "components/**/*.tsx",
     "lib/**/*.ts",
     "lib/**/*.tsx",
+    "catalog/snapshot.json",
     "types/**/*.ts",
     ".source/**/*.ts",
     ".next/types/**/*.ts",

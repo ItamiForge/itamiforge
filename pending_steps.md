@@ -1,25 +1,21 @@
 # Pending steps — itamiforge
 
-Open work after the Theme Lab docs landing. Split by who needs to act.
+Open work after the studio catalog landing.
 
 ## You (human)
 
-1. **Confirm Theme Lab docs** after this site deploys: `/docs/projects/theme-lab` (and `/technical`).
-2. **Confirm Theme Lab Pages demo** is enabled on `ItamiForge/shadcn-theme-builder` (Settings → Pages → GitHub Actions). Docs already link there.
-3. **If the demo URL changes** (repo rename or custom domain), update `content/docs/projects/theme-lab/*.mdx`.
-4. **Optional:** add a Theme Lab card or mention on the home page, not only under Docs → Projects.
-5. Review the ASCII landing tone — keep, tighten, or replace with a screenshot once the demo is live.
+1. Commit `.itamiforge.yml` (and README catalog links) in each source repo, then push or open PRs. Local clones were updated; remotes were not, because this machine has no GitHub SSH key.
+2. Confirm `GH_PAT` can read private org repos so BrewKogu stays a stub instead of dropping out of sync.
+3. Merge catalog-sync PRs after checking facts. Do not treat them as literature rewrites.
 
 ## Agent / next coding session
 
-1. After Theme Lab Pages is live, drop a screenshot into `public/` and embed it on the Theme Lab index.
-2. Keep `bun run generate:projects` in the same change whenever project dirs or frontmatter change.
-3. Do not expand Theme Lab docs into a block catalog or changelog dump — landing + technical is the intended surface.
-4. If `shadcn-theme-builder` is renamed, update links in `content/docs/projects/theme-lab/`.
+1. Keep `catalog/snapshot.json` generated. Do not hand-edit `lib/projects.ts` project lists.
+2. Optional literature pages can be added later under `content/docs/projects/<slug>/` without changing the contract.
+3. Do not ingest private repo file contents onto GitHub Pages.
 
 ## Done in this pass
 
-- Renamed project docs from `shadcn-theme-builder` → `theme-lab`
-- Product landing (ASCII hero + features) and technical overview
-- Projects index regenerated
-- Quality gate remains `bun check` (lint + format + typecheck + build)
+- Hub policy, YAML contracts, snapshot sync, scheduled PR workflow
+- Single catalog table at `/docs/projects`
+- LLM-generated per-project doc trees removed
