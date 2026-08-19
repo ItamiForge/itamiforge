@@ -1,7 +1,7 @@
-import { featuredProjects, publicProjects } from "@/lib/projects";
 import GradientText from "@/components/gradient-text";
 import Link from "next/link";
 import { ProjectCard } from "@/components/project-card";
+import { featuredProjects } from "@/lib/projects";
 
 export default function HomePage() {
   return (
@@ -23,7 +23,7 @@ export default function HomePage() {
       <section className="space-y-6">
         <div className="flex items-end justify-between gap-4">
           <Link href="/docs/projects" className="btn">
-            All projects
+            Catalog
           </Link>
         </div>
 
@@ -33,13 +33,6 @@ export default function HomePage() {
               <ProjectCard project={project} />
             </div>
           ))}
-          {publicProjects
-            .filter((project) => !project.featured)
-            .map((project) => (
-              <div key={project.slug} className="bento-card">
-                <ProjectCard project={project} />
-              </div>
-            ))}
         </div>
       </section>
     </div>

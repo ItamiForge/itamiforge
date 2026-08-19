@@ -1,36 +1,42 @@
-import { BookOpenText, Github } from "lucide-react";
+import { Github } from "lucide-react";
 import Link from "next/link";
 import type { ProjectMeta } from "@/lib/projects";
-
-type ProjectCardProps = {
-  project: ProjectMeta;
-};
+import { projectCatalogHref } from "@/lib/projects";
 
 const statusTone: Record<ProjectMeta["status"], string> = {
   active: "status-active",
   experimental: "status-experimental",
   concept: "status-concept",
+  archived: "status-concept",
 };
 
 const statusLabel: Record<ProjectMeta["status"], string> = {
   active: "active",
   experimental: "exp",
   concept: "concept",
+  archived: "archived",
 };
 
-export function ProjectCard({ project }: ProjectCardProps) {
-  const githubUrl =
-    project.links?.github ??
-    (project.sourcePath?.includes("github.com") ? project.sourcePath : undefined);
+export function ProjectCard({ project }: { project: ProjectMeta }) {
   const variant = project.slug.split("").reduce((total, char) => total + char.charCodeAt(0), 0) % 3;
 
   return (
     <article className={`card project-mini project-mini--v${variant} h-full`}>
-      <Link
-        href={project.docsPath}
-        className="project-mini__stretched"
-        aria-label={`${project.title} docs`}
-      />
+      {project.github ? (
+        <a
+          href={project.github}
+          className="project-mini__stretched"
+          aria-label={project.title}
+          rel="noreferrer"
+          target="_blank"
+        />
+      ) : (
+        <Link
+          href={projectCatalogHref(project.slug)}
+          className="project-mini__stretched"
+          aria-label={project.title}
+        />
+      )}
 
       <div className="project-mini__layout">
         <div className="project-mini__zone project-mini__zone--head">
@@ -63,21 +69,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="project-mini__zone project-mini__zone--footer">
           <div className="project-mini__meta">
             <span className="meta-chip">{project.category}</span>
-            <span className="meta-chip">{project.tags.length} tags</span>
           </div>
 
           <div className="project-mini__actions">
-            <Link
-              href={project.docsPath}
-              className="project-mini__action"
-              aria-label={`${project.title} docs`}
-            >
-              <BookOpenText className="h-4 w-4" aria-hidden="true" />
-            </Link>
-
-            {githubUrl ? (
+            {project.github ? (
               <Link
-                href={githubUrl}
+                href={project.github}
                 target="_blank"
                 rel="noreferrer"
                 className="project-mini__action"

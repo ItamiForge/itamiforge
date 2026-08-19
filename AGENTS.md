@@ -15,7 +15,7 @@ Operational guidance for contributors and coding agents in `itamiforge`.
 
 Repo-specific content generation:
 
-- `bun run generate:projects`: Regenerate `content/docs/projects.mdx`
+- `bun run sync:catalog`: Refresh `catalog/snapshot.json` from GitHub + `.itamiforge.yml`
 - `bun run generate:notes`: Regenerate `content/docs/notes.mdx` and `content/docs/notes/meta.json`
 
 ## Source Of Truth
@@ -36,7 +36,7 @@ When changing commands, tooling, or quality gates, update these files in the sam
 ## Workflow Posture
 
 - Keep CI/workflow updates minimal and correctness-focused.
-- Current repo workflow is `.github/workflows/deploy-pages.yml`.
+- Current repo workflows: `.github/workflows/deploy-pages.yml` and `.github/workflows/catalog-sync.yml`.
 - Do not refactor workflow structure for style parity unless correctness requires it.
 
 ## Code Conventions

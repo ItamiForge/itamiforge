@@ -11,6 +11,7 @@ description: Current local and CI validation paths for the site.
 - `bun run format`: Oxfmt write
 - `bun run build`: Full Next.js static build to `out/`
 - `bun run preview:prod`: Build and serve the GitHub Pages-shaped output locally
+- `bun run sync:catalog`: Refresh `catalog/snapshot.json` from GitHub + repo contracts
 - `bun run check`: Lint, format check, typecheck, then build
 - `bun run check:fix`: Lint auto-fix, format write, typecheck, then build
 
@@ -29,7 +30,7 @@ description: Current local and CI validation paths for the site.
 
 ## CI checks
 
-The GitHub Actions workflow currently does this:
+The GitHub Actions deploy workflow currently does this:
 
 1. `bun install --frozen-lockfile`
 2. `bun run lint`
@@ -38,6 +39,8 @@ The GitHub Actions workflow currently does this:
 5. `bun run build`
 6. upload the `out/` artifact
 7. deploy to GitHub Pages
+
+A separate `catalog-sync` workflow refreshes `catalog/snapshot.json` every six hours and opens a PR when facts change.
 
 ## Security checks
 

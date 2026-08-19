@@ -1,0 +1,28 @@
+# Hub-side discovery and membership policy.
+# Repo-level opt-in still lives in each repo's `.itamiforge.yml`.
+# Precedence: catalog/README.md
+
+orgs:
+  - ItamiForge
+
+contractFile: .itamiforge.yml
+
+# Never list, regardless of YAML or allowlist.
+denylist:
+  - ItamiForge/.github
+
+# Extra discovery (outside org scan, or private stubs).
+# Allowlist does not override denylist or `catalog: false`.
+allowlist:
+  - repo: JordanRex/yaaml
+  - repo: ItamiForge/brewkogu
+    slug: brewkogu
+    title: BrewKogu
+    summary: Private brewery operations platform for SOP execution and production visibility.
+    status: active
+    category: app
+    visibility: stub
+    tags:
+      - private
+      - operations
+      - erp

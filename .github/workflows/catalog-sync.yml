@@ -1,0 +1,51 @@
+name: Sync catalog
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [catalog-sync]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: catalog-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Refresh snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Sync catalog snapshot
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: bun run sync:catalog
+
+      - name: Open snapshot PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.token }}
+          branch: catalog/sync
+          delete-branch: true
+          commit-message: "chore(catalog): refresh snapshot"
+          title: "chore(catalog): refresh snapshot"
+          body: |
+            Automated catalog refresh from GitHub + `.itamiforge.yml` contracts.
+
+            Review facts only. Do not treat this as a literature rewrite.
+          add-paths: catalog/snapshot.json

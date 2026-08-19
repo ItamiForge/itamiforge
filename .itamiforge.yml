@@ -1,0 +1,13 @@
+catalog: true
+slug: itamiforge
+title: ItamiForge
+summary: Studio documentation hub and project catalog.
+status: active
+category: app
+featured: false
+visibility: public
+tags:
+  - nextjs
+  - fumadocs
+  - catalog
+live: https://itamiforge.github.io/itamiforge/
