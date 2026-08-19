@@ -7,7 +7,7 @@ Project context and conventions for AI-assisted development.
 **ItamiForge** is a portfolio and documentation hub for a game and app studio. It's a statically exported Next.js site deployed to GitHub Pages at `https://itamiforge.github.io/itamiforge/`.
 
 The site has two main content areas:
-- **Docs** — catalog, field notes, and operational guides
+- **Docs** — catalog, project guides (for example Astro Sumi), field notes, and operational guides
 - **Blog** — authored posts with frontmatter metadata
 
 ## Tech Stack
@@ -169,6 +169,11 @@ The oxlint config (`.oxlintrc.json`) intentionally disables these style rules as
 3. Run `bun run sync:catalog` (or wait for the scheduled workflow PR)
 
 **Add a new docs page**: Create `.mdx` file under `content/docs/` — Fumadocs picks it up automatically.
+
+**Add a project guide** (literature, not catalog facts):
+1. Add pages under `content/docs/projects/<slug>/`
+2. List the folder in `content/docs/projects/meta.json`
+3. Register the slug in `lib/projects.ts` (`projectGuideHref`) so the catalog title and home card link to the guide
 
 **Add or edit a note**:
 1. Create or edit `content/docs/notes/<slug>.mdx`

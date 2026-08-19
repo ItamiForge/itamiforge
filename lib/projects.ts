@@ -15,3 +15,15 @@ export const excludedRepos = catalogSnapshot.excluded;
 export function projectCatalogHref(slug: string): `/docs/projects/#${string}` {
   return `/docs/projects/#${slug}`;
 }
+
+const PROJECT_GUIDES = {
+  "astro-sumi": "/docs/projects/astro-sumi",
+} as const;
+
+export function projectGuideHref(slug: string): string | undefined {
+  if (slug in PROJECT_GUIDES) {
+    return PROJECT_GUIDES[slug as keyof typeof PROJECT_GUIDES];
+  }
+
+  return undefined;
+}

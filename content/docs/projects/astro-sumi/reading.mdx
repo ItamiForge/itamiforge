@@ -1,0 +1,66 @@
+---
+title: Reading chamber
+description: Look presets, spoiler mode, continue-reading, immersive chrome, and keyboard shortcuts.
+---
+
+The chamber is the public reading surface: home, novel pages, and chapter pages. Appearance is one named **look preset** that owns color, fonts, type size, measure, and corner radius together. Spoiler mode is independent of the look.
+
+Open the header gear to change both.
+
+## Look presets
+
+Comfort (eyes and access):
+
+| Preset | Scheme | Type |
+| --- | --- | --- |
+| **Daylight** | Light, warm paper | Literata, easy daylight |
+| **Dusk** | Dark, warm night | Slightly larger type, low blue light |
+| **Clear** | High-contrast light | Atkinson Hyperlegible, larger, wide measure |
+| **Beacon** | High-contrast night | Atkinson on black |
+
+Story (genre atmosphere):
+
+| Preset | Scheme | Type |
+| --- | --- | --- |
+| **Manuscript** | Light | Fraunces titles, Literata prose, Bricolage UI. Default |
+| **Myth** | Light | Parchment and Fraunces, high fantasy |
+| **Starfarer** | Dark | Cool night, Source Sans titles, Source Serif prose. Science fiction |
+| **Nocturne** | Dark | Gothic, Fraunces titles, Newsreader body. Horror |
+| **Lantern** | Light | Soft color, round corners. YA, fairy tale, anime |
+| **Broadsheet** | Light | Newsreader columns, sharp edges. Pulp, comics, serials |
+
+The preset is stored in `localStorage` (`sumi:preset`). Older split keys (`sumi:palette`, `sumi:type`, …) map onto a single preset and are then forgotten.
+
+## Spoiler mode
+
+| Mode | Codex indexes | Atlas |
+| --- | --- | --- |
+| **First-time** (default) | `spoiler` cards hidden | Pins stay covered |
+| **Scholar** | Spoiler cards visible | Atlas reveal on |
+
+`secret` entities are never built, so Scholar mode cannot show them. First-time is the right default for a public serial: the Codex does not leak later volumes from the index.
+
+## Continue reading
+
+Opening a chapter writes a pointer: novel, chapter title, href, and scroll position. The home page offers that pointer back. It lives in `localStorage` (`sumi:continue`) on the reader's machine — not on the server.
+
+## Immersive mode
+
+Press `i` to hide header and footer. An exit control stays in the corner. The flag is `data-immersive` on `html`, persisted as `sumi:immersive`.
+
+## Keys
+
+These fire when the focus is not an input or contenteditable field.
+
+| Key | Action |
+| --- | --- |
+| `j` | Next chapter |
+| `k` | Previous chapter |
+| `m` | Atlas |
+| `i` | Immersive on/off |
+| `?` | Keyboard help |
+| `Esc` | Close overlays |
+
+## Home wash
+
+The sample home page sits on a Paper Noir grainient (peach / bark / taupe, slow warp, film grain). Chapter pages use the preset background, not that wash. This studio guide reuses the home wash only on Astro Sumi docs pages.

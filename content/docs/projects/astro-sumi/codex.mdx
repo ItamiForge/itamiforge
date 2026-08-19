@@ -1,0 +1,103 @@
+---
+title: Codex
+description: People, places, maps, wiki links, spoiler visibility, epic callouts, and scholar footnotes.
+---
+
+The Codex is a gazetteer beside the books. Each entity is a markdown file. Indexes hide spoiler cards until Scholar mode. `secret` entities are never built.
+
+## Collections and routes
+
+| Folder | Route | Wiki kind |
+| --- | --- | --- |
+| `src/content/characters/` | `/codex/people/:id` | `character` |
+| `src/content/locations/` | `/codex/places/:id` | `location` |
+| `src/content/factions/` | `/codex/factions/:id` | `faction` |
+| `src/content/species/` | `/codex/kindreds/:id` | `species` |
+| `src/content/maps/` | `/codex/atlas/:id` | — (plates, not wiki-linked as a kind) |
+| `src/content/terms/` | `/codex/glossary/:id` | `term` |
+| `src/content/events/` | `/codex/annals/:id` | `event` |
+| `src/content/documents/` | `/codex/library/:id` | `document` |
+| `src/content/relics/` | `/codex/relics/:id` | `relic` |
+
+Filename slug is the id. Every folio lists backlinks from chapters and other Codex files.
+
+`shortBio` is the card text. Keep it spoiler-safe even when the long body is not.
+
+## Visibility
+
+Codex entities take `visibility`:
+
+| Value | Index | Detail page |
+| --- | --- | --- |
+| `public` (default) | Shown | Built |
+| `spoiler` | Hidden until Scholar mode | Built |
+| `secret` | Hidden | **Not built** |
+
+`revealedIn` is an optional chapter slug for your own notes; it does not change routing.
+
+Characters also have `role` (`protagonist`, `deuteragonist`, `supporting`, `antagonist`, `mentioned`, `mythic`) and `status` (`alive`, `dead`, `unknown`, `mythic`, `reincarnating`). Locations have `kind` (world, city, ship, …) and optional `coords` for the atlas.
+
+## Wiki links
+
+In chapter or Codex markdown:
+
+```md
+[[Kael]]
+[[character:lyssa|the healer]]
+[[location:thornhaven]]
+[[term:the-bond]]
+[[event:the-first-awakening]]
+[[document:prophecy-of-the-five]]
+[[relic:kaels-spear]]
+```
+
+Unqualified `[[slug]]` resolves when that slug is unique across Codex kinds. Qualified links take `kind:slug`, optional `#anchor`, and optional `|label`.
+
+Kind aliases work in the qualifier: `person` / `people` → character, `place` / `places` → location, `kindred` → species, `glossary` → term, `annals` → event, `library` → document, and the obvious plurals.
+
+Hover cards use `shortBio`. Unresolved slugs still render as links with a `wiki-link-missing` class (they default to the people route). Fix them before you publish; the parser tests in `src/test/utils/wiki.test.ts` cover syntax, not every slug in your tree.
+
+## Atlas pins
+
+Pin a place on a map plate with percentages from the top-left of the image:
+
+```yaml
+coords:
+  map: "thornhaven-valley"
+  x: 44
+  y: 62
+```
+
+`map` is a file slug in `src/content/maps/`. Maps themselves have a `kind` (`star-chart`, `system`, `world`, `region`, `city`, `cutaway`) and an optional `plate` image. Spoiler-aware pins follow the same Scholar / first-time split as Codex indexes. `m` opens the atlas from the chamber.
+
+## Callouts
+
+```md
+> [!PROPHECY]
+> Five names will wake in a valley that thinks itself small.
+```
+
+| Marker | Label |
+| --- | --- |
+| `NOTE` | Note |
+| `TIP` | Tip |
+| `WARNING` | Warning |
+| `IMPORTANT` | Important |
+| `PROPHECY` | Prophecy |
+| `CODEX` | Codex |
+| `SONG` | Song |
+| `LOG` | Captain's Log |
+| `TRANSLATION` | Translation |
+| `FORBIDDEN` | Forbidden |
+
+The marker must be the first line of the blockquote, in capitals, as `[!KIND]`.
+
+## Footnotes
+
+```md
+A scholar note.[^1]
+
+[^1]: Footnotes open in the side panel on chapter pages.
+```
+
+Chapter pages collect these into the scholar-notes panel. They are not ordinary endnotes at the bottom of the article.

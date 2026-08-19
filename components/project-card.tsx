@@ -1,7 +1,7 @@
+import { projectCatalogHref, projectGuideHref } from "@/lib/projects";
 import { Github } from "lucide-react";
 import Link from "next/link";
 import type { ProjectMeta } from "@/lib/projects";
-import { projectCatalogHref } from "@/lib/projects";
 
 const statusTone: Record<ProjectMeta["status"], string> = {
   active: "status-active",
@@ -17,26 +17,41 @@ const statusLabel: Record<ProjectMeta["status"], string> = {
   archived: "archived",
 };
 
+function ProjectCardLink({ project }: { project: ProjectMeta }) {
+  const className = "project-mini__stretched";
+  const guideHref = projectGuideHref(project.slug);
+
+  if (guideHref) {
+    return <Link href={guideHref} className={className} aria-label={project.title} />;
+  }
+
+  if (project.github) {
+    return (
+      <a
+        href={project.github}
+        className={className}
+        aria-label={project.title}
+        rel="noreferrer"
+        target="_blank"
+      />
+    );
+  }
+
+  return (
+    <Link
+      href={projectCatalogHref(project.slug)}
+      className={className}
+      aria-label={project.title}
+    />
+  );
+}
+
 export function ProjectCard({ project }: { project: ProjectMeta }) {
   const variant = project.slug.split("").reduce((total, char) => total + char.charCodeAt(0), 0) % 3;
 
   return (
     <article className={`card project-mini project-mini--v${variant} h-full`}>
-      {project.github ? (
-        <a
-          href={project.github}
-          className="project-mini__stretched"
-          aria-label={project.title}
-          rel="noreferrer"
-          target="_blank"
-        />
-      ) : (
-        <Link
-          href={projectCatalogHref(project.slug)}
-          className="project-mini__stretched"
-          aria-label={project.title}
-        />
-      )}
+      <ProjectCardLink project={project} />
 
       <div className="project-mini__layout">
         <div className="project-mini__zone project-mini__zone--head">

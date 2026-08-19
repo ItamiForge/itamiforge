@@ -1,0 +1,85 @@
+---
+title: Write novels
+description: Novels, volumes, chapters, authors, drafts, and the filename contract Astro Sumi expects.
+---
+
+Canon lives under `src/content/`. Filename slug is the id: `kael.md` → `kael`. Collections are declared in `src/content.config.ts` and validated at build time.
+
+## Authors
+
+`src/content/authors/` → `/authors/:id`
+
+A novel's `author` field must match an author file slug. After `bun run fresh`, `template-author.md` is the only author left. Rename it or add files.
+
+Useful fields: `name`, optional `penName`, `pronouns`, `avatar` (URL or site path), `bio`, `genres`, and social URLs (`website`, `twitter`, `github`, `email`, `patreon`, `kofi`).
+
+## Novels
+
+`src/content/novels/` → `/novels/:id`
+
+```yaml
+---
+title: "Echoes of Eternity"
+description: "Five souls return whenever the world starts to end."
+genre: ["epic-fantasy", "reincarnation"]
+status: ongoing
+coverImage: "../../assets/covers/cover-echoes-of-eternity.jpg"
+author: "template-author"
+startDate: 2023-08-10
+lastUpdated: 2024-11-01
+wordCount: 456000
+tags: ["prophecy", "multi-era"]
+mature: false
+summary: "Optional longer blurb for the novel page."
+draft: false
+---
+```
+
+| Field | Notes |
+| --- | --- |
+| `title` | Max 100 characters |
+| `description` | Max 300 characters. Used on cards and the home rail |
+| `status` | `draft`, `ongoing`, `completed`, or `hiatus` |
+| `coverImage` | Astro `image()` — file in the repo, not a CMS upload URL |
+| `author` | Author slug |
+| `startDate` / `lastUpdated` | Coerced dates |
+| `mature` | Defaults `false` |
+| `draft` | `true` keeps the novel out of production builds |
+
+The home page features the first novel (by the collection's sort) and lists the next four in a rail. `SITE.featuredNovelCount` in `src/consts.ts` is `3` for other listings; the home hero is hard-wired to one feature plus a four-item rail.
+
+## Chapters
+
+`src/content/chapters/` → `/novels/:novel/:volume/:chapter`
+
+Name files `novel-slug-v1-c1.md`:
+
+```yaml
+---
+title: "Chapter Title"
+novel: "novel-slug"
+volume: 1
+volumeTitle: "The Age of Bronze"
+chapter: 1
+publishDate: 2024-01-01
+draft: false
+---
+```
+
+`novel` must match a novel slug. `volume` and `chapter` are numbers. Optional: `summary` (max 200), `wordCount`, `pageCount`, `order`, `pageBreaks` (named anchors inside the chapter).
+
+Set `draft: true` to omit a chapter from production.
+
+The body is ordinary markdown plus Astro Sumi's [wiki links, callouts, and footnotes](/docs/projects/astro-sumi/codex).
+
+## Drafts vs production
+
+`draft: true` on a novel or chapter keeps that file out of the production build. Use it for work in progress you still want in git. Dev mode still shows drafts so you can read them locally.
+
+## Covers and portraits
+
+Novel covers and Codex portraits use Astro image fields. Put the file in the repo (commonly `src/assets/`) and set the relative path in frontmatter. The CMS does **not** rewrite those image fields. Uploads configured in `public/admin/config.yml` land in `public/static/uploads/` and are a different path — prefix them with the site `base` (`/astro-sumi/...`) on GitHub Pages.
+
+## Feeds
+
+RSS and a sitemap are generated at build time from published novels and chapters. Set `SITE_URL` so those URLs are canonical.

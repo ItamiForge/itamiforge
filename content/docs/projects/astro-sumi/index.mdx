@@ -1,0 +1,53 @@
+---
+title: Astro Sumi
+description: A git-native template for serial novels — markdown in the repo, a reading chamber on the web, and a Codex beside the books.
+---
+
+import { Card, Cards } from "fumadocs-ui/components/card";
+
+Astro Sumi is the studio's novel-site template. You keep canon as markdown in git. The build turns that into a public reading chamber, a Codex of people and places, and static files you can host on GitHub Pages.
+
+It is a **fork-and-replace** template, not a hosted writing app. Sample books ship so you can see the shape. Delete them with `bun run fresh` and write your own.
+
+- Live sample: [itamiforge.github.io/astro-sumi](https://itamiforge.github.io/astro-sumi/)
+- Source: [ItamiForge/astro-sumi](https://github.com/ItamiForge/astro-sumi)
+- Catalog facts: [Astro Sumi in the studio catalog](/docs/projects/#astro-sumi)
+
+## What it is for
+
+Serial fiction that wants a site of its own: volumes and chapters, a gazetteer that does not live in a wiki product, and a reading surface that remembers where a visitor left off.
+
+Typical use:
+
+1. Fork the repo.
+2. Wipe or rewrite the sample novels.
+3. Fill `src/content/` (or the CMS at `/admin/`).
+4. Deploy `dist/` to GitHub Pages or any static host.
+
+## Three surfaces
+
+| Surface | What the reader sees | What you edit |
+| --- | --- | --- |
+| **Chamber** | Home, novel pages, chapter pages, look presets, continue-reading | `src/content/novels/`, `src/content/chapters/`, `src/content/authors/` |
+| **Codex** | People, places, factions, kindreds, glossary, annals, library, relics, atlas | matching folders under `src/content/` |
+| **Git** | The repo is the source of truth. Sveltia CMS writes the same markdown | `.md` files, `public/admin/config.yml`, `.env.local` |
+
+Prose can `[[wiki]]` link into the Codex. Hover cards and backlinks are generated at build time. Nothing here is a database.
+
+## What ships in the fork
+
+The sample shelf is an epic-fantasy cycle named **Echoes of Eternity**, plus a handful of other novel stubs so the home page has a rail. Codex files (Kael, Thornhaven, the Bond, and so on) belong to that sample world. Treat them as fixtures, not studio canon.
+
+The home page uses a Paper Noir grainient wash — the same backdrop on these guide pages.
+
+## Stack
+
+Astro 5, Bun, Tailwind CSS 4, shadcn/ui, TypeScript, Vitest. Production GitHub Pages uses `base: /astro-sumi`. Current template version is **1.6.3**. MIT license, adapted from [astro-erudite](https://github.com/jktrn/astro-erudite).
+
+<Cards>
+  <Card title="Get started" description="Fork, install, wipe samples, run the chamber." href="/docs/projects/astro-sumi/getting-started" />
+  <Card title="Write novels" description="Novels, volumes, chapters, authors, drafts." href="/docs/projects/astro-sumi/writing" />
+  <Card title="Codex" description="Wiki links, visibility, maps, callouts, footnotes." href="/docs/projects/astro-sumi/codex" />
+  <Card title="Reading chamber" description="Look presets, spoiler mode, keys, continue-reading." href="/docs/projects/astro-sumi/reading" />
+  <Card title="Publish" description="CMS, comments, GitHub Pages, other hosts." href="/docs/projects/astro-sumi/publishing" />
+</Cards>

@@ -1,8 +1,10 @@
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import { docsSource, getDocPageImage } from "@/lib/source";
+import { AstroSumiBackdrop } from "@/components/astro-sumi-backdrop";
 import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
+import { isAstroSumiDocsSlug } from "@/lib/astro-sumi-paper-noir";
 import { notFound } from "next/navigation";
 
 type DocsPageProps = {
@@ -19,19 +21,23 @@ export default async function Page(props: DocsPageProps) {
   }
 
   const MDX = page.data.body;
+  const showAstroSumiBackdrop = isAstroSumiDocsSlug(params.slug);
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
-      <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
-      <DocsBody>
-        <MDX
-          components={getMDXComponents({
-            a: createRelativeLink(docsSource, page),
-          })}
-        />
-      </DocsBody>
-    </DocsPage>
+    <>
+      {showAstroSumiBackdrop ? <AstroSumiBackdrop /> : null}
+      <DocsPage toc={page.data.toc} full={page.data.full}>
+        <DocsTitle>{page.data.title}</DocsTitle>
+        <DocsDescription>{page.data.description}</DocsDescription>
+        <DocsBody>
+          <MDX
+            components={getMDXComponents({
+              a: createRelativeLink(docsSource, page),
+            })}
+          />
+        </DocsBody>
+      </DocsPage>
+    </>
   );
 }
 

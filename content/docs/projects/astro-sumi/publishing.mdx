@@ -1,0 +1,78 @@
+---
+title: Publish
+description: Sveltia CMS, Giscus comments, GitHub Pages, and how to host the static build elsewhere.
+---
+
+Astro Sumi emits a static site. There is no application server. Comments, if you want them, are GitHub Discussions via Giscus. Editing in the browser is Sveltia CMS writing markdown back to git.
+
+## GitHub Pages (included)
+
+`.github/workflows/deploy.yml` runs on `main`:
+
+1. `bun install --frozen-lockfile`
+2. `bun run verify` (format, lint, tests, types, production audit)
+3. `bun run build`
+4. Upload `dist/` and deploy to GitHub Pages
+
+Set the repo's Pages source to GitHub Actions. Production `astro.config.ts` uses `base: /astro-sumi`, so the public URL is `https://<owner>.github.io/astro-sumi/`.
+
+Set `SITE_URL` in the environment the build sees (GitHub Actions variables / secrets, or `.env` committed only if it contains no secrets — `SITE_URL` is not a secret). Giscus ids are not secrets either, but keep tokens out of the repo.
+
+Pull requests run `verify` only; they do not deploy.
+
+## Other hosts
+
+```bash
+bun run build
+```
+
+Output is `dist/`. Vercel, Netlify, and Cloudflare Pages all work if you set:
+
+- Build command: `bun run build` (install Bun on the image)
+- Publish directory: `dist`
+- `SITE_URL` to the public origin
+
+If the site is served at the domain root, change `astro.config.ts` so production `base` is `/` instead of `/astro-sumi`.
+
+## CMS
+
+`/admin/` loads [Sveltia CMS](https://github.com/sveltia/sveltia-cms) from a CDN. It edits the same markdown files. There is no extra CSS or module script.
+
+1. In `public/admin/config.yml`, set `backend.repo` to `your-github-user/your-repo` and `site_url` to the public site.
+2. For a hosted GitHub backend, create a GitHub OAuth application, or use Sveltia's local folder picker in Chromium.
+3. Open `/admin/` in development, or `/astro-sumi/admin/` on GitHub Pages.
+
+Cover images and portraits still use Astro `image()` fields. Put those files in the repo and set the path in markdown. CMS uploads go to `public/static/uploads/`. With a `base` path, prefix public image URLs accordingly.
+
+## Chapter comments (Giscus)
+
+Chapter pages can load [Giscus](https://giscus.app) (GitHub Discussions).
+
+1. Enable Discussions on the repository.
+2. Install the [Giscus app](https://github.com/apps/giscus).
+3. Fill the form at [giscus.app](https://giscus.app).
+4. Copy values into `.env.local` (and into the host's env for production).
+
+```bash
+GISCUS_ENABLED=true
+GISCUS_REPO="yourusername/your-repo"
+GISCUS_REPO_ID="R_kgDOH123456"
+GISCUS_CATEGORY="General"
+GISCUS_CATEGORY_ID="DIC_kwDOH123456"
+```
+
+Set `GISCUS_ENABLED=false`, or omit the ids, to hide the widget. Theme, mapping (`pathname`), and language defaults live in `.env.example`.
+
+## Quality gate before you push
+
+`bun run verify` is the same sequence as CI and the pre-push hook. If it fails locally, the Pages workflow will fail too.
+
+## Related docs in the repo
+
+The template also keeps shorter copies next to the code:
+
+- [`docs/guide.md`](https://github.com/ItamiForge/astro-sumi/blob/main/docs/guide.md)
+- [`docs/setup.md`](https://github.com/ItamiForge/astro-sumi/blob/main/docs/setup.md)
+- [`docs/giscus.md`](https://github.com/ItamiForge/astro-sumi/blob/main/docs/giscus.md)
+
+This studio guide is the long-form user manual. Those files stay as in-repo orientation for anyone who never opens ItamiForge.

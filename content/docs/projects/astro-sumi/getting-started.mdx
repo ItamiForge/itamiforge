@@ -1,0 +1,73 @@
+---
+title: Get started
+description: Fork Astro Sumi, install with Bun, wipe the sample shelf, and run the reading chamber locally.
+---
+
+You need [Bun](https://bun.sh) on PATH. Node is not required for day-to-day work.
+
+## Install
+
+```bash
+git clone https://github.com/ItamiForge/astro-sumi.git my-novel-site
+cd my-novel-site
+bun install
+bun run setup
+bun run dev
+```
+
+`bun run setup` writes `.env.local` from prompts. You can instead copy `.env.example` to `.env.local` and edit it.
+
+The dev server listens on **port 1234**, not 3000.
+
+## Empty the sample shelf
+
+The fork includes sample novels and Codex files so the live demo is not a blank page. For your own site:
+
+```bash
+bun run fresh          # asks first
+bun run fresh -- --yes
+```
+
+That deletes sample markdown under `src/content/` except `src/content/authors/template-author.md`, and leaves empty folders with `.gitkeep`. Authors besides the template file are removed.
+
+## Environment
+
+| Variable | Role |
+| --- | --- |
+| `SITE_TITLE` | Site name in the header, About page, and metadata |
+| `SITE_AUTHOR` | Default author label |
+| `SITE_URL` | Canonical origin (`https://<user>.github.io` on project Pages). Do not include `/astro-sumi`; production `base` supplies that path. Required for RSS, sitemap, and Open Graph |
+| `SITE_DESCRIPTION` | Meta description |
+| `GITHUB_URL`, `EMAIL_ADDRESS`, `PATREON_URL`, `KOFI_URL` | Optional footer / social links |
+| `GISCUS_*` | Chapter comments. See [Publish](/docs/projects/astro-sumi/publishing) |
+
+`src/consts.ts` holds nav links, featured novel count (`3`), and novels per page (`6`). Change those in code, not in env.
+
+## First files
+
+After `fresh`, add:
+
+1. An author at `src/content/authors/<slug>.md` (or keep `template-author.md` and rename it).
+2. A novel at `src/content/novels/<slug>.md` whose `author` field matches that slug.
+3. A chapter at `src/content/chapters/<novel-slug>-v1-c1.md`.
+
+Details and frontmatter are in [Write novels](/docs/projects/astro-sumi/writing).
+
+## Commands
+
+| Command | What it does |
+| --- | --- |
+| `bun run dev` | Chamber at `http://localhost:1234` |
+| `bun run build` | `astro check` then production build to `dist/` |
+| `bun run preview` | Preview that build |
+| `bun run setup` | Interactive `.env.local` |
+| `bun run fresh` | Delete sample content |
+| `bun run verify` | Format check, lint (JS/CSS/markdown), tests, `astro check`, production audit — same gate as CI and the pre-push hook |
+| `bun run test:run` | Vitest once |
+| `bun run prettier` | Format TS/Astro |
+
+Pre-commit formats staged files only. Pre-push runs `verify`.
+
+## GitHub Pages base path
+
+Production builds set `base: /astro-sumi` when `NODE_ENV=production`. Local `bun run dev` uses `/`. Internal links must go through `withBase()` so they work in both modes. If you rename the repo, change that base in `astro.config.ts` and the CMS `site_url`.

@@ -1,5 +1,5 @@
 import type { CatalogExcluded, CatalogProject } from "@/lib/catalog/schema";
-import { PROJECTS, excludedRepos, publicProjects } from "@/lib/projects";
+import { PROJECTS, excludedRepos, projectGuideHref, publicProjects } from "@/lib/projects";
 
 const reasonLabel: Record<CatalogExcluded["reason"], string> = {
   denylist: "hub denylist",
@@ -58,28 +58,39 @@ export function CatalogTable() {
             </tr>
           </thead>
           <tbody>
-            {listed.map((project) => (
-              <tr id={project.slug} key={project.slug}>
-                <td>
-                  <div className="catalog-table__title">{project.title}</div>
-                  <p className="catalog-table__summary">{project.summary}</p>
-                  {project.live ? (
-                    <a href={project.live} rel="noreferrer" target="_blank">
-                      live
-                    </a>
-                  ) : null}
-                </td>
-                <td>{project.status}</td>
-                <td>{project.category}</td>
-                <td>{project.public ? "public" : "stub"}</td>
-                <td>{project.language ?? "—"}</td>
-                <td>
-                  <RepoLink project={project} />
-                  <div className="catalog-table__reason">{project.reason}</div>
-                </td>
-                <td>{formatDate(project.pushedAt)}</td>
-              </tr>
-            ))}
+            {listed.map((project) => {
+              const guideHref = projectGuideHref(project.slug);
+
+              return (
+                <tr id={project.slug} key={project.slug}>
+                  <td>
+                    <div className="catalog-table__title">
+                      {guideHref ? <a href={guideHref}>{project.title}</a> : project.title}
+                    </div>
+                    <p className="catalog-table__summary">{project.summary}</p>
+                    {guideHref || project.live ? (
+                      <div className="catalog-table__links">
+                        {guideHref ? <a href={guideHref}>guide</a> : null}
+                        {project.live ? (
+                          <a href={project.live} rel="noreferrer" target="_blank">
+                            live
+                          </a>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </td>
+                  <td>{project.status}</td>
+                  <td>{project.category}</td>
+                  <td>{project.public ? "public" : "stub"}</td>
+                  <td>{project.language ?? "—"}</td>
+                  <td>
+                    <RepoLink project={project} />
+                    <div className="catalog-table__reason">{project.reason}</div>
+                  </td>
+                  <td>{formatDate(project.pushedAt)}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
