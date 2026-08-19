@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-19T06:35:21.416Z",
-  "source": "github+local",
+  "generatedAt": "2026-08-19T06:38:48.070Z",
+  "source": "github",
   "included": [
     {
       "repo": "ItamiForge/astro-sumi",
@@ -201,7 +201,7 @@
       "language": "HTML",
       "github": "https://github.com/ItamiForge/itamiforge",
       "live": "https://itamiforge.github.io/itamiforge/",
-      "pushedAt": "2026-08-19T06:28:22Z",
+      "pushedAt": "2026-08-19T06:38:27Z",
       "archived": false,
       "reason": "yaml"
     },
