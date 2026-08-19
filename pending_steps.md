@@ -4,7 +4,7 @@ Open work after the studio catalog landing.
 
 ## You (human)
 
-1. Confirm Actions secret `GH_PAT` can read private org repos so BrewKogu stays a stub in CI sync.
+1. Confirm Actions secret `GH_PAT` can still read private org repos so BrewKogu stays a stub in CI sync. The secret exists on this repo. Local `gh` as JordanRex can read it.
 
 ## Agent / next coding session
 
@@ -15,4 +15,5 @@ Open work after the studio catalog landing.
 
 - Hub catalog sync + table
 - Scheduled `catalog-sync` workflow
-- Contract files and README catalog links opened as PRs on source repos
+- Contract files and README catalog links merged on source repos
+- Snapshot refreshed from GitHub contracts
