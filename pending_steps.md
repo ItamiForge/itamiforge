@@ -4,18 +4,25 @@ Open work after the studio catalog landing.
 
 ## You (human)
 
-1. Commit `.itamiforge.yml` (and README catalog links) in each source repo, then push or open PRs. Local clones were updated; remotes were not, because this machine has no GitHub SSH key.
-2. Confirm `GH_PAT` can read private org repos so BrewKogu stays a stub instead of dropping out of sync.
-3. Merge catalog-sync PRs after checking facts. Do not treat them as literature rewrites.
+1. Merge the hub PR: https://github.com/ItamiForge/itamiforge/pull/3
+2. Merge the per-repo contract PRs (see below).
+3. One more GitHub CLI grant so the scheduled sync workflow can be pushed:
+
+```bash
+gh auth refresh -s workflow
+```
+
+Then an agent can add `.github/workflows/catalog-sync.yml` to this repo. The current `gh` token has `repo` and `read:org` but not `workflow`.
+
+4. Confirm Actions secret `GH_PAT` can read private org repos so BrewKogu stays a stub in CI sync.
 
 ## Agent / next coding session
 
-1. Keep `catalog/snapshot.json` generated. Do not hand-edit `lib/projects.ts` project lists.
-2. Optional literature pages can be added later under `content/docs/projects/<slug>/` without changing the contract.
+1. After `gh auth refresh -s workflow`, commit and PR `.github/workflows/catalog-sync.yml`.
+2. Keep `catalog/snapshot.json` generated. Do not hand-edit `lib/projects.ts` project lists.
 3. Do not ingest private repo file contents onto GitHub Pages.
 
 ## Done in this pass
 
-- Hub policy, YAML contracts, snapshot sync, scheduled PR workflow
-- Single catalog table at `/docs/projects`
-- LLM-generated per-project doc trees removed
+- Hub catalog sync + table (PR #3)
+- Contract PRs opened on opted-in and opted-out repos
