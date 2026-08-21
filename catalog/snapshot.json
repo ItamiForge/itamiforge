@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T06:38:48.070Z",
+  "generatedAt": "2026-08-21T00:59:51.873Z",
   "source": "github",
   "included": [
     {
@@ -21,7 +21,7 @@
       "language": "Astro",
       "github": "https://github.com/ItamiForge/astro-sumi",
       "live": "https://itamiforge.github.io/astro-sumi/",
-      "pushedAt": "2026-08-19T06:28:30Z",
+      "pushedAt": "2026-08-19T08:26:19Z",
       "archived": false,
       "reason": "yaml"
     },
@@ -201,7 +201,7 @@
       "language": "HTML",
       "github": "https://github.com/ItamiForge/itamiforge",
       "live": "https://itamiforge.github.io/itamiforge/",
-      "pushedAt": "2026-08-19T06:38:27Z",
+      "pushedAt": "2026-08-20T18:31:37Z",
       "archived": false,
       "reason": "yaml"
     },
